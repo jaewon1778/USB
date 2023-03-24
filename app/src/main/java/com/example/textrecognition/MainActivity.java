@@ -40,6 +40,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 public class MainActivity extends AppCompatActivity {
 
+    //UI Views
     private MaterialButton inputImageBtn;
     private MaterialButton recognizedTextBtn;
     private ShapeableImageView imageIv;
@@ -51,14 +52,18 @@ public class MainActivity extends AppCompatActivity {
     //Uri of the image that we will take from Camera or Gallery
     private Uri imageUri = null;
 
+    //to handle the result of Camera/Gallery permissions
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 101;
 
+    //arrays of permission required to pick image from Camera, Gallery
     private String[] cameraPermissions;
     private String[] storagePermissions;
 
+    //progress dialog
     private ProgressDialog progressDialog;
 
+    //TextRecognizer
     private TextRecognizer textRecognizer;
 
     @Override
@@ -66,20 +71,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //init UI
         inputImageBtn = findViewById(R.id.inputImageBtn);
         recognizedTextBtn = findViewById(R.id.recognizedTextBtn);
         imageIv = findViewById(R.id.imageIv);
         recognizedTextEt = findViewById(R.id.recognizedTextEt);
 
+        //init arrays of permissions required for camera, gallery
         cameraPermissions = new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+        //init setup the progress dialog, shwo while text from image is being recognized
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        //init TextRecognizer
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
+        //handle click, show input image dialog
         inputImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,13 +97,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //handle click, start recognizing text from image we took from Camera/Gallery
         recognizedTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //check if image is picked or not, picked if imageUri is not null
                 if(imageUri == null){
+                    //imageUri is null, which means we haven't picked image yet, can't recognize text
                     Toast.makeText(MainActivity.this, "Pick image first...", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    //imageUri is not null, which means we have picked image, we can recognize text
                     recognizeTextFromImage();
                 }
             }
@@ -103,33 +117,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void recognizeTextFromImage() {
         Log.d(TAG, "recognizeTextFromImage: ");
+        //set message and show progress dialog
         progressDialog.setMessage("Preparing image...");
         progressDialog.show();
 
         try {
+            //Prepare InputImage from imageUri
             InputImage inputImage = InputImage.fromFilePath(this, imageUri);
-
+            //image prepared, we are about to start text recognition process, change progress message
             progressDialog.setMessage("Recognizing text...");
-
+            //start text recognition process from image
             Task<Text> textTaskResult = textRecognizer.process(inputImage)
                     .addOnSuccessListener(new OnSuccessListener<Text>(){
                         @Override
                         public void onSuccess(Text text){
+                            //process completed, dismiss dialog
                             progressDialog.dismiss();
+                            //get the recognized text
                             String recognizedText = text.getText();
                             Log.d(TAG, "onSuccess : recognizedText: " + recognizedText);
+                            //set the recognized text to edit text
                             recognizedTextEt.setText(recognizedText);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            //failed recognizing text from image, dismiss dialog, show reason in Toast
                             progressDialog.dismiss();
                             Log.e(TAG, "onFailure: ", e);
                             Toast.makeText(MainActivity.this, "Failed recognizing text due to "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e){
+            //Exception occurred while preparing InputImage, dismiss dialog, show reason in Toast
             progressDialog.dismiss();
             Log.e(TAG, "recognizeTextFromImage: ", e);
             Toast.makeText(MainActivity.this, "Failed preparing image due to "+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -137,32 +158,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showInputImageDialog() {
+        //init PopupMenu param 1 is context, param 2 is UI View where you want to show PopupMenu
         PopupMenu popupMenu = new PopupMenu(this, inputImageBtn);
 
+        //Add item Camera, Gallery to PopupMenu, param 2 is menu id, param 3 is position of this menu items list, param 4 is title of the menu
         popupMenu.getMenu().add(Menu.NONE, 1, 1, "CAMERA");
-        popupMenu.getMenu().add(Menu.NONE, 1, 1, "GALLERY");
+        popupMenu.getMenu().add(Menu.NONE, 2, 2, "GALLERY");
 
         popupMenu.show();
 
+        //handle PopupMenu item clicks
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                //get item id that is clicked from PopupMenu
                 int id = menuItem.getItemId();
                 if(id == 1){
+                    //Camera is clicked, check if camera permissions are granted or not
                     Log.d(TAG, "onMenuItemClick: Camera Clicked...");
                     if (checkCameraPermissions()) {
+                        //camera permissions granted, we can launch camera intetn
                         pickImageCamera();
                     }
                     else{
+                        //camera permissions not granted, request the camera permission
                         requestCameraPermissions();
                     }
                 }
                 else if (id == 2){
-                    Log.d(TAG, "onMenuItemClick: Gallery Clicked...");
+                    //Gallery is clicked, check if storage permission is granted or not
+                    Log.d(TAG, "onMenuItemClick: Gallery Clicked");
                     if(checkStoragePermission()){
+                        //storage permission granted, we can launch gallery intent
                         pickImageGallery();
                     }
                     else{
+                        //storage permission not granted, request the storage permission
                         requestStoragePermission();
                     }
                 }
@@ -173,8 +204,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void pickImageGallery(){
         Log.d(TAG, "pickImageGallery: ");
+        //intent to pick image from gallery, will show all resources from where we can pick the image
         Intent intent = new Intent(Intent.ACTION_PICK);
 
+        //set type of file we want to pick i.e. image
         intent.setType("image/*");
         galleryActivityResultLauncher.launch(intent);
     }
@@ -268,18 +301,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 else{
+                    //Neither allowed not denied, rather cancelled
                     Toast.makeText(this,"Cancelled",Toast.LENGTH_SHORT).show();
                 }
             }
             break;
             case STORAGE_REQUEST_CODE:{
+                //Check if same action from permission dialog performed or not Allow/Deny
                 if(grantResults.length>0){
+                    //Check if Storage permissions granted, contains boolean results either true or false
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
+                    //Check if storage permission is granted or not
                     if(storageAccepted){
+                        //storage permission granted, we can launch gallery intent
                         pickImageGallery();
                     }
                     else{
+                        //storage permission denied, cant' launch gallery intent
                         Toast.makeText(this,"Storage permission is required", Toast.LENGTH_SHORT).show();
                     }
                 }
