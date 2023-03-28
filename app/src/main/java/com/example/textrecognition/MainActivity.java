@@ -36,6 +36,7 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 public class MainActivity extends AppCompatActivity {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         //init TextRecognizer
-        textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        textRecognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
 
         //handle click, show input image dialog
         inputImageBtn.setOnClickListener(new View.OnClickListener() {
