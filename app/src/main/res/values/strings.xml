@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">USB_JAVA_UI</string>
+    <string name="back">뒤로가기</string>
+    <string name="setting">설정</string>
+    <string name="help">도움말</string>
+    <string name="usb_logo">팀 소개</string>
+    <string name="search">검색</string>
+    <string name="header">USB Project</string>
+    <string name="study">학습하기</string>
+    <string name="add_word">단어 추가</string>
+    <string name="learning_word">단어 배우기</string>
+    <string name="quiz">퀴즈 풀기</string>
+    <string name="dummy1">더미</string>
+    <string name="dummy2">더미더미더미</string>
+    <string name="dummy3">더더더더더더미미미미미미</string>
+    <string name="typing">직접 입력</string>
+    <string name="image_detection">이미지 인식</string>
+    <string name="STT">음성 인식</string>
+    <string name="dot_num">점 위치</string>
+    <string name="korea">한글</string>
+    <string name="number">숫자</string>
+    <string name="word">단어</string>
+    <string name="dot_num_explain">원하는 점을 선택하고 출력 버튼을 누르세요</string>
+    <string name="point_1">1점</string>
+    <string name="point_2">2점</string>
+    <string name="point_3">3점</string>
+    <string name="point_4">4점</string>
+    <string name="point_5">5점</string>
+    <string name="point_6">6점</string>
+    <string name="tgl_on">ON</string>
+    <string name="tgl_off">OFF</string>
+    <string name="output">출력</string>
+    <string name="consonant">자음</string>
+    <string name="vowel">모음</string>
+    <string name="abbreviation">약자</string>
+
+</resources>

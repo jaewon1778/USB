@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="txt_title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">23sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+    
+    <style name="txt_contents" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/black</item>
+
+    </style>
+
+    <style name="btn_study" parent="TextAppearance.AppCompat">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="btn_add_word" parent="TextAppearance.AppCompat">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="tgl_point" parent="TextAppearance.AppCompat">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.3</item>
+    </style>
+</resources>

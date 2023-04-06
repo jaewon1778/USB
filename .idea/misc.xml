@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/button_study.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/consonant.xml" value="0.19452757588713127" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/dot_num.xml" value="0.264" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header.xml" value="0.19281744335185977" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header2.xml" value="0.10175511909736733" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header_white.xml" value="0.14460562103354488" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/korea.xml" value="0.264" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/learning_word.xml" value="0.2" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/loading.xml" value="0.176" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.15625" />
+      </ProjectState>
+    </option>
+  </component>
+</project>
