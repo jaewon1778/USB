@@ -15,6 +15,17 @@
 
     </style>
 
+    <style name="txt_leftTitle" parent="TextAppearance.AppCompat">
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+
+    </style>
+
     <style name="btn_study" parent="TextAppearance.AppCompat">
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">20dp</item>

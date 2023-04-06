@@ -35,11 +35,31 @@
             android:name=".Dot_num"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.Learning_word" />
+                <action android:name="android.intent.Dot_num" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Korean"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Korean" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Consonant"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Consonant" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -21,5 +21,13 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button korean = (Button) findViewById(R.id.lw_korean);
+        korean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Korean.class);
+                startActivity(intent);
+            }
+        });
     }
 }
