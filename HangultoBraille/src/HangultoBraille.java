@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 
+
 public class HangultoBraille {
 
     // 모든 초성에 대한 점자를 매치해놓은 HashMap 변수 선언 (파이썬의 딕셔너리와 비슷)
