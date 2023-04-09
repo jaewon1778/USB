@@ -11,7 +11,7 @@
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
 
-2. build.grade (Module: STTTTStest.app) 파일에 dependencies 변경
+2. build.gradle (Module: STTTTStest.app) 파일에 dependencies 변경
 
 ```
 implementation 'androidx.appcompat:appcompat:1.4.1'
