@@ -156,17 +156,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-            //test1
-            Log.d("test1", arrayListToString(matches));
             for(int i = 0; i < matches.size(); i++){
                 textView.setText(matches.get(i));
             }
-            str = arrayListToString(matches);
 
-            //test2
-            Log.d("test2", "str: " + str);
+            //음성인식 텍스트 가져오기
+            str = textView.getText().toString();
+            Log.d("recognized text", str);
+
             //speakout test
-            speakOut2();
+            //speakOut2();
+            speakOut3(str);
         }
 
         @Override
@@ -202,6 +202,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         tts.setPitch((float) 1.0);
         tts.setSpeechRate((float) 1.0);
         tts.speak(text,TextToSpeech.QUEUE_FLUSH,null,"id1");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void speakOut3(String str) {
+        tts.setPitch((float) 1.0);
+        tts.setSpeechRate((float) 1.0);
+        tts.speak(str,TextToSpeech.QUEUE_FLUSH,null,"id1");
     }
 
     @Override
