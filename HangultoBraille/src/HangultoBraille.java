@@ -104,6 +104,7 @@ public class HangultoBraille {
         }};
 
     // 문법에 규정된 약어/약자 점자를 매치해놓은 HashMap 변수 선언
+    // Key값에 String형이 들어가서 GRAMMAR2를 따로 만듦
     public static final Map<String, int[][]> MATCH_H2B_GRAMMAR2 = new HashMap<String, int[][]>() {{
         put("ㅓㄱ", new int[][] {{1,0,0,1,1,1}}); // '초성'+'ㅓ'+'ㄱ' 일 때 'ㅓㄱ'에 해당하는 점자를 의미
         put("ㅓㄴ", new int[][] {{0,1,1,1,1,1}});
@@ -277,5 +278,6 @@ public class HangultoBraille {
         PrintBraille("걱정");
         PrintBraille("이야기");
         PrintBraille("할것");
+        PrintBraille("사과");
     }
 }

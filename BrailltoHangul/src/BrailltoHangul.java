@@ -1,8 +1,7 @@
-import java.text.Normalizer;
 import java.util.*;
 
-public class jumjatohangul {
-
+public class BrailltoHangul {
+    // 모든 한글에 대한 점자를 매치해놓은 HashMap 변수 선언 (파이썬의 딕셔너리와 비슷)
     public static final HashMap<Character, int[][]> MATCH_H2B_CHO = new HashMap<Character, int[][]>() {{
         put('ㄱ', new int[][] {{0,0,0,1,0,0}});
         put('ㄴ', new int[][] {{1,0,0,1,0,0}});
@@ -113,88 +112,92 @@ public class jumjatohangul {
 
     }};
 
-    private static HashMap<Character, Integer> chosungMap;
-    private static HashMap<Character, Integer> jungsungMap;
-    private static HashMap<Character, Integer> jongsungMap;
+
+    // 점자를 받아 한글 초성 중성 종성으로 변환한 후 한글을 조합!해야함
+    // 초성과 중성에 각각 글자에 해당하는 index를 곱한 후 유니코드에서 한글 시작부분(44032)에 더하면 한글이 조합된다.
+    //아래는 한글에 해당하는 index 맵이다.
+    /////////////////////////////////////////////////
+    // 0xAC00 ~ 0xD7A3 (11172 자)
+    //
+    // 초성: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ
+    // 중성: ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ
+    // 종성: fill ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
+    /////////////////////////////////////////////////
+    private static HashMap<Character, Integer> ChosungIndex;
+    private static HashMap<Character, Integer> JoongsungIndex;
+    private static HashMap<Character, Integer> JongsungInedx;
     static {
-        chosungMap = new HashMap<Character, Integer>();
-        chosungMap.put('ㄱ', 0);
-        chosungMap.put('ㄴ', 1);
-        chosungMap.put('ㄷ', 2);
-        chosungMap.put('ㄹ', 3);
-        chosungMap.put('ㅁ', 4);
-        chosungMap.put('ㅂ', 5);
-        chosungMap.put('ㅅ', 6);
-        chosungMap.put('ㅇ', 7);
-        chosungMap.put('ㅈ', 8);
-        chosungMap.put('ㅊ', 9);
-        chosungMap.put('ㅋ', 10);
-        chosungMap.put('ㅌ', 11);
-        chosungMap.put('ㅍ', 12);
-        chosungMap.put('ㅎ', 13);
+        ChosungIndex = new HashMap<Character, Integer>();
+        ChosungIndex.put('ㄱ', 0);
+        ChosungIndex.put('ㄴ', 1);
+        ChosungIndex.put('ㄷ', 2);
+        ChosungIndex.put('ㄹ', 3);
+        ChosungIndex.put('ㅁ', 4);
+        ChosungIndex.put('ㅂ', 5);
+        ChosungIndex.put('ㅅ', 6);
+        ChosungIndex.put('ㅇ', 7);
+        ChosungIndex.put('ㅈ', 8);
+        ChosungIndex.put('ㅊ', 9);
+        ChosungIndex.put('ㅋ', 10);
+        ChosungIndex.put('ㅌ', 11);
+        ChosungIndex.put('ㅍ', 12);
+        ChosungIndex.put('ㅎ', 13);
 
-        jungsungMap = new HashMap<Character, Integer>();
-        jungsungMap.put('ㅏ', 0);
-        jungsungMap.put('ㅐ', 1);
-        jungsungMap.put('ㅑ', 2);
-        jungsungMap.put('ㅒ', 3);
-        jungsungMap.put('ㅓ', 4);
-        jungsungMap.put('ㅔ', 5);
-        jungsungMap.put('ㅕ', 6);
-        jungsungMap.put('ㅖ', 7);
-        jungsungMap.put('ㅗ', 8);
-        jungsungMap.put('ㅘ', 9);
-        jungsungMap.put('ㅙ', 10);
-        jungsungMap.put('ㅚ', 11);
-        jungsungMap.put('ㅛ', 12);
-        jungsungMap.put('ㅜ', 13);
-        jungsungMap.put('ㅝ', 14);
-        jungsungMap.put('ㅞ', 15);
-        jungsungMap.put('ㅟ', 16);
-        jungsungMap.put('ㅠ', 17);
-        jungsungMap.put('ㅡ', 18);
-        jungsungMap.put('ㅢ', 19);
-        jungsungMap.put('ㅣ', 20);
+        JoongsungIndex = new HashMap<Character, Integer>();
+        JoongsungIndex.put('ㅏ', 0);
+        JoongsungIndex.put('ㅐ', 1);
+        JoongsungIndex.put('ㅑ', 2);
+        JoongsungIndex.put('ㅒ', 3);
+        JoongsungIndex.put('ㅓ', 4);
+        JoongsungIndex.put('ㅔ', 5);
+        JoongsungIndex.put('ㅕ', 6);
+        JoongsungIndex.put('ㅖ', 7);
+        JoongsungIndex.put('ㅗ', 8);
+        JoongsungIndex.put('ㅘ', 9);
+        JoongsungIndex.put('ㅙ', 10);
+        JoongsungIndex.put('ㅚ', 11);
+        JoongsungIndex.put('ㅛ', 12);
+        JoongsungIndex.put('ㅜ', 13);
+        JoongsungIndex.put('ㅝ', 14);
+        JoongsungIndex.put('ㅞ', 15);
+        JoongsungIndex.put('ㅟ', 16);
+        JoongsungIndex.put('ㅠ', 17);
+        JoongsungIndex.put('ㅡ', 18);
+        JoongsungIndex.put('ㅢ', 19);
+        JoongsungIndex.put('ㅣ', 20);
 
-        jongsungMap = new HashMap<Character, Integer>();
-        jongsungMap.put(' ', 0);
-        jongsungMap.put('ㄱ', 1);
-        jongsungMap.put('ㄲ', 2);
-        jongsungMap.put('ㄳ', 3);
-        jongsungMap.put('ㄴ', 4);
-        jongsungMap.put('ㄵ', 5);
-        jongsungMap.put('ㄶ', 6);
-        jongsungMap.put('ㄷ', 7);
-        jongsungMap.put('ㄹ', 8);
-        jongsungMap.put('ㄺ', 9);
-        jongsungMap.put('ㄻ', 10);
-        jongsungMap.put('ㄼ', 11);
-        jongsungMap.put('ㄽ', 12);
-        jongsungMap.put('ㄾ', 13);
-        jongsungMap.put('ㄿ', 14);
-        jongsungMap.put('ㅀ', 15);
-        jongsungMap.put('ㅁ', 16);
-        jongsungMap.put('ㅂ', 17);
-        jongsungMap.put('ㅄ', 18);
-        jongsungMap.put('ㅅ', 19);
-        jongsungMap.put('ㅆ', 20);
-        jongsungMap.put('ㅇ', 21);
-        jongsungMap.put('ㅈ', 22);
-        jongsungMap.put('ㅊ', 23);
-        jongsungMap.put('ㅋ', 24);
-        jongsungMap.put('ㅌ', 25);
-        jongsungMap.put('ㅍ', 26);
-        jongsungMap.put('ㅎ', 27);
-        /////////////////////////////////////////////////
-// 0xAC00 ~ 0xD7A3 (11172 자)
-//
-// 초성: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ
-// 중성: ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ
-// 종성: fill ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
-/////////////////////////////////////////////////
+        JongsungInedx = new HashMap<Character, Integer>();
+        JongsungInedx.put(' ', 0);
+        JongsungInedx.put('ㄱ', 1);
+        JongsungInedx.put('ㄲ', 2);
+        JongsungInedx.put('ㄳ', 3);
+        JongsungInedx.put('ㄴ', 4);
+        JongsungInedx.put('ㄵ', 5);
+        JongsungInedx.put('ㄶ', 6);
+        JongsungInedx.put('ㄷ', 7);
+        JongsungInedx.put('ㄹ', 8);
+        JongsungInedx.put('ㄺ', 9);
+        JongsungInedx.put('ㄻ', 10);
+        JongsungInedx.put('ㄼ', 11);
+        JongsungInedx.put('ㄽ', 12);
+        JongsungInedx.put('ㄾ', 13);
+        JongsungInedx.put('ㄿ', 14);
+        JongsungInedx.put('ㅀ', 15);
+        JongsungInedx.put('ㅁ', 16);
+        JongsungInedx.put('ㅂ', 17);
+        JongsungInedx.put('ㅄ', 18);
+        JongsungInedx.put('ㅅ', 19);
+        JongsungInedx.put('ㅆ', 20);
+        JongsungInedx.put('ㅇ', 21);
+        JongsungInedx.put('ㅈ', 22);
+        JongsungInedx.put('ㅊ', 23);
+        JongsungInedx.put('ㅋ', 24);
+        JongsungInedx.put('ㅌ', 25);
+        JongsungInedx.put('ㅍ', 26);
+        JongsungInedx.put('ㅎ', 27);
     }
 
-
+    //점자를 각각 초성 중성 종성으로 변환하는 함수
     private static char convertBrailleToHangul(int[][] jumja) {
         for (char hangul : MATCH_H2B_CHO.keySet()) {
             int[][] check = MATCH_H2B_CHO.get(hangul);
@@ -214,9 +217,11 @@ public class jumjatohangul {
                 return(hangul);
             }
         }
+
         return ' ';
 
     }
+
 
     public static char combine(int x1, int x2, int x3) {
         int x = (x1 * 21 * 28) + (x2 * 28) + x3;
@@ -238,9 +243,9 @@ public class jumjatohangul {
         String jungsungStr = hanguls.get(1).toString();
         String jongsungStr = hanguls.get(2).toString();
 
-        int chosung = chosungMap.get(chosungStr.charAt(0));
-        int jungsung = jungsungMap.get(jungsungStr.charAt(0));
-        int jongsung = jongsungMap.get(jongsungStr.charAt(0));
+        int chosung = ChosungIndex.get(chosungStr.charAt(0));
+        int jungsung = JoongsungIndex.get(jungsungStr.charAt(0));
+        int jongsung = JongsungInedx.get(jongsungStr.charAt(0));
 
         char hangulChar = combine(chosung, jungsung, jongsung);
 
@@ -250,3 +255,14 @@ public class jumjatohangul {
 
 
 }
+
+
+
+
+
+// 퀴즈 낼 때만 점자 입력 필요?
+// 우리는 퀴즈 랜덤으로 문제 냄. 예를 들어 '사과'
+// 우리는 문제를 내면서 바로 '사과'라는 한글과 그에 맞는 점자 알고있음 a - HangultoBraille을 이용해서.
+// 사용자가 점자를 입력하면.
+// 굳이 그 점자를 한글로 바꾸고 조합하여 '사과'와 일치하는지 체크하는게 아니라
+// 입력 점자 그대로를 a와 일치 시켜 확인.

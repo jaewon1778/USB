@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/BrailltoHangul/BrailltoHangul.iml" filepath="$PROJECT_DIR$/BrailltoHangul/BrailltoHangul.iml" />
       <module fileurl="file://$PROJECT_DIR$/HangultoBraille/HangultoBraille.iml" filepath="$PROJECT_DIR$/HangultoBraille/HangultoBraille.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/IdeaProjects.iml" filepath="$PROJECT_DIR$/.idea/IdeaProjects.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jumjatohangul/jumjatohangul.iml" filepath="$PROJECT_DIR$/jumjatohangul/jumjatohangul.iml" />
     </modules>
   </component>
 </project>
