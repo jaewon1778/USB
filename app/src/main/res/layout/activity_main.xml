@@ -27,12 +27,26 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/recognizedTextBtn"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:text="Recognize Text"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/baseline_document_scanner_24" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/VoiceBtn"
+            android:text="SPEAK To Text"
+
             app:cornerRadius="5dp"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            app:icon="@drawable/baseline_document_scanner_24"
-            android:text="Recognize Text"
-            android:layout_height="match_parent"/>
+            app:icon="@drawable/baseline_textsms_24"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
     
     <ScrollView
@@ -64,6 +78,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"/>
+            <EditText
+                android:id="@+id/txtTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/SpeakBtn"
+                android:text="Text to Speak"
+
+                app:cornerRadius="5dp"
+                android:layout_weight="1"
+                app:icon="@drawable/baseline_keyboard_voice_24"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/quizBtn"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:text="quiz"
+                android:layout_gravity="right"
+                app:cornerRadius="5dp"
+                app:icon="@drawable/baseline_quiz_24" />
         </LinearLayout>
         
     </ScrollView>
