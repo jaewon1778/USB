@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dot_num"
+    tools:context=".Korean"
     android:background="@color/white">
 
     <LinearLayout
@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             layout="@layout/header_white"
             />
+
+
 
         <TextView
             android:layout_width="match_parent"

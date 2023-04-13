@@ -10,4 +10,6 @@
     <color name="main">#C8E0E0</color>
     <color name="dark_main">#A1C2C3</color>
     <color name="dark_gray">#FF303030</color>
+    <color name="light_gray">#F7F7F7</color>
+    <color name="medium_gray">#D9D9D9</color>
 </resources>

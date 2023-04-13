@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dot_num"
+    tools:context=".Consonant"
     android:background="@color/white">
 
     <LinearLayout
@@ -15,115 +16,102 @@
         >
 
         <include
+            android:id="@+id/Header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/header_white"
             />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
+
+            android:layout_marginRight="10dp"
+
+            android:fillViewport="true"
+
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:descendantFocusability="blocksDescendants"
                 >
 
 
                 <TextView
                     android:id="@+id/txt_initialCon"
+                    style="@style/txt_leftTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="초성"
-                    style="@style/txt_leftTitle"
-                    />
+                    android:text="@string/initial_consonant" />
 
                 <GridView
                     android:id="@+id/grdv_initialCon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-
-                    android:numColumns="5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_initialCon"
-
                     style="@style/grdv_kor"
+                    android:layout_width="match_parent"
+
+
+                    android:layout_height="wrap_content"
+                    android:numColumns="5"
                     />
 
                 <TextView
                     android:id="@+id/txt_initialDblCon"
+                    style="@style/txt_leftTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="초성 쌍자음"
-                    style="@style/txt_leftTitle"
-                    />
+                    android:text="@string/initial_double_consonant" />
 
                 <GridView
                     android:id="@+id/grdv_initialDblCon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:numColumns="5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_initialDblCon"
                     style="@style/grdv_kor"
-                    />
+                    android:layout_width="match_parent"
 
+                    android:layout_height="wrap_content"
+                    android:numColumns="5"
+                    />
                 <TextView
                     android:id="@+id/txt_finalCon"
+                    style="@style/txt_leftTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="종성"
-                    style="@style/txt_leftTitle"
-                    />
+                    android:text="@string/final_consonant" />
 
                 <GridView
                     android:id="@+id/grdv_finalCon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:numColumns="5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_finalCon"
-
                     style="@style/grdv_kor"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:numColumns="5"
+
                     />
 
                 <TextView
                     android:id="@+id/txt_finalDblCon"
+                    style="@style/txt_leftTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="종성 겹받침"
-                    style="@style/txt_leftTitle"
-                    />
+                    android:text="@string/final_double_consonant" />
 
                 <GridView
                     android:id="@+id/grdv_finalDblCon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:numColumns="5"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_finalDblCon"
-
                     style="@style/grdv_kor"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:numColumns="5"
+
                     />
 
 
             </LinearLayout>
 
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
 

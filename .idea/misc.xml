@@ -3,17 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable-v24/button_every_word.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/background_splash.xml" value="0.176" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/button_study.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/ic_launcher_usb_background.xml" value="0.226" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/consonant.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/apple.xml" value="0.20735356990166737" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/consonant.xml" value="0.2" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/dot_num.xml" value="0.264" />
-        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grd_item_con.xml" value="0.20820863616930313" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grd_item_con.xml" value="0.1" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grid_item_braille.xml" value="0.16" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grid_item_dot.xml" value="0.136" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grid_item_output.xml" value="0.16460025651988028" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header.xml" value="0.19281744335185977" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header2.xml" value="0.10175511909736733" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/header_white.xml" value="0.14460562103354488" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/korea.xml" value="0.264" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/korean.xml" value="0.12569474134245404" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/learning_word.xml" value="0.2" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/loading.xml" value="0.176" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/output.xml" value="0.16" />
       </map>
     </option>
   </component>

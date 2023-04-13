@@ -29,5 +29,13 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button apple = (Button) findViewById(R.id.lw_word);
+        apple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), apple.class);
+                startActivity(intent);
+            }
+        });
     }
 }

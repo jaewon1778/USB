@@ -33,6 +33,9 @@
     <string name="consonant">자음</string>
     <string name="vowel">모음</string>
     <string name="abbreviation">약자</string>
-
-
+    <string name="listen">다시 듣기</string>
+    <string name="initial_consonant">초성</string>
+    <string name="initial_double_consonant">초성 쌍자음</string>
+    <string name="final_consonant">종성</string>
+    <string name="final_double_consonant">종성 겹받침</string>
 </resources>
