@@ -25,15 +25,16 @@ public class Consonant extends AppCompatActivity {
     private String[] kor_ic_list = {"ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ",
                                     "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ",
                                     "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
+
     private final String[] kor_idc_list = {"ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"};
 
     private final String[] kor_fc_list = {"ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ",
-                                    "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ",
-                                    "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
+                                          "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ",
+                                          "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
 
     private final String[] kor_fdc_list = {"ㄲ", "ㄳ", "ㄵ", "ㄶ", "ㄺ",
-                                     "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ",
-                                     "ㅀ", "ㅄ", "ㅆ"};
+                                           "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ",
+                                           "ㅀ", "ㅄ", "ㅆ"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
