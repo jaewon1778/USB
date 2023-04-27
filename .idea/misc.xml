@@ -8,9 +8,10 @@
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/button_study.xml" value="0.1" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/drawable/ic_launcher_usb_background.xml" value="0.226" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/abbreviation.xml" value="0.1" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/apple.xml" value="0.20735356990166737" />
-        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/consonant.xml" value="0.2" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/consonant.xml" value="0.1" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/dot_num.xml" value="0.264" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grd_item_con.xml" value="0.1" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/grid_item_braille.xml" value="0.16" />
@@ -24,6 +25,9 @@
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/learning_word.xml" value="0.2" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/loading.xml" value="0.176" />
         <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/output.xml" value="0.16" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/toolbar.xml" value="0.18628359592215013" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/layout/vowel.xml" value="0.19581017528858485" />
+        <entry key="..\:/Users/jeawo/USB_JAVA_UI/app/src/main/res/menu/menu.xml" value="0.20778110303548525" />
       </map>
     </option>
   </component>

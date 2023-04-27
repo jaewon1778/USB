@@ -9,6 +9,7 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/header_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1"
@@ -18,8 +19,9 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/header_white"
+            layout="@layout/toolbar"
             />
+
 
         <Space
             android:layout_width="match_parent"

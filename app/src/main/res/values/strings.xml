@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">USB_JAVA_UI</string>
+    <string name="app_name">USB</string>
     <string name="back">뒤로가기</string>
     <string name="setting">설정</string>
     <string name="help">도움말</string>
+    <string name="bluetooth">블루투스</string>
     <string name="usb_logo">팀 소개</string>
     <string name="search">검색</string>
     <string name="header">USB Project</string>
@@ -38,4 +39,7 @@
     <string name="initial_double_consonant">초성 쌍자음</string>
     <string name="final_consonant">종성</string>
     <string name="final_double_consonant">종성 겹받침</string>
+    <string name="con_abb">자음 약자</string>
+    <string name="vo_abb">모음 약자</string>
+    <string name="abb_u">약어</string>
 </resources>

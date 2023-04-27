@@ -16,10 +16,9 @@
         >
 
         <include
-            android:id="@+id/Header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/header_white"
+            layout="@layout/toolbar"
             />
 
         <androidx.core.widget.NestedScrollView

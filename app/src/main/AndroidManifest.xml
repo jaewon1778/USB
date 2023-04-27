@@ -59,6 +59,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Vowel"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Vowel" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Abbreviation"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Abbreviation" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Output"
             android:exported="true">
             <intent-filter>

@@ -1,8 +1,13 @@
 package com.example.usb_java_ui;
 
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
@@ -14,6 +19,14 @@ public class Dot_num extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dot_num);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         String S_on = getString(R.string.tgl_on);
         String S_off = getString(R.string.tgl_off);
 
@@ -47,5 +60,13 @@ public class Dot_num extends AppCompatActivity {
         tgl_p6.setTextOn(S_p6 + "\n" + S_on);
         tgl_p6.setTextOff(S_p6 + "\n" + S_off);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
