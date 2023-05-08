@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,26 +30,27 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle("USB_Project");
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ImageButton setting = findViewById(R.id.Setting);
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Setting.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton bluetooth = findViewById(R.id.Bluetooth);
-        bluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Bluetooth.class);
-                startActivity(intent);
-            }
-        });
+//        ImageButton setting = findViewById(R.id.Setting);
+//        setting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),Setting.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        ImageButton bluetooth = findViewById(R.id.Bluetooth);
+//        bluetooth.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),Bluetooth.class);
+//                startActivity(intent);
+//            }
+//        });
 
         Button learning_word = (Button) findViewById(R.id.learning_word);
         learning_word.setOnClickListener(new View.OnClickListener() {
@@ -96,10 +98,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.Help:
+                startActivity(new Intent(this, Help.class));
+                return true;
+
+            case R.id.Bluetooth:
+                startActivity(new Intent(this, Bluetooth.class));
+                return true;
+
+            case R.id.Setting:
+                startActivity(new Intent(this, Setting.class));
+                return true;
+
             case android.R.id.home:
                 long tempTime = System.currentTimeMillis();
                 long intervalTime = tempTime - pressTime;
@@ -113,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                     pressTime = tempTime;
                     Toast.makeText(getApplicationContext(), "한번더 누르시면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
                 }
+
+
         }
         return super.onOptionsItemSelected(item);
     }

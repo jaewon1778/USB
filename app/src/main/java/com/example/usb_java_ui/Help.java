@@ -6,17 +6,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class ImageDetection extends AppCompatActivity {
+public class Help extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_detection);
+        setContentView(R.layout.help);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -25,11 +28,17 @@ public class ImageDetection extends AppCompatActivity {
         actionBar.setTitle("USB_Project");
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        ImageButton bluetooth = findViewById(R.id.Bluetooth);
+//        bluetooth.setImageResource(0);
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
+        menuInflater.inflate(R.menu.help_menu, menu);
+
         return true;
     }
     @SuppressLint("NonConstantResourceId")
@@ -51,8 +60,8 @@ public class ImageDetection extends AppCompatActivity {
 
             case android.R.id.home:
                 finish();
-
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

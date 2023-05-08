@@ -13,9 +13,9 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/Bluetooth"
-        android:title="@string/bluetooth"
-        android:icon="@drawable/ic_baseline_bluetooth_24"
+        android:id="@+id/Blank"
+        android:title="@string/blank"
+        android:icon="@drawable/ic_baseline_catching_pokemon_24"
         app:showAsAction="ifRoom"
         />
     <item

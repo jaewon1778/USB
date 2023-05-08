@@ -7,9 +7,9 @@
 
 
     <item
-        android:id="@+id/Help"
-        android:title="@string/help"
-        android:icon="@drawable/ic_baseline_help_24"
+        android:id="@+id/Blank"
+        android:title="@string/blank"
+        android:icon="@drawable/ic_baseline_catching_pokemon_24"
         app:showAsAction="ifRoom"
         />
     <item

@@ -9,57 +9,59 @@
     android:layout_height="50dp"
     android:id="@+id/toolbar"
     android:background="@color/main"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     tools:ignore="MissingConstraints">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:gravity="right"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.7"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:text="@string/header"
-            />
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:weightSum="1"-->
+<!--        android:gravity="end"-->
+<!--        >-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.7"-->
+<!--            android:gravity="center"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="20sp"-->
+<!--            android:text="@string/header"-->
+<!--            />-->
 
-        <ImageButton
-            android:id="@+id/Help"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_baseline_help_24"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/help"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/Help"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.1"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:srcCompat="@drawable/ic_baseline_help_24"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:contentDescription="@string/help"/>-->
 
-        <ImageButton
-            android:id="@+id/Bluetooth"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_baseline_bluetooth_24"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/bluetooth" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/Bluetooth"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.1"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:srcCompat="@drawable/ic_baseline_bluetooth_24"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:contentDescription="@string/bluetooth" />-->
 
-        <ImageButton
-            android:id="@+id/Setting"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_baseline_settings_24"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/setting" />
-    </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/Setting"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="0.1"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:srcCompat="@drawable/ic_baseline_settings_24"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:contentDescription="@string/setting" />-->
+<!--    </LinearLayout>-->
 
 </androidx.appcompat.widget.Toolbar>

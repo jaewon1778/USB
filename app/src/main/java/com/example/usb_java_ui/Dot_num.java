@@ -6,7 +6,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
@@ -25,7 +28,8 @@ public class Dot_num extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle("USB_Project");
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         int[] braille = {1,1,1,1,1,1};
@@ -117,13 +121,34 @@ public class Dot_num extends AppCompatActivity {
         });
 
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.Help:
+                startActivity(new Intent(this, Help.class));
+                return true;
+
+            case R.id.Bluetooth:
+                startActivity(new Intent(this, Bluetooth.class));
+                return true;
+
+            case R.id.Setting:
+                startActivity(new Intent(this, Setting.class));
+                return true;
+
             case android.R.id.home:
                 finish();
+
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

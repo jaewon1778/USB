@@ -1,9 +1,15 @@
 package com.example.usb_java_ui;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +32,8 @@ public class Quiz_readOutput extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle("USB_Project");
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         qzr_grid_output = (GridView) findViewById(R.id.grdv_qzrBrailles);
@@ -68,5 +75,34 @@ public class Quiz_readOutput extends AppCompatActivity {
         }
         o_param.height = 160 * line;
         qzr_grid_output.setLayoutParams(o_param);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.Help:
+                startActivity(new Intent(this, Help.class));
+                return true;
+
+            case R.id.Bluetooth:
+                startActivity(new Intent(this, Bluetooth.class));
+                return true;
+
+            case R.id.Setting:
+                startActivity(new Intent(this, Setting.class));
+                return true;
+
+            case android.R.id.home:
+                finish();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
