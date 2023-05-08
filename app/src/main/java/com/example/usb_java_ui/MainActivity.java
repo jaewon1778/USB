@@ -34,23 +34,6 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        ImageButton setting = findViewById(R.id.Setting);
-//        setting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(),Setting.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        ImageButton bluetooth = findViewById(R.id.Bluetooth);
-//        bluetooth.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(),Bluetooth.class);
-//                startActivity(intent);
-//            }
-//        });
 
         Button learning_word = (Button) findViewById(R.id.learning_word);
         learning_word.setOnClickListener(new View.OnClickListener() {
