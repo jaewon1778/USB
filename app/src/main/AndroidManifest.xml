@@ -23,10 +23,56 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Bluetooth"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Bluetooth" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Setting"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Setting" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Learning_word"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.Learning_word" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Typing"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Typing" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageDetection"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.ImageDetection" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".STT"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.STT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -91,6 +137,34 @@
             tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.GridItemBraille" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Quiz"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Quiz" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Quiz_readOutput"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Quiz_readOutput" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Quiz_listenOutput"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Quiz_listenOutput" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

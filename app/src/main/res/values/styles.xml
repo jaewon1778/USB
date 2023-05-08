@@ -6,13 +6,33 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/dark_gray</item>
     </style>
+
+    <style name="txt_qzlQStr" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="txt_dot" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
     
     <style name="txt_contents" parent="TextAppearance.AppCompat">
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/black</item>
+    </style>
 
+    <style name="txt_swName" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="txt_leftTitle" parent="TextAppearance.AppCompat">

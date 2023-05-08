@@ -80,7 +80,7 @@ public class Output extends AppCompatActivity {
         if (numcol > 6) {
 
             numcol = 6;
-            line = line + exmlist.length/6;
+            line = 1 + (exmlist.length-1)/6;
 
         }
 
@@ -93,7 +93,7 @@ public class Output extends AppCompatActivity {
         if(o_param == null) {
             o_param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-        o_param.height = 200 * line;
+        o_param.height = 160 * line;
         o_grid_output.setLayoutParams(o_param);
 
 

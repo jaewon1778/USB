@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Quiz"
+    android:background="@color/white"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/toolbar"
+
+            />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.03"
+            />
+
+        <TextView
+            android:id="@+id/txt_qzSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="13dp"
+            android:text="@string/dummy1"
+            style="@style/txt_title"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_marginTop="-50dp"
+            android:layout_marginEnd="20dp"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_mode"
+            style="@style/txt_swName"
+            />
+        <Switch
+            android:id="@+id/swbtn_qzSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/thumb_cm"
+            android:track="@drawable/track_cm"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.03"
+            />
+        <Button
+            android:id="@+id/btn_qzDotNum"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.12"
+            android:background="@drawable/button_study"
+            android:text="@string/dot_num"
+            style="@style/btn_add_word"
+            />
+        <Button
+            android:id="@+id/btn_qzKorean"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.12"
+            android:background="@drawable/button_study"
+            android:text="@string/korean"
+            style="@style/btn_add_word"
+            />
+        <Button
+            android:id="@+id/btn_qzNumber"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.12"
+            android:background="@drawable/button_study"
+            android:text="@string/number"
+            style="@style/btn_add_word"
+            />
+        <Button
+            android:id="@+id/btn_qzWord"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.12"
+            android:background="@drawable/button_study"
+            android:text="@string/word"
+            style="@style/btn_add_word"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

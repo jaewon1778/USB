@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/toolbar"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+
+            android:layout_marginRight="10dp"
+
+            android:fillViewport="true"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:descendantFocusability="blocksDescendants"
+                >
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/round_border"
+            >
+
+            <TextView
+                android:id="@+id/txt_qzrStr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/txt_title"
+                android:text="@string/qz_read_description"
+                />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.05"/>
+
+            <GridView
+                android:id="@+id/grdv_qzrBrailles"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:isScrollContainer="false"
+                android:horizontalSpacing="3dp"
+                android:verticalSpacing="10dp"
+                tools:ignore="Suspicious0dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                >
+                <Button
+                    android:id="@+id/btn_output"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_add_word"
+                    android:background="@drawable/button_study"
+                    android:text="@string/output"
+                    />
+                <Button
+                    android:id="@+id/btn_listen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_add_word"
+                    android:background="@drawable/button_study"
+                    android:text="@string/listen"
+                    />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+
+            <ImageButton
+                android:id="@+id/btn_speakAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/btn_add_word"
+                android:background="@drawable/button_study"
+                android:src="@drawable/ic_baseline_keyboard_voice_24"
+                />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:textSize="20sp"
+                android:backgroundTint="@color/main"
+
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/btn_add_word"
+                android:background="@drawable/button_study"
+                android:src="@drawable/ic_baseline_check_24"
+                />
+        </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

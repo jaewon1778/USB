@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/toolbar"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/ns_qzl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+
+            >
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/round_border"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_qzlQuestion"
+                        style="@style/txt_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/qz_listen_description" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                    <TextView
+                        android:id="@+id/txt_qzlStr"
+                        style="@style/txt_qzlQStr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/dummy1" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/btn_output"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:text="@string/output" />
+
+                        <Button
+                            android:id="@+id/btn_listen"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:text="@string/listen" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    >
+
+
+                    <GridView
+                        android:id="@+id/grdv_qzlBrailles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:horizontalSpacing="3dp"
+                        android:isScrollContainer="false"
+                        android:numColumns="6"
+                        android:verticalSpacing="10dp"
+                        tools:ignore="Suspicious0dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-15dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="end|bottom"
+                            android:orientation="vertical"
+                            android:weightSum="1"
+                            tools:ignore="NestedWeights">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|end"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="50dp"
+                                    android:text="@string/point_1" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|end"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="50dp"
+                                    android:text="@string/point_2" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|end"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="50dp"
+                                    android:text="@string/point_3" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="start|bottom"
+                            android:orientation="vertical"
+                            android:weightSum="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|start"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="50dp"
+                                    android:text="@string/point_4" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|start"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="50dp"
+                                    android:text="@string/point_5" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.3"
+                                android:gravity="center|start"
+                                android:orientation="horizontal"
+                                android:padding="5dp">
+
+                                <ImageButton
+                                    android:id="@+id/imgbtn_qzlPoint6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:background="@color/transparent"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/p1" />
+
+                                <TextView
+                                    style="@style/txt_dot"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="50dp"
+                                    android:text="@string/point_6" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+
+                        <ImageButton
+                            android:id="@+id/btn_addAnswer"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:src="@drawable/ic_baseline_arrow_upward_24" />
+
+                        <ImageButton
+                            android:id="@+id/btn_backspaceAnswer"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:src="@drawable/ic_baseline_arrow_back_24" />
+
+                        <ImageButton
+                            android:id="@+id/btn_removeAnswer"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:src="@drawable/ic_baseline_clear_24" />
+
+                        <ImageButton
+                            android:id="@+id/btn_submitAnswer"
+                            style="@style/btn_add_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_study"
+                            android:src="@drawable/ic_baseline_check_24" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

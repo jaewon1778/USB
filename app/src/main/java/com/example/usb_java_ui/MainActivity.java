@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +32,24 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        ImageButton setting = findViewById(R.id.Setting);
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Setting.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton bluetooth = findViewById(R.id.Bluetooth);
+        bluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Bluetooth.class);
+                startActivity(intent);
+            }
+        });
+
         Button learning_word = (Button) findViewById(R.id.learning_word);
         learning_word.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +58,43 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button quiz = (Button) findViewById(R.id.quiz);
+        quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Quiz.class);
+                startActivity(intent);
+            }
+        });
+
+        Button typing = (Button) findViewById(R.id.typing);
+        typing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Typing.class);
+                startActivity(intent);
+            }
+        });
+
+        Button image_detection = (Button) findViewById(R.id.image_detection);
+        image_detection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ImageDetection.class);
+                startActivity(intent);
+            }
+        });
+
+        Button stt = (Button) findViewById(R.id.STT);
+        stt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), STT.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

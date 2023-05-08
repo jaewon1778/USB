@@ -32,42 +32,110 @@
             android:layout_height="wrap_content"
             android:text="@string/dot_num_explain"
             style="@style/txt_contents"
-
+            android:layout_marginBottom="50dp"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.6"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="1"
+
             >
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:gravity="right"
+            android:gravity="end"
             tools:ignore="NestedWeights"
             android:weightSum="1"
             android:orientation="vertical"
             >
 
-            <ToggleButton
-                android:id="@+id/tgl_point_1"
-                android:textOff="@string/point_1"
-                style="@style/tgl_point"
-                />
-            <ToggleButton
-                android:id="@+id/tgl_point_2"
-                android:textOff="@string/point_2"
-                style="@style/tgl_point"
-                />
-            <ToggleButton
-                android:id="@+id/tgl_point_3"
-                android:textOff="@string/point_3"
-                style="@style/tgl_point"
-                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|end"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_1"
+                    android:layout_marginEnd="50dp"
+                    style="@style/txt_dot"
+                    />
+                <ImageButton
+                    android:id="@+id/imgbtn_point1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|end"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_2"
+                    android:layout_marginEnd="50dp"
+                    style="@style/txt_dot"
+                    />
+                <ImageButton
+                    android:id="@+id/imgbtn_point2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|end"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_3"
+                    android:layout_marginEnd="50dp"
+                    style="@style/txt_dot"
+                    />
+                <ImageButton
+                    android:id="@+id/imgbtn_point3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -76,24 +144,92 @@
             android:layout_weight="0.5"
             android:weightSum="1"
             android:orientation="vertical"
-            android:gravity="left"
+            android:gravity="start"
             >
-            <ToggleButton
-                android:id="@+id/tgl_point_4"
-                android:textOff="@string/point_4"
-                style="@style/tgl_point"
-                />
-            <ToggleButton
-                android:id="@+id/tgl_point_5"
-                android:textOff="@string/point_5"
-                style="@style/tgl_point"
-                />
-            <ToggleButton
-                android:id="@+id/tgl_point_6"
-                android:textOff="@string/point_6"
-                style="@style/tgl_point"
-                />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|start"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <ImageButton
+                    android:id="@+id/imgbtn_point4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_4"
+                    android:layout_marginStart="50dp"
+                    style="@style/txt_dot"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|start"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <ImageButton
+                    android:id="@+id/imgbtn_point5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_5"
+                    android:layout_marginStart="50dp"
+                    style="@style/txt_dot"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center|start"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                >
+                <ImageButton
+                    android:id="@+id/imgbtn_point6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/p1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/transparent"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/point_6"
+                    android:layout_marginStart="50dp"
+                    style="@style/txt_dot"
+                    />
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

@@ -22,9 +22,10 @@ public class Consonant extends AppCompatActivity {
     private GridAdapter m_gridAdt_idc;
     private GridAdapter m_gridAdt_fc;
     private GridAdapter m_gridAdt_fdc;
-    private String[] kor_ic_list = {"ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ",
-                                    "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ",
-                                    "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
+
+    private final String[] kor_ic_list = {"ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ",
+                                          "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ",
+                                          "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
 
     private final String[] kor_idc_list = {"ㄲ", "ㄸ", "ㅃ", "ㅆ", "ㅉ"};
 

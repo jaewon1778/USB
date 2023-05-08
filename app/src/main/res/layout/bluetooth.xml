@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
+    tools:context=".Bluetooth"
+    android:background="@color/white"
+    tools:ignore="MissingDefaultResource">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,67 +18,86 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/toolbar"
-            />
 
+            />
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.15"/>
+            android:layout_weight="0.03"
+            />
         <TextView
-            android:id="@+id/txt_str"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="13dp"
+            android:text="@string/bluetooth"
             style="@style/txt_title"
-            android:text="@string/dummy1"
             />
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.05"/>
-
-        <GridView
-            android:id="@+id/grdv_brailles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_margin="20dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:isScrollContainer="false"
-            android:horizontalSpacing="3dp"
-            android:verticalSpacing="10dp"
+            android:layout_weight="0.03"
             />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.05"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:orientation="horizontal"
+            android:gravity="center|start"
             >
-            <Button
-                android:id="@+id/btn_output"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/btn_add_word"
-                android:background="@drawable/button_study"
-                android:text="@string/output"
-                />
 
-            <Button
-                android:id="@+id/btn_listen"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/btn_add_word"
-                android:background="@drawable/button_study"
-                android:text="@string/listen"
+                android:layout_marginStart="50dp"
+                android:text="@string/connected_device"
+                style="@style/txt_leftTitle"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nothing"
+                style="@style/txt_leftTitle"
                 />
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <Button
+                android:id="@+id/btn_pairedD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paired_devices"
+                style="@style/btn_add_word"
+                android:background="@drawable/button_study"
+                />
+
+            <Button
+                android:id="@+id/btn_searchD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_devices"
+                style="@style/btn_add_word"
+                android:background="@drawable/button_study"
+                />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lstv_bluetoothD"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/round_border"
+            />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
