@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                             progressDialog.dismiss();
                             //인식된 텍스트 추출
                             String recognizedText = text.getText();
+                            recognizedText = recognizedText.replaceAll("\\n", " ");  //엔터 제거
                             Log.d(TAG, "onSuccess : recognizedText: " + recognizedText);
                             //인식된 텍스트를 edit 텍스트에 set시킴
                             recognizedTextEt.setText(recognizedText);
