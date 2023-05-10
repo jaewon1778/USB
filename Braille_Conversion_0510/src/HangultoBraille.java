@@ -186,41 +186,49 @@ public class HangultoBraille {
 
         // 문법: MATCH_H2B_GRAMMAR2에 해당하는 중성+종성을 가진 글자는 MATCH_H2B_GRAMMAR2 에서 점자 매치하여 리턴 ex) 'ㄱ'+'ㅓ'+'ㄱ'는 'ㄱ' + 'ㅓㄱ'에 해당하는 두개의 점자로 줄여서 출력 가능함
         if (hangul_decomposed.length() >= 3 && MATCH_H2B_GRAMMAR2.containsKey(hangul_decomposed.substring(1, 3))) {
-            System.out.println(hangul_decomposed.substring(1, 3));
             if (!(hangul_decomposed.charAt(0) == 'ㅇ') && MATCH_H2B_CHO.containsKey(String.valueOf(hangul_decomposed.charAt(0))) ){
                 int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul_decomposed.charAt(0)));
                 for (int j = 0; j < ChoArray.length; j++) {
                     result.add(ChoArray[j]);
                 }
             }
-
             int[][] GrammarArray = MATCH_H2B_GRAMMAR2.get(hangul_decomposed.substring(1, 3));
-            System.out.println(GrammarArray);
             for (int j = 0; j < GrammarArray.length; j++) {
                 result.add(GrammarArray[j]);
             }
+            return result;
         }
 
 
         // 문법: 중성에 'ㅏ'가 오는 글자는 초성을 무시하고 MATCH_H2B_GRAMMAR 에서 점자 매치하여 리턴 ex) 'ㄱ'+'ㅏ' = '가'로 합쳐서 하나의 점자로 리턴
         else if (hangul_decomposed.charAt(0) != 'ㅇ' && hangul_decomposed.charAt(0) != 'ㄹ' && hangul_decomposed.charAt(0) != 'ㅊ' && hangul_decomposed.charAt(1) == 'ㅏ') {
-            result.add(hangul_decomposed.charAt(0) + "ㅏ");
-            result.add(Arrays.deepToString(MATCH_H2B_GRAMMAR.get(hangul_decomposed.charAt(0))));
-            if (hangul_decomposed.length() >= 3 && MATCH_H2B_JONG.containsKey(hangul_decomposed.charAt(2))) {
-                result.add(hangul_decomposed.charAt(2));
-                result.add(Arrays.deepToString(MATCH_H2B_JONG.get(hangul_decomposed.charAt(2))));
+            //result.add(hangul_decomposed.charAt(0) + "ㅏ");
+            int[][] GrammarArray = MATCH_H2B_GRAMMAR.get(String.valueOf(hangul_decomposed.charAt(0)));
+            for (int j = 0; j < GrammarArray.length; j++) {
+                result.add(GrammarArray[j]);
             }
-            //return result;
+
+            if (hangul_decomposed.length() >= 3 && MATCH_H2B_JONG.containsKey( String.valueOf(hangul_decomposed.charAt(2))) ) {
+                int[][] JongArray = MATCH_H2B_JONG.get(String.valueOf(hangul_decomposed.charAt(2)));
+                for (int j = 0; j < JongArray.length; j++) {
+                    result.add(JongArray[j]);
+                }
+            }
+            return result;
         }
 
 
         // 문법: 'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ' + 'ㅓ' + 'ㅇ' 의 글자에서 'ㅓ+ㅇ'은 MATCH_H2B_GRAMMAR2 에서 'ㅕㅇ'에 해당하는 점자 매치하여 리턴  ex)'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ'+'ㅓ'+'ㅇ'일때 ㅓ+ㅇ은 ㅕ+ㅇ으로 표기한다
         else if (hangul_decomposed.charAt(0) == 'ㅅ' || hangul_decomposed.charAt(0) == 'ㅆ' || hangul_decomposed.charAt(0) == 'ㅈ' || hangul_decomposed.charAt(0) == 'ㅉ' || hangul_decomposed.charAt(0) == 'ㅊ' && hangul_decomposed.charAt(1) == 'ㅓ' && hangul_decomposed.charAt(2) == 'ㅇ') {
-            result.add(hangul_decomposed.charAt(0));
-            result.add(Arrays.deepToString(MATCH_H2B_CHO.get(hangul_decomposed.charAt(0))));
-            result.add("ㅓㅇ(ㅕㅇ)");
-            result.add(Arrays.deepToString(MATCH_H2B_GRAMMAR2.get("ㅕㅇ")));
-            //return result;
+            int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul_decomposed.charAt(0)));
+            for (int j = 0; j < ChoArray.length; j++) {
+                result.add(ChoArray[j]);
+            }
+            int[][] GrammarArray = MATCH_H2B_GRAMMAR2.get("ㅕㅇ");
+            for (int j = 0; j < GrammarArray.length; j++) {
+                result.add(GrammarArray[j]);
+            }
+            return result;
         }
 
 
@@ -268,7 +276,6 @@ public class HangultoBraille {
             return (result);
 
         }
-        return null;
     }
 
 
@@ -288,7 +295,7 @@ public class HangultoBraille {
 
 
     public static void main(String[] args) {
-        String Hangul = "글";
+        String Hangul = "각성";
         ArrayList<Object> FinalResult = text(Hangul);  //긴 한글(문장,단어)이 들어올 경우
         String Braille = Arrays.deepToString(FinalResult.toArray());
         System.out.println(Braille);
