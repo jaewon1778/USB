@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 public class Learnig {
     // dot에 대한 점자를 매치해놓은 HashMap 변수 선언 (파이썬의 딕셔너리와 비슷)
     public static final HashMap<String, int[]> DOT = new HashMap<String, int[]>() {{
