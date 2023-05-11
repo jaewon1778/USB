@@ -90,6 +90,7 @@
                 android:weightSum="1"
                 >
                 <TextView
+                    android:id="@+id/txt_volumeName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/volume"
@@ -122,6 +123,7 @@
                 android:weightSum="1"
                 >
                 <TextView
+                    android:id="@+id/txt_speedName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/speed"

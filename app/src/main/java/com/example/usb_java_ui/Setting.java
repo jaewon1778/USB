@@ -53,27 +53,41 @@ public class Setting extends AppCompatActivity {
 //        ImageButton setting = findViewById(R.id.Setting);
 //        setting.setImageResource(0);
 
+
+
+
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch swbtn_vm = findViewById(R.id.swbtn_voiceMode);
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rdg_speed);
         int default_rdbtn_id = R.id.rdbtn_speed_1;
 
+        SeekBar skbr_vol = findViewById(R.id.skbr_volume);
+
         SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
-        swbtn_vm.setChecked(prev_settings.getBoolean("voiceChecked", false));
+        boolean is_voiceChecked = prev_settings.getBoolean("voiceChecked", false);
+        swbtn_vm.setChecked(is_voiceChecked);
+        skbr_vol.setEnabled(is_voiceChecked);
+        for(int i=0; i<5;i++) {
+            radioGroup.getChildAt(i).setEnabled(is_voiceChecked);
+        }
         RadioButton radioButton = radioGroup.findViewById(prev_settings.getInt("voiceSpeed", default_rdbtn_id));
         radioButton.setChecked(true);
 
-        final boolean[] vm_checked = {prev_settings.getBoolean("voiceChecked", false)};
+        final boolean[] vm_checked = {is_voiceChecked};
         swbtn_vm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 vm_checked[0] = isChecked;
+                skbr_vol.setEnabled(isChecked);
+                for(int i=0; i<5;i++) {
+                    radioGroup.getChildAt(i).setEnabled(isChecked);
+                }
             }
         });
 
         AudioManager m_audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         int maxVol = m_audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int curVol = m_audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        SeekBar skbr_vol = findViewById(R.id.skbr_volume);
+
         skbr_vol.setMax(maxVol);
         skbr_vol.setProgress(curVol);
         TextView txt_vol = findViewById(R.id.txt_volume);
@@ -100,14 +114,36 @@ public class Setting extends AppCompatActivity {
 
         Button saveSetting = (Button) findViewById(R.id.btn_saveSetting);
         saveSetting.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onClick(View v) {
 
                 SharedPreferences sp_setting = getSharedPreferences("setting", MODE_PRIVATE);
                 @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe_setting = sp_setting.edit();
-                spe_setting.putBoolean("voiceChecked",vm_checked[0]);
                 int rdbtn_id = radioGroup.getCheckedRadioButtonId();
+                float voiceSpeedFloat;
+                switch (rdbtn_id){
+                    case R.id.rdbtn_speed_0_5:
+                        voiceSpeedFloat = 0.5f;
+                        break;
+                    case R.id.rdbtn_speed_1:
+                        voiceSpeedFloat = 1.0f;
+                        break;
+                    case R.id.rdbtn_speed_1_5:
+                        voiceSpeedFloat = 1.5f;
+                        break;
+                    case R.id.rdbtn_speed_2:
+                        voiceSpeedFloat = 2.0f;
+                        break;
+                    case R.id.rdbtn_speed_3:
+                        voiceSpeedFloat = 3.0f;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + rdbtn_id);
+                }
+                spe_setting.putBoolean("voiceChecked",vm_checked[0]);
                 spe_setting.putInt("voiceSpeed", rdbtn_id);
+                spe_setting.putFloat("voiceSpeedFloat", voiceSpeedFloat);
                 spe_setting.apply();
             }
         });

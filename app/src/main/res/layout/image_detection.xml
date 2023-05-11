@@ -55,70 +55,135 @@
             android:weightSum="1"
             >
 
-            <ImageView
-                android:id="@+id/img_imageDTakenImage"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/round_border"
-                android:src="@drawable/ic_baseline_image_24"
-                tools:ignore="NestedWeights"
-
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center|top"
-                >
-                <TextView
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:gravity="center|bottom"
+                tools:ignore="NestedWeights">
+                <Button
+                    android:id="@+id/btn_imageDCamera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/recognized_text"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="0dp"
-                    style="@style/txt_leftTitle"
+                    android:text="@string/camera"
+                    style="@style/btn_imageD"
+                    android:background="@drawable/button_study"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="5dp"
                     />
 
-                <EditText
-                    android:id="@+id/et_imageDContent"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_imageDGallery"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="30dp"
-                    android:textSize="18sp"
+                    android:text="@string/gallery"
+                    style="@style/btn_imageD"
+                    android:background="@drawable/button_study"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="5dp"
+
                     />
 
             </LinearLayout>
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:background="@drawable/round_border"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/img_imageDTakenImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+
+                        android:src="@drawable/ic_baseline_image_24"
+
+                        android:padding="5dp"
+                        tools:ignore="NestedWeights"
+
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@drawable/bar"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center|top"
+                        android:layout_gravity="bottom"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/recognized_text"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="0dp"
+                            style="@style/txt_leftTitle"
+                            />
+
+                        <EditText
+                            android:id="@+id/et_imageDContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="30dp"
+                            android:textSize="18sp"
+
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:gravity="center"
+                android:layout_weight="0.15"
+                android:gravity="center|top"
                 >
-
                 <Button
-                    android:id="@+id/btn_imageDTakeImage"
+                    android:id="@+id/btn_imageDRecognizeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/take_image"
-                    style="@style/btn_add_word"
+                    android:text="@string/recognize_text"
+                    style="@style/btn_imageD"
                     android:background="@drawable/button_study"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
 
                     />
+
                 <Button
                     android:id="@+id/btn_imageDSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/save"
-                    style="@style/btn_add_word"
+                    style="@style/btn_imageD"
                     android:background="@drawable/button_study"
-
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     />
 
             </LinearLayout>
