@@ -112,13 +112,45 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Log.d("braille", Arrays.deepToString(Result.toArray()));
                 Log.d("length", String.valueOf(Result.size()));
 
+                //3개 이하씩 쪼개서 보내기
+                int quo = Result.size() / 3;
+                int rem = Result.size() % 3;
+
+                for(int i = 0; i < quo + 1; i++) {
+                    ArrayList<Object> brailleList = new ArrayList<>();
+                    int cnt = 3;
+                    if(i == quo) {
+                        if(rem == 0) break;
+                        else cnt = rem;
+                    }
+                    for(int j = 0; j < cnt; j++) {
+                        brailleList.add(Result.get(i*3 + j));
+                    }
+                    String row = String.valueOf(brailleList.size());
+                    String braille = Arrays.deepToString(brailleList.toArray());
+                    braille = row + braille + ";";  //끝에 ; 추가
+                    Log.d("braille", braille);
+                    if(connectedThread!=null){ connectedThread.write(braille); }
+
+                    //delay
+                    if(i != quo) {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+
+                /* 한번에 다 보내기
                 String row = String.valueOf(Result.size());
                 String braille = Arrays.deepToString(Result.toArray());
                 braille = row + braille + ";";  //끝에 ; 추가
 
                 Log.d("strResult", braille);
                 if(connectedThread!=null){ connectedThread.write(braille); }
-
+                */
 
 
                 /*
@@ -515,13 +547,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
-    // Send string "braille"
-    public void onClickButtonSend(View view) {
-        CharSequence CharSeq = txtText.getText();
-        String sendtext = CharSeq.toString();
-        Log.d("txttxt", sendtext);
-        if(connectedThread!=null){ connectedThread.write(sendtext); }
-    }
 
     // Send "a"
     public void onClickButtonSendA(View view) {
