@@ -3,11 +3,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-
 public class HangultoBraille {
-
     // 모든 초성에 대한 점자를 매치해놓은 HashMap 변수 선언 (파이썬의 딕셔너리와 비슷)
-
     public static final HashMap<String , int[][]> MATCH_H2B_CHO = new HashMap<String, int[][]>() {{
         put("ㄱ", new int[][] {{0,0,0,1,0,0}});
         put("ㄴ", new int[][] {{1,0,0,1,0,0}});
@@ -239,8 +236,8 @@ public class HangultoBraille {
 
                 // 초성에 해당하는 점자를 MATCH_H2B_CHO(hashmap)에서 찾아서 result 리스트에 추가
                 // 문법: 초성 'ㅇ'은 표기하지않는다.
-                if (i == 0 && !(hangul == 'ㅇ') && MATCH_H2B_CHO.containsKey(hangul)) {
-                    int[][] ChoArray = MATCH_H2B_CHO.get(hangul);
+                if (i == 0 && !(hangul == 'ㅇ') && MATCH_H2B_CHO.containsKey(String.valueOf(hangul))){
+                    int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul));
                     for (int j = 0; j < ChoArray.length; j++) {
                         result.add(ChoArray[j]);
                     }
@@ -248,8 +245,8 @@ public class HangultoBraille {
                 }
 
                 // 중성에 해당하는 점자 MATCH_H2B_JOONG(hashmap)애서 찾아서 result 리스트에 추가
-                if (i == 1 && MATCH_H2B_JOONG.containsKey(hangul)) {
-                    int[][] JoongArray = MATCH_H2B_JOONG.get(hangul);
+                if (i == 1 && MATCH_H2B_JOONG.containsKey(String.valueOf(hangul))) {
+                    int[][] JoongArray = MATCH_H2B_JOONG.get(String.valueOf(hangul));
                     for (int j = 0; j < JoongArray.length; j++) {
                         result.add(JoongArray[j]);
                     }
@@ -257,7 +254,7 @@ public class HangultoBraille {
 
                 // 문법: 종성에 있는 'ㅆ'은 약어가 존재한다. MATCH_H2B_GRAMMAR에서 점자 찾기 (초성에선 점자 두글자로 출력되지만 종성에 올땐 한글자로 출력)
                 if (i == 2 && hangul == 'ㅆ') {
-                    int[][] JongArray = MATCH_H2B_GRAMMAR.get(hangul);
+                    int[][] JongArray = MATCH_H2B_GRAMMAR.get(String.valueOf(hangul));
                     for (int j = 0; j < JongArray.length; j++) {
                         result.add(JongArray[j]);
                     }
@@ -265,8 +262,8 @@ public class HangultoBraille {
                 }
 
                 // 그 외 종성에 해당하는 점자 MATCH_H2B_JONG(hashmap)애서 찾아서 result 리스트에 추가
-                if (i == 2 && MATCH_H2B_JONG.containsKey(hangul) && !(hangul == 'ㅆ')) {
-                    int[][] JongArray = MATCH_H2B_JONG.get(hangul);
+                if (i == 2 && MATCH_H2B_JONG.containsKey(String.valueOf(hangul)) && !(hangul == 'ㅆ')) {
+                    int[][] JongArray = MATCH_H2B_JONG.get(String.valueOf(hangul));
                     for (int j = 0; j < JongArray.length; j++) {
                         result.add(JongArray[j]);
                     }
@@ -293,11 +290,12 @@ public class HangultoBraille {
         return FinalResult;
     }
 
-
     public static void main(String[] args) {
-        String Hangul = "각성";
+        String Hangul = "고재원";
         ArrayList<Object> FinalResult = text(Hangul);  //긴 한글(문장,단어)이 들어올 경우
         String Braille = Arrays.deepToString(FinalResult.toArray());
         System.out.println(Braille);
     }
+
+
 }
