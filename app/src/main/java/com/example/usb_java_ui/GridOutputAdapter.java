@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 public class GridOutputAdapter extends BaseAdapter {
 
+
     private Context o_context;
     private ArrayList<GridItemBraille> o_array_item;
 
@@ -40,6 +41,7 @@ public class GridOutputAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

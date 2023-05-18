@@ -34,7 +34,7 @@ public class apple extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = "사과";
+                String str = "고재원";
                 Context context = v.getContext();
                 Intent intent = new Intent(context, Output.class);
                 intent.putExtra("keyStr", str);

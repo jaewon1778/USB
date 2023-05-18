@@ -11,10 +11,12 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
+    private int keyType;
     private Context m_context;
     private ArrayList<GridItem> m_array_item;
 
     public GridAdapter(Context context){
+        this.keyType = 0;
         this.m_context = context;
         this.m_array_item = new ArrayList<GridItem>();
 
@@ -51,6 +53,7 @@ public class GridAdapter extends BaseAdapter {
                 String str = getItemString(position);
                 Intent intent = new Intent(m_context, Output.class);
                 intent.putExtra("keyStr", str);
+                intent.putExtra("keyType", keyType);
                 m_context.startActivity(intent);
             }
         });
@@ -64,5 +67,13 @@ public class GridAdapter extends BaseAdapter {
 
     public String getItemString(int position) {
         return this.m_array_item.get(position).getItemString();
+    }
+
+    public int getKeyType() {
+        return keyType;
+    }
+
+    public void setKeyType(int keyType) {
+        this.keyType = keyType;
     }
 }

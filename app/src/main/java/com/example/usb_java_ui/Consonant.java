@@ -82,6 +82,13 @@ public class Consonant extends AppCompatActivity {
         for (String conStr : kor_fdc_list) {
             m_gridAdt_fdc.setItem(conStr);
         }
+
+        m_gridAdt_ic.setKeyType(1);
+        m_gridAdt_idc.setKeyType(1);
+        m_gridAdt_fc.setKeyType(2);
+        m_gridAdt_fdc.setKeyType(2);
+
+
         m_grid_ic.setAdapter(m_gridAdt_ic);
         m_grid_idc.setAdapter(m_gridAdt_idc);
         m_grid_fc.setAdapter(m_gridAdt_fc);

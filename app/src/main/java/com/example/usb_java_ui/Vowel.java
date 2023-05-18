@@ -21,7 +21,7 @@ public class Vowel extends AppCompatActivity {
     private final String[] kor_v_list = {
             "ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ",
             "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ",
-            "ㅐ", "ㅔ ", "ㅖ", "ㅘ", "ㅚ",
+            "ㅐ", "ㅔ", "ㅖ", "ㅘ", "ㅚ",
             "ㅝ", "ㅢ", "ㅒ", "ㅙ", "ㅞ",
             "ㅟ"};
 
@@ -44,6 +44,7 @@ public class Vowel extends AppCompatActivity {
         for (String voStr : kor_v_list) {
             m_gridAdt_v.setItem(voStr);
         }
+        m_gridAdt_v.setKeyType(3);
 
         m_grid_v.setAdapter(m_gridAdt_v);
 

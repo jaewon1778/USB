@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,19 +20,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Output extends AppCompatActivity {
-    private int[][] exmlist3 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}};
-    private int[][] exmlist6 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}, {1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}};
-    private int[][] exmlist2 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}};
-    private int[][] exmlist9 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}, {1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}, {1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}};
-    private int[][] exmlist1 = {{1, 1, 1, 0, 0, 0}};
     private GridView o_grid_output;
     private GridOutputAdapter o_gridOAdt;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,24 +43,47 @@ public class Output extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        TextView txt_strType = (TextView) findViewById(R.id.txt_strType);
         TextView txt_str = (TextView)findViewById(R.id.txt_str);
 
         Intent recv_intent = getIntent();
-        String temp = recv_intent.getStringExtra("keyStr");
-        txt_str.setText(temp);
+        String keyStr = recv_intent.getStringExtra("keyStr");
+        int keyType = recv_intent.getIntExtra("keyType",0);
+        ArrayList<int[]> exmlist;
+        switch (keyType){
+//            case 0: // 일반 단어
+//                exmlist = Hangul2Braille.text(keyStr);
+//                break;
+            case 1: // 초성
+                exmlist = Hangul2BrailleSpecific.Learnig_hangul(keyStr);
+                txt_strType.setText("초성 : ");
+                break;
+            case 2: // 종성
+                exmlist = Hangul2BrailleSpecific.Learnig_hangul(keyStr);
+                txt_strType.setText("종성 : ");
+                break;
+            case 3: // 중성
+                exmlist = Hangul2BrailleSpecific.Learnig_hangul(keyStr);
+                txt_strType.setText("중성 : ");
+                break;
+            case 4: // 약자
+                exmlist = Hangul2BrailleSpecific.Learnig_Grammar(keyStr);
+                txt_strType.setText("약자 : ");
+                break;
+            default:
+                exmlist = Hangul2Braille.text(keyStr);
+                txt_strType.setText("");
+                break;
+        }
+
+        txt_str.setText(keyStr);
+//        ArrayList<int[]> exmlist = Hangul2Braille.text(keyStr);
 
         o_grid_output = (GridView) findViewById(R.id.grdv_brailles);
         o_gridOAdt = new GridOutputAdapter(this);
 
 
-
-        int[][] exmlist = exmlist3;
-
-        if (Objects.equals(temp, "ㄱ")) exmlist = exmlist1;
-        if (Objects.equals(temp, "ㄴ")) exmlist = exmlist2;
-        if (Objects.equals(temp, "ㄷ")) exmlist = exmlist3;
-        if (Objects.equals(temp, "ㄹ")) exmlist = exmlist6;
-        if (Objects.equals(temp, "ㅁ")) exmlist = exmlist9;
+//        int[][]exmlist = arrayList.toArray(new int[arrayList.size()][6]);
 
         for (int[] BItem : exmlist) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -78,14 +99,18 @@ public class Output extends AppCompatActivity {
 
             o_gridOAdt.setBItem(resId);
         }
-        int numcol = exmlist.length;
+        int numcol = exmlist.size();
         int line = 1;
 
         if (numcol > 6) {
 
             numcol = 6;
-            line = 1 + (exmlist.length-1)/6;
+            line = 1 + (exmlist.size()-1)/6;
 
+        }
+
+        if (line >= 5){
+            line = 5;
         }
 
 
@@ -97,6 +122,11 @@ public class Output extends AppCompatActivity {
         if(o_param == null) {
             o_param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+
+        if(numcol < 6){
+            o_param.width = 120*numcol;
+        }
+
         o_param.height = 160 * line;
         o_grid_output.setLayoutParams(o_param);
 

@@ -23,9 +23,9 @@ public class Abbreviation extends AppCompatActivity {
     private GridAdapter m_gridAdt_ca;
     private GridAdapter m_gridAdt_va;
     private GridAdapter m_gridAdt_ua;
-    private String[] kor_ca_list = {"가", "나", "다", "라", "마",
-                                    "바", "사", "아", "자", "차",
-                                    "카", "타", "파", "하"};
+    private String[] kor_ca_list = {"가", "나", "다", "마", "바",
+                                    "사", "자", "카", "타", "파",
+                                    "하"};
     private String[] kor_va_list = {"억", "언", "얼", "연", "열",
                                     "영", "옥", "온", "옹", "운",
                                     "울", "은", "을", "인"};
@@ -66,6 +66,10 @@ public class Abbreviation extends AppCompatActivity {
         for (String uaStr : kor_ua_list) {
             m_gridAdt_ua.setItem(uaStr);
         }
+
+        m_gridAdt_ca.setKeyType(4);
+        m_gridAdt_va.setKeyType(4);
+        m_gridAdt_ua.setKeyType(4);
 
         m_grid_ca.setAdapter(m_gridAdt_ca);
         m_grid_va.setAdapter(m_gridAdt_va);
