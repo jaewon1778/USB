@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
     TextView textStatus;
-    Button btnParied, btnSearch, btnSend;
+    Button btnParied, btnSearch, btnNext, btnBack, btnBraille, btnQuiz;
     ListView listView;
     EditText txtText;
 
@@ -63,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private int[][] exlist1 = {{1, 1, 1, 0, 0, 0}};
     private int[][] exlist4 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}, {1, 1, 1, 0, 0, 0}};
     private int[][] exlist5 = {{1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}, {1, 1, 1, 0, 0, 1}, {1, 1, 1, 0, 0, 0}, {0, 0, 0, 1, 0, 0}};
+
+    private ArrayList<Object> Result = new ArrayList<>();
+    private int send_idx = 0;
+    private int max_idx = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +92,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         textStatus = (TextView) findViewById(R.id.text_status);
         btnParied = (Button) findViewById(R.id.btn_paired);
         btnSearch = (Button) findViewById(R.id.btn_search);
-        btnSend = (Button) findViewById(R.id.btn_send);
+        btnBraille = (Button) findViewById(R.id.btn_braille);
+        btnQuiz = (Button) findViewById(R.id.btn_quiz);
+        btnBack = (Button) findViewById(R.id.btn_back);
+        btnNext = (Button) findViewById(R.id.btn_next);
         txtText = findViewById(R.id.txtText);
         listView = (ListView) findViewById(R.id.listview);
 
@@ -101,103 +109,109 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         listView.setOnItemClickListener(new myOnItemClickListener());
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        btnBraille.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CharSequence CharSeq = txtText.getText();
                 String text = CharSeq.toString();
 
-                ArrayList<Object> Result = text(text);
+                Result = text(text);
 
-                Log.d("braille", Arrays.deepToString(Result.toArray()));
-                Log.d("length", String.valueOf(Result.size()));
-
-                //3개 이하씩 쪼개서 보내기
                 int quo = Result.size() / 3;
                 int rem = Result.size() % 3;
 
-                for(int i = 0; i < quo + 1; i++) {
-                    ArrayList<Object> brailleList = new ArrayList<>();
-                    int cnt = 3;
-                    if(i == quo) {
-                        if(rem == 0) break;
-                        else cnt = rem;
-                    }
-                    for(int j = 0; j < cnt; j++) {
-                        brailleList.add(Result.get(i*3 + j));
-                    }
-                    String row = String.valueOf(brailleList.size());
-                    String braille = Arrays.deepToString(brailleList.toArray());
-                    braille = row + braille + ";";  //끝에 ; 추가
-                    Log.d("braille", braille);
-                    if(connectedThread!=null){ connectedThread.write(braille); }
+                send_idx = 0;
+                max_idx = quo + 1;
+                if(rem == 0) { max_idx--; }
 
-                    //delay
-                    if(i != quo) {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                Log.d("send_idx", String.valueOf(send_idx));
+                Log.d("max_idx", String.valueOf(max_idx));
+
+                Log.d("Result", Arrays.deepToString(Result.toArray()));
+                Log.d("length", String.valueOf(Result.size()));
+
+                int cnt = 3;
+                if(max_idx == 0) {
+                    cnt = 0;
+                }
+                else if(send_idx == max_idx - 1) {
+                    if(rem != 0) cnt = rem;
                 }
 
+                sendbraille(send_idx, cnt);
+            }
+        });
 
-                /* 한번에 다 보내기
-                String row = String.valueOf(Result.size());
-                String braille = Arrays.deepToString(Result.toArray());
-                braille = row + braille + ";";  //끝에 ; 추가
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int rem = Result.size() % 3;
 
-                Log.d("strResult", braille);
-                if(connectedThread!=null){ connectedThread.write(braille); }
-                */
-
-
-                /*
-                // test
-                String braille = null;
-                int rowCnt = 0;
-
-                if(text.equals("1")) {
-                    braille = Arrays.deepToString(exlist1);
-                    rowCnt = exlist1.length;
-                }
-                else if(text.equals("2")) {
-                    braille = Arrays.deepToString(exlist2);
-                    rowCnt = exlist2.length;
-                }
-                else if(text.equals("3")) {
-                    braille = Arrays.deepToString(exlist3);
-                    rowCnt = exlist3.length;
-                }
-                else if(text.equals("6")) {
-                    braille = Arrays.deepToString(exlist6);
-                    rowCnt = exlist6.length;
-                }
-                else if(text.equals("9")) {
-                    braille = Arrays.deepToString(exlist9);
-                    rowCnt = exlist9.length;
-                }
-                else if(text.equals("4")) {
-                    braille = Arrays.deepToString(exlist4);
-                    rowCnt = exlist4.length;
-                }
-                else if(text.equals("5")) {
-                    braille = Arrays.deepToString(exlist5);
-                    rowCnt = exlist5.length;
+                send_idx++;
+                if(send_idx == max_idx) {
+                    send_idx--;
                 }
 
-                Log.d("braille", braille);
-                String row = String.valueOf(rowCnt);
-                braille = row + braille + ";";
-                Log.d("send", braille);
+                int cnt = 3;
+                if(max_idx == 0) {
+                    cnt = 0;
+                }
+                else if(send_idx == max_idx - 1) {
+                    if(rem != 0) cnt = rem;
+                }
 
-                if(connectedThread!=null){
-                    connectedThread.write(braille); }
-                */
+                sendbraille(send_idx, cnt);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int rem = Result.size() % 3;
+
+                send_idx--;
+                if(send_idx < 0) {
+                    send_idx++;
+                }
+
+                int cnt = 3;
+                if(max_idx == 0) {
+                    cnt = 0;
+                }
+                else if(send_idx == max_idx - 1) {
+                    if(rem != 0) cnt = rem;
+                }
+
+                sendbraille(send_idx, cnt);
+            }
+        });
+
+        btnQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connectedThread.run();
+
+
+
             }
         });
     }
+
+    //send braille
+    public void sendbraille(int send_idx, int cnt) {
+        ArrayList<Object> brailleList = new ArrayList<>();
+
+        for(int j = 0; j < cnt; j++) {
+            brailleList.add(Result.get(send_idx*3 + j));
+        }
+
+        String row = String.valueOf(brailleList.size());
+        String braille = Arrays.deepToString(brailleList.toArray());
+        braille = row + braille + ";";  //끝에 ; 추가
+        Log.d("braille", braille);
+        if(connectedThread!=null){ Log.d("braille", braille);connectedThread.write(braille); }
+    }
+
 
     // 모든 초성에 대한 점자를 매치해놓은 HashMap 변수 선언 (파이썬의 딕셔너리와 비슷)
 
@@ -412,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 
         // 문법: 'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ' + 'ㅓ' + 'ㅇ' 의 글자에서 'ㅓ+ㅇ'은 MATCH_H2B_GRAMMAR2 에서 'ㅕㅇ'에 해당하는 점자 매치하여 리턴  ex)'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ'+'ㅓ'+'ㅇ'일때 ㅓ+ㅇ은 ㅕ+ㅇ으로 표기한다
-        else if (hangul_decomposed.charAt(0) == 'ㅅ' || hangul_decomposed.charAt(0) == 'ㅆ' || hangul_decomposed.charAt(0) == 'ㅈ' || hangul_decomposed.charAt(0) == 'ㅉ' || hangul_decomposed.charAt(0) == 'ㅊ' && hangul_decomposed.charAt(1) == 'ㅓ' && hangul_decomposed.charAt(2) == 'ㅇ') {
+        else if ((hangul_decomposed.charAt(0) == 'ㅅ' || hangul_decomposed.charAt(0) == 'ㅆ' || hangul_decomposed.charAt(0) == 'ㅈ' || hangul_decomposed.charAt(0) == 'ㅉ' || hangul_decomposed.charAt(0) == 'ㅊ') && hangul_decomposed.charAt(1) == 'ㅓ' && hangul_decomposed.charAt(2) == 'ㅇ') {
             int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul_decomposed.charAt(0)));
             for (int j = 0; j < ChoArray.length; j++) {
                 result.add(ChoArray[j]);

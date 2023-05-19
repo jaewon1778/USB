@@ -39,7 +39,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
 
-        />
+    />
+
+    <Button
+            android:id="@+id/btn_quiz"
+            android:text="Quiz"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+    />
     <LinearLayout
         android:id="@+id/lin_send"
         android:layout_width="match_parent"
@@ -49,7 +58,7 @@
         >
     <EditText
         android:id="@+id/txtText"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:inputType="text"
@@ -57,11 +66,37 @@
 
 
     <Button
-        android:id="@+id/btn_send"
-        android:text="Send"
+        android:id="@+id/btn_braille"
+        android:text="braille"
         android:layout_width="100dp"
         android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lin_nb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <Button
+                android:id="@+id/btn_back"
+                android:text="Back"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:text="Next"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="wrap_content"
