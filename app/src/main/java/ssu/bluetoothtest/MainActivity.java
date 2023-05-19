@@ -189,10 +189,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         btnQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                connectedThread.run();
+                //connectedThread.run();
+                ArrayList<Object> answer = text("사과");
+                ArrayList<Object> user_answer = connectedThread.quizresult();
 
+                Log.d("answer array", Arrays.deepToString(answer.toArray()));
+                Log.d("user_answer array", Arrays.deepToString(user_answer.toArray()));
 
-
+                //Log.d("quiz result", String.valueOf(Arrays.deepToString(answer.toArray()).equals(Arrays.deepToString(user_answer.toArray()))));
+                Log.d("quiz result", String.valueOf(Arrays.deepEquals(answer.toArray(), user_answer.toArray())));
             }
         });
     }
