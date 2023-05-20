@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-public class TTS_Import extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class TTS_Import implements TextToSpeech.OnInitListener {
     private TextToSpeech tts;
     private float speed;
 
@@ -44,13 +44,21 @@ public class TTS_Import extends AppCompatActivity implements TextToSpeech.OnInit
 
     }
 
-    @Override
-    protected void onDestroy() {
+//    @Override
+//    protected void onDestroy() {
+//        if (tts != null)  {
+//            tts.stop();
+//            tts.shutdown();
+//            tts=null;
+//        }
+//        super.onDestroy();
+//    }
+    public void ttsDestroy(){
         if (tts != null)  {
             tts.stop();
             tts.shutdown();
             tts=null;
         }
-        super.onDestroy();
     }
+
 }

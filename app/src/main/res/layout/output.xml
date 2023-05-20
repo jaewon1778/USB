@@ -24,12 +24,33 @@
             android:layout_height="0dp"
             android:layout_weight="0.15"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        >
+        <ImageButton
+            android:id="@+id/btn_prevWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/btn_output"
+            android:background="@drawable/button_study"
+            android:src="@drawable/baseline_arrow_left_24"
+
+            />
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:layout_weight="1"
             >
+
+
             <TextView
                 android:id="@+id/txt_strType"
                 android:layout_width="wrap_content"
@@ -48,7 +69,15 @@
 
 
         </LinearLayout>
-
+        <ImageButton
+            android:id="@+id/btn_nextWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/btn_output"
+            android:background="@drawable/button_study"
+            android:src="@drawable/baseline_arrow_right_24"
+            />
+    </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -86,13 +115,31 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             >
+            <ImageButton
+                android:id="@+id/btn_prevOutput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/btn_output"
+                android:background="@drawable/button_study"
+                android:src="@drawable/baseline_keyboard_double_arrow_left_24"
+                />
+
             <Button
                 android:id="@+id/btn_output"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/btn_add_word"
+                style="@style/btn_output"
                 android:background="@drawable/button_study"
                 android:text="@string/output"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_nextOutput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/btn_output"
+                android:background="@drawable/button_study"
+                android:src="@drawable/baseline_keyboard_double_arrow_right_24"
                 />
 
             <Button
@@ -106,6 +153,8 @@
 
 
         </LinearLayout>
+
+
 
 
     </LinearLayout>
