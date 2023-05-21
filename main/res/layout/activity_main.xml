@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/buttonViewCho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View cho_table" />
+
+    <Button
+        android:id="@+id/buttonViewJoong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View joong_table" />
+
+    <Button
+        android:id="@+id/buttonViewJong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View jong_table" />
+
+    <Button
+        android:id="@+id/buttonViewGrammar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View grammar_table" />
+
+</LinearLayout>
+
+
