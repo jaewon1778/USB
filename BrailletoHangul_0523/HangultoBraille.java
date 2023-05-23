@@ -305,6 +305,7 @@ public class HangultoBraille {
 
             if (HangulSentence.charAt(i) == '것') {
                 FinalResult.add(MATCH_H2B_GRAMMAR.get(String.valueOf('것')));
+                continue;
             }
 
             // 들어온 문자 중 숫자가 포함되어있다면
