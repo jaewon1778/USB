@@ -1,5 +1,5 @@
 # USB (Useful System for the Blind _ Team.BIOS)
-#### <p align = "center">점자 교육 어플리케이션 ⠿🧑‍🦯
+#### <p align = "center">점자 교육 어플리케이션 ⠥⠎⠃🧑‍🦯
 ![USB_png](https://github.com/jaewon1778/USB/blob/main/USB%20%EC%BA%98%EB%A6%AC%EA%B7%B8%EB%9E%98%ED%94%BC.png) </p>
 
 ## Introduction
