@@ -9,6 +9,9 @@
 #### 이런 문제점을 해결하기 위해 시각 장애인들이 혼자서도 학습 가능하며 자원의 낭비가 덜한
 #### 점자 학습 시스템(USB)를 제안하고자 합니다.
 
+## System blueprint
+![USB_png](https://github.com/jaewon1778/USB/blob/main/%EC%84%A4%EA%B3%84%EB%8F%84.png)
+
 ## Settings
 #### Android Studio 2022.2.1.19 (target SDK : 31 / min SDK : 28)
 #### Arduino IDE 2.1.0
