@@ -140,18 +140,27 @@ public class ConnectedThread extends Thread {
             one_braille = "";
             run();
             if(one_braille.length() == 1) {
-                if(one_braille.charAt(0) == 'A') {
-                    break;
-                }
-                else if(one_braille.charAt(0) == '@') {
+                // 1개 지우기: $
+                if(one_braille.charAt(0) == '$') {
                     if(quizarray.size() != 0) {
                         quizarray.remove(quizarray.size() - 1);
                     }
+                }
+                // 전체 지우기: #
+                else if(one_braille.charAt(0) == '#') {
+                    if(quizarray.size() != 0) {
+                        quizarray.clear();
+                    }
+                }
+                // 제출하기: @
+                else if(one_braille.charAt(0) == '@') {
+                    break;
                 }
                 else {
                     continue;
                 }
             }
+            // 1개 올리기: *
             else if(one_braille.length() == 6){
                 int[] one = {0, 0, 0, 0, 0, 0};
                 //Log.d("one array", String.valueOf(one));

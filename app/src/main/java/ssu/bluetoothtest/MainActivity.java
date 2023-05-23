@@ -553,23 +553,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             btAdapter.cancelDiscovery();
         } else {
             if (btAdapter.isEnabled()) {
+                Log.d("1", "good");
                 btAdapter.startDiscovery();
+                Log.d("2", "good");
                 btArrayAdapter.clear();
+                Log.d("3", "good");
                 if (deviceAddressArray != null && !deviceAddressArray.isEmpty()) {
                     deviceAddressArray.clear();
+                    Log.d("4", "good");
                 }
+                Log.d("5", "good");
                 IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                Log.d("6", "good");
                 registerReceiver(receiver, filter);
+                Log.d("7", "good");
             } else {
                 Toast.makeText(getApplicationContext(), "bluetooth not on", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-
-    // Send "a"
-    public void onClickButtonSendA(View view) {
-        if(connectedThread!=null){ connectedThread.write("a"); }
     }
 
     // Create a BroadcastReceiver for ACTION_FOUND.
