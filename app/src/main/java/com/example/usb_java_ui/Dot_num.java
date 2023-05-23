@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +20,53 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
 
-public class Dot_num extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
+public class Dot_num extends AppCompatActivity {
+    private TTS_Import tts_import;
+    private ConnectedThread connectedThread;
+
+    private int[] braille;
+    private ImageButton point1;
+    private ImageButton point2;
+    private ImageButton point3;
+    private ImageButton point4;
+    private ImageButton point5;
+    private ImageButton point6;
+
+    private Button btn_output;
+
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
+        tts_import = new TTS_Import();
+        tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                tts_import.onInit(i);
+            }
+        }));
+        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
+
+
+        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
+        String deviceN = sp_bluetooth.getString("DN", "isNot");
+
+        if(!Objects.equals(deviceN, "isNot")) {
+            connectedThread = BluetoothConnection.connectedThread;
+        }
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tts_import.ttsDestroy();
+        sendbraille(0, 0);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +80,23 @@ public class Dot_num extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        int[] braille = {1,1,1,1,1,1};
+        braille = new int[]{0, 0, 0, 0, 0, 0};
 
-        ImageButton point1 = (ImageButton) findViewById(R.id.imgbtn_point1);
-        ImageButton point2 = (ImageButton) findViewById(R.id.imgbtn_point2);
-        ImageButton point3 = (ImageButton) findViewById(R.id.imgbtn_point3);
-        ImageButton point4 = (ImageButton) findViewById(R.id.imgbtn_point4);
-        ImageButton point5 = (ImageButton) findViewById(R.id.imgbtn_point5);
-        ImageButton point6 = (ImageButton) findViewById(R.id.imgbtn_point6);
+        point1 = (ImageButton) findViewById(R.id.imgbtn_point1);
+        point2 = (ImageButton) findViewById(R.id.imgbtn_point2);
+        point3 = (ImageButton) findViewById(R.id.imgbtn_point3);
+        point4 = (ImageButton) findViewById(R.id.imgbtn_point4);
+        point5 = (ImageButton) findViewById(R.id.imgbtn_point5);
+        point6 = (ImageButton) findViewById(R.id.imgbtn_point6);
+        btn_output = findViewById(R.id.btn_output);
+
+
+        btn_output.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendbraille(0, 1);
+            }
+        });
 
         point1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +178,21 @@ public class Dot_num extends AppCompatActivity {
         });
 
     }
+    public void sendbraille(int send_idx, int cnt) {
+        ArrayList<int[]> brailleList = new ArrayList<>();
+
+        if(send_idx+cnt == 0){
+            braille = new int[]{0,0,0,0,0,0};
+        }
+        brailleList.add(braille);
+
+        String row = String.valueOf(brailleList.size());
+        String braille = Arrays.deepToString(brailleList.toArray());
+        braille = row + braille + ";";  //끝에 ; 추가
+        Log.d("braille", braille);
+        if(connectedThread!=null){ Log.d("braille", braille);connectedThread.write(braille); }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ObjectTree {
 
-    private View currentObject;
+    private View currentView;
     private ObjectTree parentObject;
     private int indexOfCurrentObject;
     private int numOfChildObject;
@@ -14,7 +14,7 @@ public class ObjectTree {
     private ArrayList<ObjectTree> childObjectList;
 
     public View getCurrentView() {
-        return this.currentObject;
+        return this.currentView;
     }
 
     public ObjectTree getParentObject() {
@@ -42,16 +42,18 @@ public class ObjectTree {
         }
     }
 
-    public void rootObject(){
-        this.currentObject = null;
+    public ObjectTree rootObject(){
+        this.currentView = null;
         this.parentObject = null;
         this.indexOfCurrentObject = 0;
         this.numOfChildObject = 0;
         this.childObjectList = new ArrayList<>();
+        return this;
     }
 
-    public ObjectTree initObject(View newObject){
-        this.currentObject = newObject;
+    public ObjectTree initObject(View newView){
+        newView.setFocusableInTouchMode(true);
+        this.currentView = newView;
         this.parentObject = null;
         this.indexOfCurrentObject = -1;
         this.numOfChildObject = 0;
@@ -78,6 +80,30 @@ public class ObjectTree {
         int childLen = newChildObjectList.size();
         for (int i = 0; i<childLen; i++){
             this.addChild(newChildObjectList.get(i));
+        }
+    }
+    public void addChildViewArr(View[] newChildViewArr){
+        int childLen = newChildViewArr.length;
+        for (View view : newChildViewArr) {
+            this.addChild(new ObjectTree().initObject(view));
+        }
+    }
+
+    public void addChildObjectArr(ObjectTree[] newChildObjectArr){
+        int childLen = newChildObjectArr.length;
+        for (ObjectTree objectTree : newChildObjectArr) {
+            this.addChild(objectTree);
+        }
+    }
+
+    public void deleteAllChildFocusable(){
+        if(this.getNumOfChildObject()!=0){
+            for (ObjectTree child : this.getChildObjectList()){
+                child.deleteAllChildFocusable();
+            }
+        }
+        if(this.getCurrentView() != null){
+            this.getCurrentView().setFocusableInTouchMode(false);
         }
     }
 

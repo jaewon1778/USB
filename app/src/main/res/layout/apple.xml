@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".apple"
     android:background="@color/white"
     >
 
@@ -27,11 +26,28 @@
             android:layout_height="0dp"
             android:layout_weight="0.05"
             />
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/word"
-            style="@style/txt_title"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <TextView
+                style="@style/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/word" />
+
+            <Button
+                android:id="@+id/btn_dbClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DB clear"
+                android:layout_marginStart="50dp"
+                />
+
+        </LinearLayout>
+
 
         <Space
             android:layout_width="match_parent"
@@ -39,14 +55,30 @@
             android:layout_weight="0.05"
             />
 
-        <Button
-            android:id="@+id/apple"
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="30dp"
+            android:padding="5dp"
+            android:background="@drawable/round_border"
+            android:id="@+id/rcyv_wordLearning"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="고재원"
-            style="@style/btn_add_word"
-            android:background="@drawable/button_study"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+
             />
 
+        <!--        <ListView-->
+        <!--            android:layout_marginStart="15dp"-->
+        <!--            android:layout_marginEnd="15dp"-->
+        <!--            android:layout_marginBottom="30dp"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:background="@drawable/round_border"-->
+        <!--            android:id="@+id/lstv_wordLearning"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_weight="0.9"-->
+
+        <!--            />-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,11 @@
 package com.example.usb_java_ui;
 
+import static com.example.usb_java_ui.DBManager.TABLE_ABB;
+import static com.example.usb_java_ui.DBManager.TABLE_FC;
+import static com.example.usb_java_ui.DBManager.TABLE_IC;
+import static com.example.usb_java_ui.DBManager.TABLE_V;
+import static com.example.usb_java_ui.DBManager.TABLE_WORD;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,8 +25,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class Quiz extends AppCompatActivity {
-    boolean qzMode;
-    TextView txt_qzs;
+    private boolean qzMode;
+    private TextView txt_qzs;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private Switch swbtn_qzs;
+
+    private Button btn_initialC;
+    private Button btn_vowel;
+    private Button btn_finalC;
+    private Button btn_abb;
+    private Button btn_num;
+    private Button btn_word;
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -60,9 +76,15 @@ public class Quiz extends AppCompatActivity {
 
         SharedPreferences prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
 
-        txt_qzs = (TextView) findViewById(R.id.txt_qzSelect);
+        txt_qzs = findViewById(R.id.txt_qzSelect);
+        btn_initialC = findViewById(R.id.btn_qzInitialCon);
+        btn_vowel = findViewById(R.id.btn_qzVowel);
+        btn_finalC = findViewById(R.id.btn_qzFinalCon);
+        btn_abb = findViewById(R.id.btn_qzAbb);
+        btn_num = findViewById(R.id.btn_qzNumber);
+        btn_word = findViewById(R.id.btn_qzWord);
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch swbtn_qzs = findViewById(R.id.swbtn_qzSelect);
+        swbtn_qzs = findViewById(R.id.swbtn_qzSelect);
         swbtn_qzs.setChecked(prev_mode.getBoolean("modeChecked", false));
         swbtn_qzs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("SetTextI18n")
@@ -78,25 +100,53 @@ public class Quiz extends AppCompatActivity {
             }
         });
 
-        Button button1 = (Button) findViewById(R.id.btn_qzKorean);
-        button1.setOnClickListener(new View.OnClickListener() {
+        btn_initialC.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Quiz_readOutput.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_IC));
             }
         });
-
-        Button button2 = (Button) findViewById(R.id.btn_qzNumber);
-        button2.setOnClickListener(new View.OnClickListener() {
+        btn_vowel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Quiz_listenOutput.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_V));
             }
         });
-
+        btn_finalC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_FC));
+            }
+        });
+        btn_abb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_ABB));
+            }
+        });
+//        btn_num.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(createIntent());
+//            }
+//        });
+        btn_word.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_WORD));
+            }
+        });
     }
+
+    public Intent createIntent(String table_name){
+        Intent intent;
+        if(qzMode) intent = new Intent(getApplicationContext(), Quiz_listenOutput.class);
+        else intent = new Intent(getApplicationContext(), Quiz_readOutput.class);
+
+        intent.putExtra("keyTableName", table_name);
+        return intent;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

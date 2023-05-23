@@ -1,7 +1,14 @@
 package com.example.usb_java_ui;
 
+import static com.example.usb_java_ui.DBManager.TABLE_ABB;
+import static com.example.usb_java_ui.DBManager.TABLE_FC;
+import static com.example.usb_java_ui.DBManager.TABLE_IC;
+import static com.example.usb_java_ui.DBManager.TABLE_V;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -19,29 +27,62 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
 
 public class Quiz_listenOutput extends AppCompatActivity {
-    private int[] braille = new int[]{1,1,1,1,1,1};
-    private final ArrayList<int[]> answerList = new ArrayList<>();
 
+    private GridView qzl_grid_output;
+    private GridOutputAdapter qzl_gridOAdt;
+    private String table_name;
+    private int[] myBraille = new int[]{0, 0, 0, 0, 0, 0};
+    private ArrayList<int[]> resList = new ArrayList<>();
+    private ArrayList<int[]> keyBraille = new ArrayList<>();
+    private String keyStr;
+    private int[] randomIndex;
+    private int[][][] AnswerArr;
+    private int curIndex;
+    private NestedScrollView ns_qzl;
+
+    private ImageButton btn_prevQz;
+    private ImageButton btn_nextQz;
+    private TextView txt_qzType;
+    private TextView txt_qzStr;
+
+
+    private ImageButton point1;
+    private ImageButton point2;
+    private ImageButton point3;
+    private ImageButton point4;
+    private ImageButton point5;
+    private ImageButton point6;
+    private ImageButton[] points;
+
+
+    private ImageButton addA;
+    private ImageButton backA;
+    private ImageButton removeA;
+    private ImageButton submitA;
+
+    private DBManager dbManager;
 
     private void resetBraille(ImageButton[] points){
-        braille = new int[]{1, 1, 1, 1, 1, 1};
-        points[0].setImageResource(R.drawable.p1);
-        points[1].setImageResource(R.drawable.p1);
-        points[2].setImageResource(R.drawable.p1);
-        points[3].setImageResource(R.drawable.p1);
-        points[4].setImageResource(R.drawable.p1);
-        points[5].setImageResource(R.drawable.p1);
+        myBraille = new int[]{0, 0, 0, 0, 0, 0};
+        points[0].setImageResource(R.drawable.p0);
+        points[1].setImageResource(R.drawable.p0);
+        points[2].setImageResource(R.drawable.p0);
+        points[3].setImageResource(R.drawable.p0);
+        points[4].setImageResource(R.drawable.p0);
+        points[5].setImageResource(R.drawable.p0);
 
     }
 
     private void updateAnswer(){
-        GridView qzl_grid_output = (GridView) findViewById(R.id.grdv_qzlBrailles);
-        GridOutputAdapter qzl_gridOAdt = new GridOutputAdapter(this);
+        qzl_gridOAdt = new GridOutputAdapter(this);
 
 
-        for (int[] BItem : answerList) {
+        for (int[] BItem : resList) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("@drawable/b");
             for (int dot : BItem){
@@ -55,7 +96,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
             qzl_gridOAdt.setBItem(resId);
         }
-        int numcol = answerList.size();
+        int numcol = resList.size();
         int line = 2;
 
         if (numcol > 12) {
@@ -89,109 +130,116 @@ public class Quiz_listenOutput extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
+        ns_qzl = findViewById(R.id.ns_qzl);
+        qzl_grid_output = findViewById(R.id.grdv_qzlBrailles);
         updateAnswer();
 
-        NestedScrollView ns_qzl = (NestedScrollView) findViewById(R.id.ns_qzl);
+        btn_prevQz = findViewById(R.id.btn_prevQz);
+        btn_prevQz.setEnabled(false);
+        btn_nextQz = findViewById(R.id.btn_nextQz);
+
+        txt_qzType = findViewById(R.id.txt_qzlStrType);
+        txt_qzStr = findViewById(R.id.txt_qzlStr);
+
+        point1 = findViewById(R.id.imgbtn_qzlPoint1);
+        point2 = findViewById(R.id.imgbtn_qzlPoint2);
+        point3 = findViewById(R.id.imgbtn_qzlPoint3);
+        point4 = findViewById(R.id.imgbtn_qzlPoint4);
+        point5 = findViewById(R.id.imgbtn_qzlPoint5);
+        point6 = findViewById(R.id.imgbtn_qzlPoint6);
+        points = new ImageButton[]{point1, point2, point3, point4, point5, point6};
+
+        addA = findViewById(R.id.btn_addAnswer);
+        backA = findViewById(R.id.btn_backspaceAnswer);
+        removeA = findViewById(R.id.btn_removeAnswer);
+        submitA = findViewById(R.id.btn_submitAnswer);
+
+        dbManager = new DBManager();
+        dbManager.checkDB(this);
+
+        table_name = getIntent().getStringExtra("keyTableName");
+
+        switch (table_name){
+            case TABLE_IC:
+                txt_qzType.setText("초성 : ");
+                break;
+            case TABLE_V:
+                txt_qzType.setText("중성 : ");
+                break;
+            case TABLE_FC:
+                txt_qzType.setText("종성 : ");
+                break;
+            case TABLE_ABB:
+                txt_qzType.setText("약자 : ");
+                break;
+            default:
+                txt_qzType.setText("");
+                break;
+        }
+
+        int[] indexes = dbManager.getIndexesOfWord(table_name,"더미");
+        int maxIndex = indexes[1];
+        randomIndex = generateShuffledArray(1, maxIndex);
+        AnswerArr = new int[maxIndex][][];
+        Arrays.fill(AnswerArr, new int[][]{});
+        curIndex = 0;
+        String[] info = dbManager.getInfoOfIndex(table_name,randomIndex[curIndex]);
+        keyStr = info[0];
+        txt_qzStr.setText(keyStr);
+        keyBraille = StringToBraille(info[1]);
 
 
-        ImageButton point1 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint1);
-        ImageButton point2 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint2);
-        ImageButton point3 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint3);
-        ImageButton point4 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint4);
-        ImageButton point5 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint5);
-        ImageButton point6 = (ImageButton) findViewById(R.id.imgbtn_qzlPoint6);
+        btn_prevQz.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onClick(View view) {
+                curIndex--;
+                if (curIndex == 0) btn_prevQz.setEnabled(false);
+                if (curIndex == maxIndex-2) btn_nextQz.setEnabled(true);
+                if (!Arrays.deepEquals(AnswerArr[curIndex], new int[][]{})) {
+                    setButtonEnabled(false);
+                    resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));
+                    updateAnswer();
+                    qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
+                } else {
+                    setButtonEnabled(true);
+                    qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
+                    resList = new ArrayList<>();
+                    updateAnswer();
+                }
+                setKeyValue();
 
-        ImageButton[] points = {point1,point2,point3,point4,point5,point6};
-
-        point1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[0]==1){
-                    braille[0] = 0;
-                    point1.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[0] = 1;
-                    point1.setImageResource(R.drawable.p1);
-                }
-            }
-        });
-        point2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[1]==1){
-                    braille[1] = 0;
-                    point2.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[1] = 1;
-                    point2.setImageResource(R.drawable.p1);
-                }
-            }
-        });
-        point3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[2]==1){
-                    braille[2] = 0;
-                    point3.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[2] = 1;
-                    point3.setImageResource(R.drawable.p1);
-                }
-            }
-        });
-        point4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[3]==1){
-                    braille[3] = 0;
-                    point4.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[3] = 1;
-                    point4.setImageResource(R.drawable.p1);
-                }
-            }
-        });
-        point5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[4]==1){
-                    braille[4] = 0;
-                    point5.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[4] = 1;
-                    point5.setImageResource(R.drawable.p1);
-                }
-            }
-        });
-        point6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(braille[5]==1){
-                    braille[5] = 0;
-                    point6.setImageResource(R.drawable.p0);
-                }
-                else {
-                    braille[5] = 1;
-                    point6.setImageResource(R.drawable.p1);
-                }
             }
         });
 
 
-        ImageButton addA = (ImageButton) findViewById(R.id.btn_addAnswer);
-        ImageButton backA = (ImageButton) findViewById(R.id.btn_backspaceAnswer);
-        ImageButton removeA = (ImageButton) findViewById(R.id.btn_removeAnswer);
-        ImageButton submitA = (ImageButton) findViewById(R.id.btn_submitAnswer);
+        btn_nextQz.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onClick(View view) {
+                curIndex++;
+                if (curIndex == 1) btn_prevQz.setEnabled(true);
+                if (curIndex == maxIndex-1) btn_nextQz.setEnabled(false);
+                if (!Arrays.deepEquals(AnswerArr[curIndex], new int[][]{})) {
+                    setButtonEnabled(false);
+                    resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));                    updateAnswer();
+                    qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
+                } else {
+                    setButtonEnabled(true);
+                    qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
+                    resList = new ArrayList<>();
+                    updateAnswer();
+                }
+                setKeyValue();
+
+            }
+        });
 
         addA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                answerList.add(braille);
+                resList.add(myBraille);
                 updateAnswer();
                 resetBraille(points);
                 ns_qzl.fullScroll(NestedScrollView.FOCUS_DOWN);
@@ -200,8 +248,8 @@ public class Quiz_listenOutput extends AppCompatActivity {
         backA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (answerList.size() != 0) {
-                    answerList.remove(answerList.size() - 1);
+                if (resList.size() != 0) {
+                    resList.remove(resList.size() - 1);
                     updateAnswer();
                 }
             }
@@ -209,17 +257,197 @@ public class Quiz_listenOutput extends AppCompatActivity {
         removeA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                answerList.clear();
+                resList.clear();
                 updateAnswer();
             }
         });
         submitA.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"제출버튼입니다.",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"제출버튼입니다.",Toast.LENGTH_SHORT).show();
+                if(isItSameBraille(keyBraille, resList)){
+                    setButtonEnabled(false);
+                    AnswerArr[curIndex] = keyBraille.toArray(new int[0][]);
+                    qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
+                } else {
+                    qzl_grid_output.setBackground(getDrawable(R.drawable.border_red));
+                }
+
             }
         });
+
+        point1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[0]==1){
+                    myBraille[0] = 0;
+                    point1.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[0] = 1;
+                    point1.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+        point2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[1]==1){
+                    myBraille[1] = 0;
+                    point2.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[1] = 1;
+                    point2.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+        point3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[2]==1){
+                    myBraille[2] = 0;
+                    point3.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[2] = 1;
+                    point3.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+        point4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[3]==1){
+                    myBraille[3] = 0;
+                    point4.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[3] = 1;
+                    point4.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+        point5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[4]==1){
+                    myBraille[4] = 0;
+                    point5.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[4] = 1;
+                    point5.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+        point6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(myBraille[5]==1){
+                    myBraille[5] = 0;
+                    point6.setImageResource(R.drawable.p0);
+                }
+                else {
+                    myBraille[5] = 1;
+                    point6.setImageResource(R.drawable.p1);
+                }
+            }
+        });
+
     }
+
+    private Boolean isItSameBraille(ArrayList<int[]> key, ArrayList<int[]> myAns){
+        if(key.size() != myAns.size()) return false;
+        for (int i = 0; i< key.size(); i++){
+            if(!Arrays.equals(key.get(i),myAns.get(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void setButtonEnabled(Boolean bool){
+        for (ImageButton p : points){
+            p.setEnabled(bool);
+        }
+        addA.setEnabled(bool);
+        backA.setEnabled(bool);
+        removeA.setEnabled(bool);
+        submitA.setEnabled(bool);
+
+    }
+
+    private void setKeyValue(){
+        switch (table_name){
+            case TABLE_IC:
+                txt_qzType.setText("초성 : ");
+                break;
+            case TABLE_V:
+                txt_qzType.setText("중성 : ");
+                break;
+            case TABLE_FC:
+                txt_qzType.setText("종성 : ");
+                break;
+            case TABLE_ABB:
+                txt_qzType.setText("약자 : ");
+                break;
+            default:
+                txt_qzType.setText("");
+                break;
+        }
+
+        String[] info = dbManager.getInfoOfIndex(table_name,randomIndex[curIndex]);
+        keyStr = info[0];
+        txt_qzStr.setText(keyStr);
+        keyBraille = StringToBraille(info[1]);
+    }
+
+    private ArrayList<int[]> StringToBraille(String str){
+        String[] strArr = str.split("");
+//        Log.d("strArr", Arrays.toString(strArr));
+        String[] strArrFor = Arrays.copyOfRange(strArr, 2, strArr.length-1);
+//        Log.d("strArrFor", Arrays.toString(strArrFor));
+        ArrayList<int[]> braille = new ArrayList<>();
+        int[] newB = {0,0,0,0,0,0};
+        int indexB = 0;
+        for (String one : strArrFor){
+
+            if(Objects.equals(one, "1")){
+                newB[indexB] = 1;
+                indexB++;
+            }
+            else if (Objects.equals(one, "0")){
+                indexB++;
+            }
+            else if (Objects.equals(one, "]")) {
+                braille.add(newB);
+                newB = new int[]{0, 0, 0, 0, 0, 0};
+                indexB = 0;
+            }
+        }
+//        Log.d("strArrBra", String.valueOf(braille));
+        return braille;
+    }
+
+    public static int[] generateShuffledArray(int start, int end) {
+        int[] array = new int[end - start + 1];
+        for (int i = start; i <= end; i++) {
+            array[i - start] = i;
+        }
+
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+
+        return array;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

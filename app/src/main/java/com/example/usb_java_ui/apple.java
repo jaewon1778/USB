@@ -9,13 +9,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class apple extends AppCompatActivity {
+
+    private ListView w_list;
+    private ListAdapterWord w_listAdt;
+
+    private RecyclerView w_rcy;
+    private RecycleAdapterWord w_rcyAdt;
+    DBManager dbManager = new DBManager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +44,28 @@ public class apple extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button button = (Button)  findViewById(R.id.apple);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button btn_clearDB = findViewById(R.id.btn_dbClear);
+        btn_clearDB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String str = "고재원";
-                Context context = v.getContext();
-                Intent intent = new Intent(context, Output.class);
-                intent.putExtra("keyStr", str);
-                context.startActivity(intent);
-
+            public void onClick(View view) {
+                dbManager.clearAllTables();
             }
         });
+
+        w_rcy = (RecyclerView) findViewById(R.id.rcyv_wordLearning);
+        w_rcy.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        w_rcyAdt = new RecycleAdapterWord();
+
+//        for (int i =1; i<exList.length;i++){
+//            w_rcyAdt.setRecycleItemWord(i,exList[i]);
+//        }
+
+        ArrayList<String> wordList = dbManager.getDataList(DBManager.TABLE_WORD);
+        for (int i=0; i<wordList.size();i++){
+            w_rcyAdt.setRecycleItemWord(i+1, wordList.get(i));
+        }
+
+        w_rcy.setAdapter(w_rcyAdt);
 
     }
     @Override

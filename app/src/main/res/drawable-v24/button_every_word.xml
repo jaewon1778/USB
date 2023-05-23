@@ -14,6 +14,15 @@
     <item android:state_focused="true">
         <shape android:layout_width="wrap_content" android:layout_height="wrap_content">
             <solid android:color="@color/light_gray"/>
+            <stroke android:width="2dp" android:color="@color/red" />
+            <corners android:radius="4dp" />
+            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+        </shape>
+    </item>
+    <!-- focused -->
+    <item android:state_enabled="false">
+        <shape android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <solid android:color="@color/type_gray"/>
             <stroke android:width="2dp" android:color="@color/dark_main" />
             <corners android:radius="4dp" />
             <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />

@@ -33,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:descendantFocusability="blocksDescendants"
                 >
 
         <Space
@@ -50,15 +49,41 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/round_border"
             >
-
-            <TextView
-                android:id="@+id/txt_qzrStr"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                style="@style/txt_title"
-                android:text="@string/qz_read_description"
-                />
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                >
+                <ImageButton
+                    android:id="@+id/btn_prevQz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_output"
+                    android:background="@drawable/button_study"
+                    android:src="@drawable/baseline_arrow_left_24"
+
+                    />
+                <TextView
+                    android:id="@+id/txt_qzrStr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/txt_qzQ"
+                    android:text="@string/qz_read_description"
+                    />
+                <ImageButton
+                    android:id="@+id/btn_nextQz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_output"
+                    android:background="@drawable/button_study"
+                    android:src="@drawable/baseline_arrow_right_24"
+                    />
+            </LinearLayout>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -85,14 +110,33 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 >
+                <ImageButton
+                    android:id="@+id/btn_prevOutput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_output"
+                    android:background="@drawable/button_study"
+                    android:src="@drawable/baseline_keyboard_double_arrow_left_24"
+                    />
+
                 <Button
                     android:id="@+id/btn_output"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/btn_add_word"
+                    style="@style/btn_output"
                     android:background="@drawable/button_study"
                     android:text="@string/output"
                     />
+
+                <ImageButton
+                    android:id="@+id/btn_nextOutput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/btn_output"
+                    android:background="@drawable/button_study"
+                    android:src="@drawable/baseline_keyboard_double_arrow_right_24"
+                    />
+
                 <Button
                     android:id="@+id/btn_listen"
                     android:layout_width="wrap_content"
@@ -101,6 +145,7 @@
                     android:background="@drawable/button_study"
                     android:text="@string/listen"
                     />
+
 
             </LinearLayout>
 
@@ -128,16 +173,19 @@
                 />
 
             <EditText
+                android:id="@+id/edt_myAnswer"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="0dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textSize="20sp"
-                android:backgroundTint="@color/main"
 
                 />
             <ImageButton
+                android:id="@+id/btn_submitAnswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/btn_add_word"

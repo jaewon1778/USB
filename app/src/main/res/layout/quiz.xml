@@ -76,19 +76,47 @@
 <!--            style="@style/btn_add_word"-->
 <!--            />-->
         <Button
-            android:id="@+id/btn_qzKorean"
+            android:id="@+id/btn_qzInitialCon"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.12"
+            android:layout_weight="0.15"
             android:background="@drawable/button_study"
-            android:text="@string/korean"
+            android:text="@string/initial_consonant"
             style="@style/btn_add_word"
             />
+        <Button
+            android:id="@+id/btn_qzVowel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:background="@drawable/button_study"
+            android:text="@string/vowel"
+            style="@style/btn_add_word"
+            />
+        <Button
+            android:id="@+id/btn_qzFinalCon"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:background="@drawable/button_study"
+            android:text="@string/final_consonant"
+            style="@style/btn_add_word"
+            />
+        <Button
+            android:id="@+id/btn_qzAbb"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:background="@drawable/button_study"
+            android:text="@string/abbreviation"
+            style="@style/btn_add_word"
+            />
+
         <Button
             android:id="@+id/btn_qzNumber"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.12"
+            android:layout_weight="0.15"
             android:background="@drawable/button_study"
             android:text="@string/number"
             style="@style/btn_add_word"
@@ -97,7 +125,7 @@
             android:id="@+id/btn_qzWord"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.12"
+            android:layout_weight="0.15"
             android:background="@drawable/button_study"
             android:text="@string/word"
             style="@style/btn_add_word"

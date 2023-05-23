@@ -17,4 +17,5 @@
     <color name="STTred">#E45F5F</color>
     <color name="STTgray">#B1B1B1</color>
     <color name="red">#FFFF0000</color>
+    <color name="green">#4CAF50</color>
 </resources>

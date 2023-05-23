@@ -26,9 +26,19 @@ public class Touchpad extends Dialog {
 
     private ObjectTree root;
     private ObjectTree curObj;
+    private ObjectTree toolRootObj;
+    private ObjectTree tempObj;
+
+    @Override
+    public void dismiss() {
+        curObj.getCurrentView().clearFocus();
+        super.dismiss();
+    }
+
     @SuppressLint("MissingInflatedId")
     public Touchpad(@NonNull Context context) {
-        super(context);
+        super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+//        super(context, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         setContentView(R.layout.touchpad);
         objIndex = 0;
 
@@ -72,7 +82,14 @@ public class Touchpad extends Dialog {
 
                         break;
                     case FLING_LEFT: // ToolBar 접근
-
+//                        for (ObjectTree toolObj : toolRootObj.getChildObjectList()){
+//                            if (curObj == toolObj){
+//                                curObj = tempObj;
+//                                break;
+//                            }
+//                        }
+//                        tempObj = curObj;
+//                        curObj = toolRootObj.getChildObjectOfIndex(0);
                         break;
                     case FLING_RIGHT: // 이전 액티비티 or 부모 Object 접근
                         if(curObj.getParentObject().getCurrentView()!=null){
@@ -80,7 +97,7 @@ public class Touchpad extends Dialog {
                         }
                         break;
                 }
-                curObj.getCurrentView().setFocusableInTouchMode(true);
+//                curObj.getCurrentView().setFocusableInTouchMode(true);
                 curObj.getCurrentView().requestFocus();
 
                 return true;
@@ -103,5 +120,8 @@ public class Touchpad extends Dialog {
 
     public void setCurObj(ObjectTree curObj) {
         this.curObj = curObj;
+    }
+    public void setToolRootObjCurObj(ObjectTree toolRootObj) {
+        this.toolRootObj = toolRootObj;
     }
 }

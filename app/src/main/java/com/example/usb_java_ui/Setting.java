@@ -139,7 +139,9 @@ public class Setting extends AppCompatActivity {
                         voiceSpeedFloat = 3.0f;
                         break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + rdbtn_id);
+                        rdbtn_id = R.id.rdbtn_speed_1;
+                        voiceSpeedFloat = 1.0f;
+//                        throw new IllegalStateException("Unexpected value: " + rdbtn_id);
                 }
                 spe_setting.putBoolean("voiceChecked",vm_checked[0]);
                 spe_setting.putInt("voiceSpeed", rdbtn_id);

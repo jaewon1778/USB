@@ -14,7 +14,7 @@
     <item android:state_focused="true">
         <shape android:layout_width="wrap_content" android:layout_height="wrap_content">
             <solid android:color="@color/STTred"/>
-            <stroke android:width="2dp" android:color="@color/STTgray" />
+            <stroke android:width="2dp" android:color="@color/red" />
             <corners android:radius="50dp" />
         </shape>
     </item>

@@ -150,6 +150,19 @@ public class Hangul2BrailleSpecific {
         put("그리하여", new int[][] {{1,0,0,0,0,0},{1,0,0,1,0,1}});
     }};
 
+    public static final HashMap<String , int[][]> NUMBER = new HashMap<String, int[][]>() {{
+        put("0", new int[][] {{0,1,0,1,1,0}});
+        put("1", new int[][] {{1,0,0,0,0,0}});
+        put("2", new int[][] {{1,1,0,0,0,0}});
+        put("3", new int[][] {{1,0,0,1,0,0}});
+        put("4", new int[][] {{1,0,0,1,1,0}});
+        put("5", new int[][] {{1,0,0,0,1,0}});
+        put("6", new int[][] {{1,1,0,1,0,0}});
+        put("7", new int[][] {{1,1,0,1,1,0}});
+        put("8", new int[][] {{1,1,0,0,1,0}});
+        put("9", new int[][] {{0,1,0,1,0,0}});
+    }};
+
     // 단어 배우기 -> 점위치 출력 코드
     public static String Learnig_dot (String dot_num) {
         String result;
@@ -208,6 +221,26 @@ public class Hangul2BrailleSpecific {
 
         return res;
     }
+
+    public static ArrayList<int[]> Learning_Number(String number) {
+        ArrayList<int[]> result = new ArrayList<int[]>();
+        result.add(new int[]{0, 0, 1, 1, 1, 1});
+
+        for (int i = 0; i < number.length(); i++) {
+            int[][] NumArray = NUMBER.get(String.valueOf(number.charAt(i)));
+            for (int j = 0; j < (NumArray != null ? NumArray.length : 0); j++) {
+                result.add(NumArray[j]);
+            }
+        }
+        return result;
+    }
+
+//    public static void main(String[] args) {
+//        String number = "815";
+//        ArrayList<Object> FinalResult = convertToBraille(number);
+//        String Braille = Arrays.deepToString(FinalResult.toArray());
+//        System.out.println(Braille);
+//    }
 
 
 

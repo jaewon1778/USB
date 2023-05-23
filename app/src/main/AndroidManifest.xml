@@ -154,6 +154,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Number"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.Number" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".WordList"
             android:exported="true">
         <intent-filter>
@@ -193,6 +202,7 @@
         </activity>
         <activity
             android:name=".Quiz_readOutput"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.Quiz_readOutput" />

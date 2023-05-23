@@ -6,12 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
@@ -19,12 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.usb_java_ui.TTS_Import;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -35,19 +32,64 @@ public class MainActivity extends AppCompatActivity {
     private TTS_Import tts_import;
 
     private ChoiceVoiceMode CVMDialog;
+    private Touchpad touchpad;
 
     private ConnectedThread connectedThread;
     private BluetoothConnection mBC;
+
+    private TextView txt_study;
+    private TextView txt_addWord;
     private Button btn_learning_word;
     private Button btn_quiz;
     private Button btn_typing;
     private Button btn_image_detection;
     private Button btn_stt;
+    private ObjectTree OT_root;
+
+    private View tool_help;
+    private View tool_bluetooth;
+    private View tool_setting;
+    private ObjectTree OT_toolRoot;
+
+    private void myFocusListener(View targetView){
+        targetView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b){
+                    view.setBackground(getDrawable(R.drawable.border_red));
+                }
+                else {
+                    view.setBackground(new ColorDrawable(Color.TRANSPARENT));
+                }
+            }
+        });
+    }
+    private void VoiceModeOn(){
+        OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_study = new ObjectTree().initObject(txt_study);
+        ObjectTree OT_addWord = new ObjectTree().initObject(txt_addWord);
+        OT_study.addChildViewArr(new View[]{btn_learning_word, btn_quiz});
+        OT_addWord.addChildViewArr(new View[]{btn_typing, btn_image_detection, btn_stt});
+        OT_root.addChildObjectArr(new ObjectTree[]{OT_study,OT_addWord});
+
+        myFocusListener(txt_study);
+        myFocusListener(txt_addWord);
+
+//        OT_toolRoot = new ObjectTree().rootObject();
+//        OT_toolRoot.addChildViewArr(new View[]{tool_help, tool_bluetooth, tool_setting});
+
+
+        touchpad.setCurObj(OT_root.getChildObjectOfIndex(0));
+//        touchpad.setToolRootObjCurObj(OT_toolRoot);
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+        touchpad.show();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
+        SharedPreferences sp_setting = getSharedPreferences("setting", MODE_PRIVATE);
         tts_import = new TTS_Import();
         tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -55,7 +97,25 @@ public class MainActivity extends AppCompatActivity {
                 tts_import.onInit(i);
             }
         }));
-        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
+        tts_import.setSpeed(sp_setting.getFloat("voiceSpeedFloat",1.0f));
+
+
+        touchpad = new Touchpad(this);
+        touchpad.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        touchpad.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+//        if(!sp_setting.getBoolean("voiceChecked", false)){
+//            CVMDialog = new ChoiceVoiceMode(this);
+////            CVMDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            CVMDialog.setCanceledOnTouchOutside(false);
+////            CVMDialog.setCancelable(false);
+//            CVMDialog.show();
+//        }
+
+        if(sp_setting.getBoolean("voiceChecked", false)){
+            VoiceModeOn();
+
+        }
 
 
         SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
@@ -69,9 +129,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
+    protected void onPause() {
+        super.onPause();
+        if (touchpad.isShowing()){
+            OT_root.deleteAllChildFocusable();
+            touchpad.dismiss();
+        }
     }
 
     @Override
@@ -80,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
 //        tts_import.onDestroy();
         tts_import.ttsDestroy();
         try {
-            BluetoothConnection.btSocket.close();
+            if(BluetoothConnection.btSocket.isConnected()){
+                BluetoothConnection.btSocket.close();
+            }
         } catch (IOException e) {
 //            throw new RuntimeException(e);
         }
@@ -91,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DBManager mDBM = new DBManager();
+        mDBM.InitDB(getApplicationContext());
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -99,6 +168,26 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        for (int i =0; i < toolbar.getChildCount(); i++){
+            tool_help = toolbar.getChildAt(i);
+//            tool_bluetooth = toolbar.getChildAt(1);
+//            tool_setting = toolbar.getChildAt(2);
+
+        }
+
+
+        //DB TEST
+        txt_study = (TextView) findViewById(R.id.txt_study);
+        txt_study.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),apple.class);
+                startActivity(intent);
+            }
+        });
+
+        //DB TEST
+        txt_addWord = findViewById(R.id.txt_addWord);
 
         //TTS TEST
 //        TextView txt_study = (TextView) findViewById(R.id.txt_study);
@@ -113,22 +202,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences sp_setting = getSharedPreferences("setting", MODE_PRIVATE);
-        boolean is_voiceChecked = sp_setting.getBoolean("voiceChecked", false);
-
-        if (!is_voiceChecked){
-            CVMDialog = new ChoiceVoiceMode(this);
-//            CVMDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            CVMDialog.setCanceledOnTouchOutside(false);
-            CVMDialog.setCancelable(false);
-            CVMDialog.show();
-        }
+//        SharedPreferences sp_setting = getSharedPreferences("setting", MODE_PRIVATE);
+//        boolean is_voiceChecked = sp_setting.getBoolean("voiceChecked", false);
+//
+//        if (!is_voiceChecked){
+//            CVMDialog = new ChoiceVoiceMode(this);
+////            CVMDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            CVMDialog.setCanceledOnTouchOutside(false);
+////            CVMDialog.setCancelable(false);
+//            CVMDialog.show();
+//        }
 
         // Blue
-        TextView txt_study = (TextView) findViewById(R.id.txt_study);
-
-
-
+//        TextView txt_study = (TextView) findViewById(R.id.txt_study);
 //        txt_study.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -137,8 +223,6 @@ public class MainActivity extends AppCompatActivity {
 ////                tts_import.speakOut((String) txt_study.getText());
 //            }
 //        });
-
-
 
         // Blue
 
@@ -193,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

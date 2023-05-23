@@ -6,19 +6,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class Learning_word extends AppCompatActivity {
+public class Number extends AppCompatActivity {
+    private GridView m_grid_n;
+    private GridAdapter m_gridAdt_n;
+    private final String[] n_list = {
+            "수표", "0", "1", "2", "3",
+            "4", "5", "6", "7", "8",
+            "9"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.learning_word);
+        setContentView(R.layout.number);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -28,38 +35,23 @@ public class Learning_word extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button dotNum = (Button) findViewById(R.id.lw_dotNum);
-        dotNum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Dot_num.class);
-                startActivity(intent);
-            }
-        });
-        Button korean = (Button) findViewById(R.id.lw_korean);
-        korean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Korean.class);
-                startActivity(intent);
-            }
-        });
-        Button number = findViewById(R.id.lw_number);
-        number.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Number.class);
-                startActivity(intent);
-            }
-        });
-        Button wordList = (Button) findViewById(R.id.lw_word);
-        wordList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WordList.class);
-                startActivity(intent);
-            }
-        });
+        m_grid_n = (GridView) findViewById(R.id.grdv_number);
+        m_gridAdt_n = new GridAdapter(this);
+
+        for (String voStr : n_list) {
+            m_gridAdt_n.setItem(voStr);
+        }
+        m_gridAdt_n.setKeyType(3);
+
+        m_grid_n.setAdapter(m_gridAdt_n);
+
+        int btn_height = 550;
+        ViewGroup.LayoutParams param_v = m_grid_n.getLayoutParams();
+        if(param_v == null) {
+            param_v = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        param_v.height = btn_height;
+        m_grid_n.setLayoutParams(param_v);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
