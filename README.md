@@ -1,6 +1,6 @@
 # USB (Useful System for the Blind _ Team.BIOS)
-#### 점자 교육 어플리케이션 ⠿🧑‍🦯
-![USB_png](https://github.com/jaewon1778/USB/blob/main/USB%20%EC%BA%98%EB%A6%AC%EA%B7%B8%EB%9E%98%ED%94%BC.png)
+#### <p align = "center">점자 교육 어플리케이션 ⠿🧑‍🦯
+![USB_png](https://github.com/jaewon1778/USB/blob/main/USB%20%EC%BA%98%EB%A6%AC%EA%B7%B8%EB%9E%98%ED%94%BC.png) </p>
 
 ## Introduction
 #### 시각장애인의 수와 문맹률은 계속 증가하는 추세이지만, 점자 학습자료 제작 시간은 매우 오래 걸립니다.
