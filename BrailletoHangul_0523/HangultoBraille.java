@@ -219,14 +219,11 @@ public class HangultoBraille {
         // 문법: 중성에 'ㅏ'가 오는 글자는 초성을 무시하고 MATCH_H2B_GRAMMAR 에서 점자 매치하여 리턴 ex) 'ㄷ'+'ㅏ' = '다'로 합쳐서 하나의 점자로 리턴
         else if (hangul_decomposed.charAt(0) != 'ㅇ' && hangul_decomposed.charAt(0) != 'ㄹ' && hangul_decomposed.charAt(0) != 'ㅊ' && hangul_decomposed.charAt(1) == 'ㅏ' && !check) {
             int[][] GrammarArray = MATCH_H2B_GRAMMAR.get(String.valueOf(hangul_decomposed.charAt(0)));
-            System.out.println(hangul_decomposed.charAt(0));
-            //System.out.println(hangul_decomposed.charAt(1));
             for (int j = 0; j < GrammarArray.length; j++) {
                 result.add(GrammarArray[j]);
             }
 
             if (hangul_decomposed.length() >= 3 && MATCH_H2B_JONG.containsKey( String.valueOf(hangul_decomposed.charAt(2))) ) {
-                //System.out.println(hangul_decomposed.charAt(2));
                 int[][] JongArray = MATCH_H2B_JONG.get(String.valueOf(hangul_decomposed.charAt(2)));
                 for (int j = 0; j < JongArray.length; j++) {
                     result.add(JongArray[j]);
@@ -238,17 +235,13 @@ public class HangultoBraille {
 
         // 문법: 'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ' + 'ㅓ' + 'ㅇ' 의 글자에서 'ㅓ+ㅇ'은 MATCH_H2B_GRAMMAR2 에서 'ㅕㅇ'에 해당하는 점자 매치하여 리턴  ex)'ㅅ/ㅆ/ㅈ/ㅉ/ㅊ'+'ㅓ'+'ㅇ'일때 ㅓ+ㅇ은 ㅕ+ㅇ으로 표기한다
         else if (( hangul_decomposed.charAt(0) == 'ㅅ' || hangul_decomposed.charAt(0) == 'ㅆ' || hangul_decomposed.charAt(0) == 'ㅈ' || hangul_decomposed.charAt(0) == 'ㅉ' || hangul_decomposed.charAt(0) == 'ㅊ') && hangul_decomposed.charAt(1) == 'ㅓ' && hangul_decomposed.charAt(2) == 'ㅇ') {
-            System.out.println((hangul_decomposed.charAt(1) == 'ㅓ'));
             int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul_decomposed.charAt(0)));
             for (int j = 0; j < ChoArray.length; j++) {
                 result.add(ChoArray[j]);
-                System.out.println(hangul_decomposed.charAt(0));
             }
             int[][] GrammarArray = MATCH_H2B_GRAMMAR2.get("ㅕㅇ");
             for (int j = 0; j < GrammarArray.length; j++) {
                 result.add(GrammarArray[j]);
-                System.out.println(hangul_decomposed.charAt(1));
-                System.out.println(hangul_decomposed.charAt(2));
 
             }
             return result;
@@ -266,7 +259,6 @@ public class HangultoBraille {
                     int[][] ChoArray = MATCH_H2B_CHO.get(String.valueOf(hangul));
                     for (int j = 0; j < ChoArray.length; j++) {
                         result.add(ChoArray[j]);
-                        System.out.println(hangul);
                     }
 
                 }
@@ -276,7 +268,6 @@ public class HangultoBraille {
                     int[][] JoongArray = MATCH_H2B_JOONG.get(String.valueOf(hangul));
                     for (int j = 0; j < JoongArray.length; j++) {
                         result.add(JoongArray[j]);
-                        System.out.println(hangul);
                     }
                 }
 
@@ -285,7 +276,6 @@ public class HangultoBraille {
                     int[][] JongArray = MATCH_H2B_GRAMMAR.get(String.valueOf(hangul));
                     for (int j = 0; j < JongArray.length; j++) {
                         result.add(JongArray[j]);
-                        System.out.println(hangul);
                     }
 
                 }
@@ -295,7 +285,6 @@ public class HangultoBraille {
                     int[][] JongArray = MATCH_H2B_JONG.get(String.valueOf(hangul));
                     for (int j = 0; j < JongArray.length; j++) {
                         result.add(JongArray[j]);
-                        System.out.println(hangul);
                     }
                 }
             }
@@ -336,8 +325,7 @@ public class HangultoBraille {
                 // 숫자가 아닌 경우 isNumberAdded를 false로 재설정
                 isNumberAdded = false;
 
-                if (HangulSentence.charAt(i) == '나' || HangulSentence.charAt(i) == '다' || HangulSentence.charAt(i) == '마' || HangulSentence.charAt(i) == '바' || HangulSentence.charAt(i) == '자' || HangulSentence.charAt(i) == '카' || HangulSentence.charAt(i) == '타' || HangulSentence.charAt(i) == '파' || HangulSentence.charAt(i) == '하' ) {
-                    System.out.println("ok");
+                if ((HangulSentence.charAt(i) == '나' || HangulSentence.charAt(i) == '다' || HangulSentence.charAt(i) == '마' || HangulSentence.charAt(i) == '바' || HangulSentence.charAt(i) == '자' || HangulSentence.charAt(i) == '카' || HangulSentence.charAt(i) == '타' || HangulSentence.charAt(i) == '파' || HangulSentence.charAt(i) == '하') && (i+1 < HangulSentence.toCharArray().length) ){
                     String HangulLetterStr = Character.toString(HangulSentence.charAt(i + 1));
                     StringBuilder hangul_decomposed = split(HangulLetterStr);
                     if (hangul_decomposed.charAt(0) == 'ㅇ' && isVowel(hangul_decomposed.charAt(1))) {
@@ -358,7 +346,7 @@ public class HangultoBraille {
     }
 
     public static void main(String[] args) {
-        String Hangul = "81고";
+        String Hangul = "모자";
         ArrayList<Object> FinalResult = text(Hangul);  //긴 한글(문장,단어)이 들어올 경우
         String Braille = Arrays.deepToString(FinalResult.toArray());
         System.out.println(Braille);
