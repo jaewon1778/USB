@@ -18,7 +18,7 @@
 #### - 8X8 Dot Matrix(1088BS)
 #### - 4X4 Keypad
 #### - HC-06
-#### - Samsung Galaxy J5 from eazyhoon
+#### - Samsung Galaxy J5
 
 ## Developers
 | Name | Department | Github |
