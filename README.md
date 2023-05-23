@@ -19,8 +19,10 @@
 #### - HC-06
 
 ## 개발자
-#### 고재원 : UI 및 프로그램 통합, HW 연결
-#### 유나경 : 이미지인식을 통한 OCR, HW 연결
-#### 이지훈 : STT & TTS, 블루투스
-#### 차영원 : 데이터 프로세스 관리
+| 이름 | 소속 | Github |
+|-|-|-|
+| 👨🏻‍💻 고재원 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/jaewon1778 |
+| 👩🏻‍💻 유나경 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/ynk3132 |
+| 👨🏻‍💻 이지훈 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/predis3299 |
+| 👩🏻‍💻 차여원 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/YoungwonCha |
 
