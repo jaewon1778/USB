@@ -20,10 +20,10 @@
 #### - HC-06
 
 ## Developers
-| Name | 소속 | Github |
+| Name | Department | Github |
 |-|-|-|
-| 👨🏻‍💻 JaeWon Ko | 🎓 SSU 🇦🇮융합학부 | https://github.com/jaewon1778 |
-| 👩🏻‍💻 NaKyung You | 🎓 SSU 🇦🇮융합학부 | https://github.com/ynk3132 |
-| 👨🏻‍💻 JiHoon Lee | 🎓 SSU 🇦🇮융합학부 | https://github.com/predis3299 |
-| 👩🏻‍💻 YoungWon Cha | 🎓 SSU 🇦🇮융합학부 | https://github.com/YoungwonCha |
+| 👨🏻‍💻 JaeWon Ko | 🎓 SSU 🇦🇮 Convergence | https://github.com/jaewon1778 |
+| 👩🏻‍💻 NaKyung You | 🎓 SSU 🇦🇮 Convergence | https://github.com/ynk3132 |
+| 👨🏻‍💻 JiHoon Lee | 🎓 SSU 🇦🇮 Convergence | https://github.com/predis3299 |
+| 👩🏻‍💻 YoungWon Cha | 🎓 SSU 🇦🇮 Convergence | https://github.com/YoungwonCha |
 
