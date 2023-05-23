@@ -9,12 +9,6 @@
 #### 이런 문제점을 해결하기 위해 시각 장애인들이 혼자서도 학습 가능하며 자원의 낭비가 덜한
 #### 점자 학습 시스템(USB)를 제안하고자 합니다.
 
-#### The number of blind people and the illiteracy rate continue to increase, but it takes a very long time to produce braille learning materials.
-#### However, when visually impaired people provide braille education, assistants are essential, such as stamping themselves on paper,
-#### and the waste of resources and insufficient size increase the difficulty of learning.
-#### To solve this problem, I would like to propose a Braille Learning System (USB)
-#### that visually impaired people can learn on their own and waste less resources.
-
 ## Settings
 #### Android Studio 2022.2.1.19 (target SDK : 31 / min SDK : 28)
 #### Arduino IDE 2.1.0
