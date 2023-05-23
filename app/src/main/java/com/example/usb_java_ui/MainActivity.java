@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.deleteDatabase("USB_DB");
+
         DBManager mDBM = new DBManager();
         mDBM.InitDB(getApplicationContext());
 
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         //DB TEST
         txt_addWord = findViewById(R.id.txt_addWord);

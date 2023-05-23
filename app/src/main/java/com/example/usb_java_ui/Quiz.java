@@ -3,6 +3,7 @@ package com.example.usb_java_ui;
 import static com.example.usb_java_ui.DBManager.TABLE_ABB;
 import static com.example.usb_java_ui.DBManager.TABLE_FC;
 import static com.example.usb_java_ui.DBManager.TABLE_IC;
+import static com.example.usb_java_ui.DBManager.TABLE_NUM;
 import static com.example.usb_java_ui.DBManager.TABLE_V;
 import static com.example.usb_java_ui.DBManager.TABLE_WORD;
 
@@ -124,12 +125,12 @@ public class Quiz extends AppCompatActivity {
                 startActivity(createIntent(TABLE_ABB));
             }
         });
-//        btn_num.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(createIntent());
-//            }
-//        });
+        btn_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(createIntent(TABLE_NUM));
+            }
+        });
         btn_word.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

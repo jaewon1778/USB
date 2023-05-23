@@ -23,8 +23,7 @@ import java.util.List;
 
 public class WordList extends AppCompatActivity {
 
-    private ListView w_list;
-    private ListAdapterWord w_listAdt;
+
 
     private RecyclerView w_rcy;
     private RecycleAdapterWord w_rcyAdt;
@@ -44,30 +43,19 @@ public class WordList extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
-//        w_list = (ListView) findViewById(R.id.lstv_wordLearning);
-//        w_listAdt = new ListAdapterWord(this);
-//
-//        for (int i =1; i<exList.length;i++){
-//            w_listAdt.setWItem(i, exList[i]);
-//        }
-//        w_list.setAdapter(w_listAdt);
-
         w_rcy = (RecyclerView) findViewById(R.id.rcyv_wordLearning);
         w_rcy.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        w_rcyAdt = new RecycleAdapterWord();
-
-//        for (int i =1; i<exList.length;i++){
-//            w_rcyAdt.setRecycleItemWord(i,exList[i]);
-//        }
+        w_rcyAdt = new RecycleAdapterWord(this);
 
         ArrayList<String> wordList = dbManager.getDataList(DBManager.TABLE_WORD);
         for (int i=0; i<wordList.size();i++){
             w_rcyAdt.setRecycleItemWord(i+1, wordList.get(i));
         }
 
-
         w_rcy.setAdapter(w_rcyAdt);
+
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

@@ -42,6 +42,8 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 
+import java.util.ArrayList;
+
 public class ImageDetection extends AppCompatActivity {
 
     private static final String TAG = "Main_TAG";
@@ -60,6 +62,9 @@ public class ImageDetection extends AppCompatActivity {
     private Button btn_camera;
     private ImageView img_takenImage;
     private EditText et_content;
+
+    private DBManager dbManager;
+    private Button btn_saveWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +153,43 @@ public class ImageDetection extends AppCompatActivity {
 
         //TEST IMAGE DETECTION
 
+        dbManager = new DBManager();
+        dbManager.checkDB(this);
+        btn_saveWord = findViewById(R.id.btn_imageDSave);
+        btn_saveWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String typingWord = et_content.getText().toString();
+                et_content.setText("");
+                if (typingWord.equals("")){
+                    Toast.makeText(getApplicationContext(), "단어를 입력해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(dbManager.isWordExists(DBManager.TABLE_WORD,typingWord)){
+                    Toast.makeText(getApplicationContext(), "이미 존재하는 단어입니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dbManager.insertWord(DBManager.TABLE_WORD, typingWord, braille2String(Hangul2Braille.text(typingWord)));
+                Toast.makeText(getApplicationContext(), "단어가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
+    }
+    public String braille2String(ArrayList<int[]> newBraille){
+        StringBuilder resString = new StringBuilder();
+        resString.append("[");
+        for (int[] B : newBraille){
+            resString.append("[");
+            for (int i : B){
+                resString.append(i);
+            }
+            resString.append("]");
+        }
+        resString.append("]");
+
+        return resString.toString();
     }
 
     private void recognizeTextFromImage() {
@@ -169,7 +209,8 @@ public class ImageDetection extends AppCompatActivity {
                             loadingDialog.dismiss();
                             //인식된 텍스트 추출
                             String recognizedText = text.getText();
-                            recognizedText = recognizedText.replaceAll("\\n", " ");  //엔터 제거
+                            recognizedText = recognizedText.replaceAll("\n", "");  //엔터 제거
+                            recognizedText = recognizedText.replaceAll(" ", "");  //공백 제거
                             Log.d(TAG, "onSuccess : recognizedText: " + recognizedText);
                             //인식된 텍스트를 edit 텍스트에 set시킴
                             et_content.setText(recognizedText);

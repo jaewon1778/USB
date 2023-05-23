@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -180,9 +181,7 @@ public class DBManager {
         String braille = "";
 
         if (cursor.moveToFirst()) {
-            do {
-                braille = cursor.getString(1);
-            } while (cursor.moveToNext());
+            braille = cursor.getString(1);
         }
 
         cursor.close();
@@ -217,7 +216,7 @@ public class DBManager {
         statement.executeInsert();
     }
 
-    private void deleteWord(String table_name, String word) {
+    public void deleteWord(String table_name, String word) {
         String sql = "DELETE FROM "+table_name+" WHERE word = ?";
         SQLiteStatement statement = db.compileStatement(sql);
         statement.bindString(1, word);

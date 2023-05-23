@@ -3,6 +3,7 @@ package com.example.usb_java_ui;
 import static com.example.usb_java_ui.DBManager.TABLE_ABB;
 import static com.example.usb_java_ui.DBManager.TABLE_FC;
 import static com.example.usb_java_ui.DBManager.TABLE_IC;
+import static com.example.usb_java_ui.DBManager.TABLE_NUM;
 import static com.example.usb_java_ui.DBManager.TABLE_V;
 
 import android.annotation.SuppressLint;
@@ -169,6 +170,9 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 break;
             case TABLE_FC:
                 txt_qzType.setText("종성 : ");
+                break;
+            case TABLE_NUM:
+                txt_qzType.setText("숫자 : ");
                 break;
             case TABLE_ABB:
                 txt_qzType.setText("약자 : ");

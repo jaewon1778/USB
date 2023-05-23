@@ -54,13 +54,13 @@ public class apple extends AppCompatActivity {
 
         w_rcy = (RecyclerView) findViewById(R.id.rcyv_wordLearning);
         w_rcy.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        w_rcyAdt = new RecycleAdapterWord();
+        w_rcyAdt = new RecycleAdapterWord(this);
 
 //        for (int i =1; i<exList.length;i++){
 //            w_rcyAdt.setRecycleItemWord(i,exList[i]);
 //        }
 
-        ArrayList<String> wordList = dbManager.getDataList(DBManager.TABLE_WORD);
+        ArrayList<String> wordList = dbManager.getDataList(DBManager.TABLE_NUM);
         for (int i=0; i<wordList.size();i++){
             w_rcyAdt.setRecycleItemWord(i+1, wordList.get(i));
         }

@@ -18,9 +18,9 @@ public class Number extends AppCompatActivity {
     private GridView m_grid_n;
     private GridAdapter m_gridAdt_n;
     private final String[] n_list = {
-            "수표", "0", "1", "2", "3",
-            "4", "5", "6", "7", "8",
-            "9"};
+            "0", "1", "2", "3", "4",
+            "5", "6", "7", "8", "9",
+            "수표"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class Number extends AppCompatActivity {
         for (String voStr : n_list) {
             m_gridAdt_n.setItem(voStr);
         }
-        m_gridAdt_n.setKeyType(3);
+        m_gridAdt_n.setKeyType(5);
 
         m_grid_n.setAdapter(m_gridAdt_n);
 

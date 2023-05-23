@@ -16,4 +16,8 @@ public class ListItemWord {
     public String getWordText() {
         return wordText;
     }
+
+    public void setIndexOfWord(int indexOfWord) {
+        this.indexOfWord = indexOfWord;
+    }
 }

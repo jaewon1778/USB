@@ -16,7 +16,11 @@ public class ViewHolderWord extends RecyclerView.ViewHolder {
     public TextView txtIndex;
     public TextView txtWord;
     public ImageButton btnCancel;
+    private RecycleAdapterWord.OnItemClickListener mListener = null;
 
+    public void setOnItemClickListener(RecycleAdapterWord.OnItemClickListener listener) {
+        this.mListener = listener;
+    }
     public ViewHolderWord(Context context, View itemView) {
         super(itemView);
 
@@ -27,7 +31,13 @@ public class ViewHolderWord extends RecyclerView.ViewHolder {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "삭제 : " +txtWord.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "삭제 : " +txtWord.getText(), Toast.LENGTH_SHORT).show();
+                int position = getAdapterPosition ();
+                if (position!=RecyclerView.NO_POSITION){
+                    if (mListener!=null){
+                        mListener.onDeleteClick (view,position);
+                    }
+                }
             }
         });
 

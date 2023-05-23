@@ -130,6 +130,10 @@ public class Output extends AppCompatActivity {
                 txt_strType.setText("약자 : ");
                 tableName = DBManager.TABLE_ABB;
                 break;
+            case 5: // 숫자
+                txt_strType.setText("숫자 : ");
+                tableName = DBManager.TABLE_NUM;
+                break;
             default:
 //                resList = Hangul2Braille.text(keyStr);
                 txt_strType.setText("");
@@ -141,10 +145,7 @@ public class Output extends AppCompatActivity {
         int[] indexesInDB = dbManager.getIndexesOfWord(tableName,keyStr);
         curIndexOfDB = indexesInDB[0];
         maxIndexOfDB = indexesInDB[1];
-//        Log.d("index", String.valueOf(curIndexOfDB));
-//        Log.d("index", String.valueOf(maxIndexOfDB));
         resList = StringToBraille(dbManager.getBrailleOfWord(tableName,keyStr));
-//        Log.d("resList", String.valueOf(resList));
         btn_prevW = findViewById(R.id.btn_prevWord);
         btn_nextW = findViewById(R.id.btn_nextWord);
 
@@ -181,6 +182,10 @@ public class Output extends AppCompatActivity {
 
         o_grid_output = (GridView) findViewById(R.id.grdv_brailles);
         o_gridOAdt = new GridOutputAdapter(this);
+        btn_output = findViewById(R.id.btn_output);
+        btn_nextO = findViewById(R.id.btn_nextOutput);
+        btn_prevO = findViewById(R.id.btn_prevOutput);
+        btn_reSpeak = findViewById(R.id.btn_listen);
 
         setWordBraille(keyStr, resList);
 
@@ -188,10 +193,6 @@ public class Output extends AppCompatActivity {
 //        max_idx = (resList.size()-1) / 3;
 //        rem = resList.size() % 3 == 0 ? 3 : resList.size() % 3;
 
-        btn_output = findViewById(R.id.btn_output);
-        btn_nextO = findViewById(R.id.btn_nextOutput);
-        btn_prevO = findViewById(R.id.btn_prevOutput);
-        btn_reSpeak = findViewById(R.id.btn_listen);
         btn_output.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,10 +248,11 @@ public class Output extends AppCompatActivity {
 
     }
     private ArrayList<int[]> StringToBraille(String str){
+        Log.d("str", str);
         String[] strArr = str.split("");
-//        Log.d("strArr", Arrays.toString(strArr));
+        Log.d("strArr", Arrays.toString(strArr));
         String[] strArrFor = Arrays.copyOfRange(strArr, 2, strArr.length-1);
-//        Log.d("strArrFor", Arrays.toString(strArrFor));
+        Log.d("strArrFor", Arrays.toString(strArrFor));
         ArrayList<int[]> braille = new ArrayList<>();
         int[] newB = {0,0,0,0,0,0};
         int indexB = 0;

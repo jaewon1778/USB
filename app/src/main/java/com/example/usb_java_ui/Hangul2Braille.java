@@ -309,6 +309,7 @@ public class Hangul2Braille {
                 int[][] GrammarArray = MATCH_H2B_GRAMMAR.get(String.valueOf('것'));
                 assert GrammarArray != null;
                 FinalResult.addAll(Arrays.asList(GrammarArray));
+                continue;
 
             }
 
