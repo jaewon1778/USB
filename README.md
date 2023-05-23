@@ -24,5 +24,5 @@
 | 👨🏻‍💻 고재원 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/jaewon1778 |
 | 👩🏻‍💻 유나경 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/ynk3132 |
 | 👨🏻‍💻 이지훈 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/predis3299 |
-| 👩🏻‍💻 차여원 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/YoungwonCha |
+| 👩🏻‍💻 차영원 | 🎓 숭실대 🇦🇮 AI융합학부 | https://github.com/YoungwonCha |
 
