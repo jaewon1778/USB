@@ -74,7 +74,9 @@ public class Touchpad extends Dialog {
                     case LONG_PRESS: // 앱 종료 버튼
                         break;
                     case SINGLE_TAP: // 음성 출력
-                        Toast.makeText(context, "index : "+ curObj.getIndexOfCurrentObject()+" ChildNum : "+curObj.getNumOfChildObject(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "index : "+ curObj.getIndexOfCurrentObject()+" ChildNum : "+curObj.getNumOfChildObject(), Toast.LENGTH_SHORT).show();
+                        curObj.getCurrentView().clearFocus();
+                        curObj.getCurrentView().requestFocus();
                         break;
                     case DOUBLE_TAP: // Click or 자식 Object 접근
                         if(curObj.getNumOfChildObject()!=0){

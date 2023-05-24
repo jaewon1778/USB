@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -56,6 +57,11 @@ public class Quiz_listenOutput extends AppCompatActivity {
     private ImageButton btn_nextQz;
     private TextView txt_qzType;
     private TextView txt_qzStr;
+
+    private Button btn_bluetoothInput;
+    private boolean running;
+    private Button btn_reSpeak;
+
 
 
     private ImageButton point1;
@@ -95,8 +101,9 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
         if(!Objects.equals(deviceN, "isNot")) {
             connectedThread = BluetoothConnection.connectedThread;
-//            BTresList = connectedThread.quizresult();
-//            Log.d("btrl", String.valueOf(BTresList));
+            btn_bluetoothInput.setEnabled(true);
+        } else {
+            btn_bluetoothInput.setEnabled(false);
         }
 
 
@@ -109,7 +116,6 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_listen_output);
 
@@ -132,6 +138,9 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
         txt_qzType = findViewById(R.id.txt_qzlStrType);
         txt_qzStr = findViewById(R.id.txt_qzlStr);
+
+        btn_bluetoothInput = findViewById(R.id.btn_bluetoothInput);
+        btn_reSpeak = findViewById(R.id.btn_listen);
 
         point1 = findViewById(R.id.imgbtn_qzlPoint1);
         point2 = findViewById(R.id.imgbtn_qzlPoint2);
@@ -193,11 +202,21 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 if (curIndex == maxIndex-2) btn_nextQz.setEnabled(true);
                 if (!Arrays.deepEquals(AnswerArr[curIndex], new int[][]{})) {
                     setButtonEnabled(false);
+                    btn_bluetoothInput.setEnabled(false);
                     resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));
                     updateAnswer();
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
                 } else {
                     setButtonEnabled(true);
+                    SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
+                    String deviceN = sp_bluetooth.getString("DN", "isNot");
+
+                    if(!Objects.equals(deviceN, "isNot")) {
+                        connectedThread = BluetoothConnection.connectedThread;
+                        btn_bluetoothInput.setEnabled(true);
+                    } else {
+                        btn_bluetoothInput.setEnabled(false);
+                    }
                     qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
                     resList = new ArrayList<>();
                     updateAnswer();
@@ -217,10 +236,20 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 if (curIndex == maxIndex-1) btn_nextQz.setEnabled(false);
                 if (!Arrays.deepEquals(AnswerArr[curIndex], new int[][]{})) {
                     setButtonEnabled(false);
+                    btn_bluetoothInput.setEnabled(false);
                     resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));                    updateAnswer();
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
                 } else {
                     setButtonEnabled(true);
+                    SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
+                    String deviceN = sp_bluetooth.getString("DN", "isNot");
+
+                    if(!Objects.equals(deviceN, "isNot")) {
+                        connectedThread = BluetoothConnection.connectedThread;
+                        btn_bluetoothInput.setEnabled(true);
+                    } else {
+                        btn_bluetoothInput.setEnabled(false);
+                    }
                     qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
                     resList = new ArrayList<>();
                     updateAnswer();
@@ -229,6 +258,38 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
             }
         });
+
+
+        btn_bluetoothInput.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Fill in the code here
+//                ArrayList<int[]> answer = Hangul2Braille.text("사과");
+//                resList.clear();
+                running = true;
+                while (running){
+                    quizresult();
+                    updateAnswer();
+
+                }
+
+
+                // Fill in the code here
+
+
+
+            }
+        });
+
+
+        btn_reSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tts_import.speakOut(keyStr);
+            }
+        });
+
 
         addA.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,10 +323,12 @@ public class Quiz_listenOutput extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"제출버튼입니다.",Toast.LENGTH_SHORT).show();
                 if(isItSameBraille(keyBraille, resList)){
                     setButtonEnabled(false);
+                    btn_bluetoothInput.setEnabled(false);
                     AnswerArr[curIndex] = keyBraille.toArray(new int[0][]);
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
                 } else {
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_red));
+//                    resList.clear();
                 }
 
             }
@@ -363,9 +426,8 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
     }
 
-    private void updateAnswer(){
+    public void updateAnswer(){
         qzl_gridOAdt = new GridOutputAdapter(this);
-
 
         for (int[] BItem : resList) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -376,7 +438,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
             String resName = stringBuilder.toString();
 
             String packName = this.getPackageName();
-            int resId = getResources().getIdentifier(resName, "drawable", packName);
+            int resId = this.getResources().getIdentifier(resName, "drawable", packName);
 
 
             qzl_gridOAdt.setBItem(resId);
@@ -489,6 +551,62 @@ public class Quiz_listenOutput extends AppCompatActivity {
         }
 
         return array;
+    }
+
+    public void quizresult() {
+
+        while(true) {
+//            updateAnswer();
+            String KeypadInput = connectedThread.KeypadInput();
+            if(KeypadInput.length() == 1) {
+                // 1개 지우기: $
+                if(KeypadInput.charAt(0) == '$') {
+                    if(resList.size() != 0) {
+                        resList.remove(resList.size() - 1);
+                        Log.d("quiz array remove", Arrays.deepToString(resList.toArray()));
+//                        btn_bluetoothInput.callOnClick();
+                        return;
+//                        updateAnswer();
+                    }
+                }
+                // 전체 지우기: #
+                else if(KeypadInput.charAt(0) == '#') {
+                    if(resList.size() != 0) {
+                        resList.clear();
+                        Log.d("quiz array clear", Arrays.deepToString(resList.toArray()));
+//                        btn_bluetoothInput.callOnClick();
+                        return;
+//                        updateAnswer();
+                    }
+                }
+                // 제출하기: @
+                else if(KeypadInput.charAt(0) == '@') {
+                    Log.d("quiz array submit", Arrays.deepToString(resList.toArray()));
+                    running = false;
+                    submitA.callOnClick();
+                    return;
+                }
+            }
+
+            // 1개 올리기: *
+            else if(KeypadInput.length() == 6){
+                int[] one = {0, 0, 0, 0, 0, 0};
+                for(int i = 0; i < 6; i++) {
+                    if(KeypadInput.charAt(i) == '1') {
+                        one[i] = 1;
+                    }
+                }
+                resList.add(one);
+                Log.d("quiz array add", Arrays.deepToString(resList.toArray()));
+//                btn_bluetoothInput.callOnClick();
+                return;
+//                updateAnswer();
+            }
+
+            //여기서 quizarray 이용해서 현재 입력된 점자 출력
+            //coding here
+//            Log.d("quiz array", Arrays.deepToString(resList.toArray()));
+        }
     }
 
     @Override

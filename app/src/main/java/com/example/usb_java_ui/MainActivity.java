@@ -52,22 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private View tool_setting;
     private ObjectTree OT_toolRoot;
 
-    private void myFocusListener(View targetView){
-        targetView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b){
-                    view.setBackground(getDrawable(R.drawable.border_red));
-                    TextView txt = (TextView)view;
-                    tts_import.speakOut(txt.getText().toString());
-                }
-                else {
-                    view.setBackground(new ColorDrawable(Color.TRANSPARENT));
-                }
-            }
-        });
-    }
     private void VoiceModeOn(){
         OT_root = new ObjectTree().rootObject();
         ObjectTree OT_study = new ObjectTree().initObject(txt_study);
@@ -76,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         OT_addWord.addChildViewArr(new View[]{btn_typing, btn_image_detection, btn_stt});
         OT_root.addChildObjectArr(new ObjectTree[]{OT_study,OT_addWord});
 
-        myFocusListener(txt_study);
-        myFocusListener(txt_addWord);
+        myFocusManager.txtFocusL(this, new TextView[]{txt_study, txt_addWord},tts_import);
+//        myFocusManager.txtFocusL(this,txt_addWord,tts_import);
 
         OT_toolRoot = new ObjectTree().rootObject();
         OT_toolRoot.addChildViewArr(new View[]{tool_help, tool_bluetooth, tool_setting});
@@ -167,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
 //        tts_import.onDestroy();
         tts_import.ttsDestroy();
         try {
-            if(BluetoothConnection.btSocket.isConnected()){
-                BluetoothConnection.btSocket.close();
+            if (BluetoothConnection.btSocket != null){
+                if(BluetoothConnection.btSocket.isConnected()){
+                    BluetoothConnection.btSocket.close();
+                }
             }
         } catch (IOException e) {
 //            throw new RuntimeException(e);

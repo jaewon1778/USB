@@ -41,6 +41,12 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="txt_helpDes" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
     <style name="txt_swName" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>

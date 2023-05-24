@@ -271,6 +271,7 @@ public class Quiz_readOutput extends AppCompatActivity {
         btn_STT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                edt_myAnswer.setBackground(getDrawable(R.drawable.border_fill_gray));
                 mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext()); // 새 SpeechRecognizer 를 만드는 팩토리 메서드
                 mRecognizer.setRecognitionListener(listener); // 리스너 설정
                 mRecognizer.startListening(intent); // 듣기 시작
@@ -283,10 +284,12 @@ public class Quiz_readOutput extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String myAnswer = edt_myAnswer.getText().toString();
-                if (myAnswer.equals(keyStr)){
+                if (myAnswer.equals(keyStr) || myAnswer.equals(changeKey(keyStr))){
                     AnswerArr[curIndex] = myAnswer;
+                    edt_myAnswer.setText(keyStr);
                     edt_myAnswer.setBackground(getDrawable(R.drawable.border_green));
-                    manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    if ( edt_myAnswer.isFocused())
+                        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     edt_myAnswer.setFocusable(false);
                     edt_myAnswer.setFocusableInTouchMode(false);
                     btn_STT.setEnabled(false);
@@ -299,6 +302,68 @@ public class Quiz_readOutput extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String changeKey(String inputStr){
+        String outputKey = inputStr;
+        switch (inputStr) {
+            case "ㅏ":
+                outputKey = "아";
+                break;
+            case "ㅑ":
+                outputKey = "야";
+                break;
+            case "ㅓ":
+                outputKey = "어";
+                break;
+            case "ㅕ":
+                outputKey = "여";
+                break;
+            case "ㅗ":
+                outputKey = "오";
+                break;
+            case "ㅛ":
+                outputKey = "요";
+                break;
+            case "ㅜ":
+                outputKey = "우";
+                break;
+            case "ㅠ":
+                outputKey = "유";
+                break;
+            case "ㅡ":
+                outputKey = "으";
+                break;
+            case "ㅣ":
+                outputKey = "이";
+                break;
+            case "ㅐ":
+            case "ㅔ":
+                outputKey = "에";
+                break;
+            case "ㅒ":
+            case "ㅖ":
+                outputKey = "예";
+                break;
+            case "ㅘ":
+                outputKey = "와";
+                break;
+            case "ㅚ":
+            case "ㅞ":
+            case "ㅙ":
+                outputKey = "왜";
+                break;
+            case "ㅝ":
+                outputKey = "워";
+                break;
+            case "ㅟ":
+                outputKey = "위";
+                break;
+            case "ㅢ":
+                outputKey = "의";
+                break;
+        }
+        return outputKey;
     }
 
     public void sendbraille(int send_idx, int cnt) {
@@ -486,9 +551,11 @@ public class Quiz_readOutput extends AppCompatActivity {
 //            for (int i = 0; i < matches.size(); i++) {
 //                edt_myAnswer.setText(matches.get(i));
 //            }
+            str = matches.get(0);
             str = str.replaceAll("\n","");
             str = str.replaceAll(" ","");
-            str = arrayListToString(matches);
+            str = str2con(str);
+            edt_myAnswer.setText(str);
 
             //test2
             Log.d("test2", "str: " + str);
@@ -514,6 +581,103 @@ public class Quiz_readOutput extends AppCompatActivity {
             // 향후 이벤트를 추가하기 위해 예약
         }
     };
+
+    public String str2con(String inputStr){
+        String outputStr = "";
+        switch (inputStr) {
+            case "기역":
+                outputStr = "ㄱ";
+                break;
+            case "니은":
+                outputStr = "ㄴ";
+                break;
+            case "디귿":
+                outputStr = "ㄷ";
+                break;
+            case "리을":
+                outputStr = "ㄹ";
+                break;
+            case "미음":
+                outputStr = "ㅁ";
+                break;
+            case "비읍":
+                outputStr = "ㅂ";
+                break;
+            case "시옷":
+                outputStr = "ㅅ";
+                break;
+            case "이응":
+                outputStr = "ㅇ";
+                break;
+            case "지읒":
+                outputStr = "ㅈ";
+                break;
+            case "치읓":
+                outputStr = "ㅊ";
+                break;
+            case "키읔":
+                outputStr = "ㅋ";
+                break;
+            case "티읕":
+                outputStr = "ㅌ";
+                break;
+            case "피읖":
+                outputStr = "ㅍ";
+                break;
+            case "히읗":
+                outputStr = "ㅎ";
+                break;
+            case "쌍기역":
+                outputStr = "ㄲ";
+                break;
+            case "쌍디귿":
+                outputStr = "ㄸ";
+                break;
+            case "쌍시옷":
+                outputStr = "ㅆ";
+                break;
+            case "쌍지읒":
+                outputStr = "ㅉ";
+                break;
+            case "기역시옷":
+                outputStr = "ㄳ";
+                break;
+            case "니은지읏":
+                outputStr = "ㄵ";
+                break;
+            case "니은히읗":
+                outputStr = "ㄶ";
+                break;
+            case "리을기역":
+                outputStr = "ㄺ";
+                break;
+            case "리을미음":
+                outputStr = "ㄻ";
+                break;
+            case "리을비읍":
+                outputStr = "ㄼ";
+                break;
+            case "리을시옷":
+                outputStr = "ㄽ";
+                break;
+            case "리을티읕":
+                outputStr = "ㄾ";
+                break;
+            case "리을피읖":
+                outputStr = "ㄿ";
+                break;
+            case "리을히읗":
+                outputStr = "ㅀ";
+                break;
+            case "비읍시옷":
+                outputStr = "ㅄ";
+                break;
+            default:
+                outputStr = inputStr;
+                break;
+        }
+        return outputStr;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

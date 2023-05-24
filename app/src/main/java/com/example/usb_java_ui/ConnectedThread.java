@@ -15,7 +15,7 @@ public class ConnectedThread extends Thread {
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
 
-    private String one_braille  = "";
+    private static String one_braille  = "";
 
     public ConnectedThread(BluetoothSocket socket) {
         mmSocket = socket;
@@ -34,6 +34,12 @@ public class ConnectedThread extends Thread {
         mmOutStream = tmpOut;
     }
 
+    public ConnectedThread() {
+        mmSocket = null;
+        mmInStream = null;
+        mmOutStream = null;
+    }
+
     @Override
     public void run() {
         byte[] buffer = new byte[1024];  // buffer store for the stream
@@ -49,7 +55,6 @@ public class ConnectedThread extends Thread {
                     buffer = new byte[1024];
                     SystemClock.sleep(100); //pause and wait for rest of data. Adjust this depending on your sending speed.
                     bytes = mmInStream.available(); // how many bytes are ready to be read?
-                    //Log.d("bytes", String.valueOf(bytes));
                     bytes = mmInStream.read(buffer, 0, bytes); // record how many bytes we actually read
 
                     // 읽은 데이터를 로그로 출력
@@ -57,13 +62,8 @@ public class ConnectedThread extends Thread {
 
                     if(receivedData.charAt(receivedData.length()-1) == ';') {
                         received += receivedData.substring(0, receivedData.length() - 1);
-                        Log.d("received_braille", received);
-                        Log.d("received_braille size", String.valueOf(received.length()));
-                        //Log.d("compare", String.valueOf(received.equals("000000")));
-                        Log.d("=========", "===============================");
 
                         one_braille = received;
-                        received = "";
                         break;
                     }
                     else {
@@ -79,53 +79,13 @@ public class ConnectedThread extends Thread {
         }
     }
 
+    public String KeypadInput() {
+        run();
 
-    //quiz execute
-    public ArrayList<int[]> quizresult() {
-        ArrayList<int[]> quizarray = new ArrayList<>();
-        while(true) {
-            one_braille = "";
-            run();
-            if(one_braille.length() == 1) {
-                // 1개 지우기: $
-                if(one_braille.charAt(0) == '$') {
-                    if(quizarray.size() != 0) {
-                        quizarray.remove(quizarray.size() - 1);
-                    }
-                }
-                // 전체 지우기: #
-                else if(one_braille.charAt(0) == '#') {
-                    if(quizarray.size() != 0) {
-                        quizarray.clear();
-                    }
-                }
-                // 제출하기: @
-                else if(one_braille.charAt(0) == '@') {
-                    break;
-                }
-                else {
-                    continue;
-                }
-            }
-            // 1개 올리기: *
-            else if(one_braille.length() == 6){
-                int[] one = {0, 0, 0, 0, 0, 0};
-                //Log.d("one array", String.valueOf(one));
-                for(int i = 0; i < 6; i++) {
-                    if(one_braille.charAt(i) == '1') {
-                        one[i] = 1;
-                    }
-                }
-                //Log.d("one array", String.valueOf(one));
-                quizarray.add(one);
-                Log.d("quiz array", Arrays.deepToString(quizarray.toArray()));
-            }
-            else {
-                continue;
-            }
-        }
+        String str = one_braille;
+        one_braille = "";
 
-        return quizarray;
+        return str;
     }
 
     /* Call this from the main activity to send data to the remote device */

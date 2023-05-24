@@ -59,7 +59,6 @@
                             style="@style/btn_output"
                             android:background="@drawable/button_study"
                             android:src="@drawable/baseline_arrow_left_24"
-
                             />
                         <TextView
                             android:id="@+id/txt_qzlQuestion"
@@ -110,6 +109,14 @@
                         android:gravity="center"
                         >
 
+                        <Button
+                            android:id="@+id/btn_bluetoothInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/btn_add_word"
+                            android:background="@drawable/button_study"
+                            android:text="@string/input"
+                            />
                         <Button
                             android:id="@+id/btn_listen"
                             android:layout_width="wrap_content"

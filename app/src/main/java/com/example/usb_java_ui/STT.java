@@ -53,7 +53,6 @@ public class STT extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO},PERMISSION);
         et_STT = findViewById(R.id.et_STTContent);
 
-
         Button btn_del = findViewById(R.id.btn_STTDelete);
         btn_del.setOnClickListener(view -> et_STT.setText(null));
 
@@ -193,7 +192,7 @@ public class STT extends AppCompatActivity {
 //            for (int i = 0; i < matches.size(); i++) {
 //                et_STT.setText(matches.get(i));
 //            }
-            str = arrayListToString(matches);
+            str = matches.get(0);
             str = str.replaceAll("\n","");
             str = str.replaceAll(" ","");
             et_STT.setText(str);
