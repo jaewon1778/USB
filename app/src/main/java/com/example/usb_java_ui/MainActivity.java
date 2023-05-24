@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_stt;
     private ObjectTree OT_root;
 
+    private Toolbar toolbar;
     private View tool_help;
     private View tool_bluetooth;
     private View tool_setting;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 if (b){
                     view.setBackground(getDrawable(R.drawable.border_red));
+                    TextView txt = (TextView)view;
+                    tts_import.speakOut(txt.getText().toString());
                 }
                 else {
                     view.setBackground(new ColorDrawable(Color.TRANSPARENT));
@@ -76,12 +79,31 @@ public class MainActivity extends AppCompatActivity {
         myFocusListener(txt_study);
         myFocusListener(txt_addWord);
 
-//        OT_toolRoot = new ObjectTree().rootObject();
-//        OT_toolRoot.addChildViewArr(new View[]{tool_help, tool_bluetooth, tool_setting});
+        OT_toolRoot = new ObjectTree().rootObject();
+        OT_toolRoot.addChildViewArr(new View[]{tool_help, tool_bluetooth, tool_setting});
+
+        tool_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(toolbar.getMenu().getItem(0));
+            }
+        });
+        tool_bluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(toolbar.getMenu().getItem(1));
+            }
+        });
+        tool_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(toolbar.getMenu().getItem(2));
+            }
+        });
 
 
         touchpad.setCurObj(OT_root.getChildObjectOfIndex(0));
-//        touchpad.setToolRootObjCurObj(OT_toolRoot);
+        touchpad.setToolRootObjCurObj(OT_toolRoot);
         OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
         touchpad.show();
     }
@@ -103,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         touchpad = new Touchpad(this);
         touchpad.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         touchpad.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        touchpad.setCanceledOnTouchOutside(false);
+        touchpad.setCancelable(false);
 
 //        if(!sp_setting.getBoolean("voiceChecked", false)){
 //            CVMDialog = new ChoiceVoiceMode(this);
@@ -156,13 +180,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.deleteDatabase("USB_DB");
+//        this.deleteDatabase("USB_DB");
 
         DBManager mDBM = new DBManager();
         mDBM.InitDB(getApplicationContext());
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -170,12 +194,9 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        for (int i =0; i < toolbar.getChildCount(); i++){
-            tool_help = toolbar.getChildAt(i);
-//            tool_bluetooth = toolbar.getChildAt(1);
-//            tool_setting = toolbar.getChildAt(2);
-
-        }
+        tool_help = findViewById(R.id.v_help);
+        tool_bluetooth = findViewById(R.id.v_bluetooth);
+        tool_setting = findViewById(R.id.v_setting);
 
 
         //DB TEST
@@ -191,6 +212,16 @@ public class MainActivity extends AppCompatActivity {
 
         //DB TEST
         txt_addWord = findViewById(R.id.txt_addWord);
+//        txt_addWord.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                toolbar.getChildAt(2).callOnClick();
+////                int n = toolbar.getChildCount();
+////                Toast.makeText(MainActivity.this, ""+n, Toast.LENGTH_SHORT).show();
+//                onOptionsItemSelected(toolbar.getMenu().getItem(1));
+//
+//            }
+//        });
 
         //TTS TEST
 //        TextView txt_study = (TextView) findViewById(R.id.txt_study);
@@ -329,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+//        super.onBackPressed();
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - pressTime;
 

@@ -8,9 +8,12 @@ import static com.example.usb_java_ui.DBManager.TABLE_V;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,11 +37,14 @@ import java.util.Random;
 
 public class Quiz_listenOutput extends AppCompatActivity {
 
+    private TTS_Import tts_import;
+    private ConnectedThread connectedThread;
     private GridView qzl_grid_output;
     private GridOutputAdapter qzl_gridOAdt;
     private String table_name;
     private int[] myBraille = new int[]{0, 0, 0, 0, 0, 0};
     private ArrayList<int[]> resList = new ArrayList<>();
+    private ArrayList<int[]> BTresList = new ArrayList<>();
     private ArrayList<int[]> keyBraille = new ArrayList<>();
     private String keyStr;
     private int[] randomIndex;
@@ -68,53 +74,37 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
     private DBManager dbManager;
 
-    private void resetBraille(ImageButton[] points){
-        myBraille = new int[]{0, 0, 0, 0, 0, 0};
-        points[0].setImageResource(R.drawable.p0);
-        points[1].setImageResource(R.drawable.p0);
-        points[2].setImageResource(R.drawable.p0);
-        points[3].setImageResource(R.drawable.p0);
-        points[4].setImageResource(R.drawable.p0);
-        points[5].setImageResource(R.drawable.p0);
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
+        tts_import = new TTS_Import();
+        tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                tts_import.onInit(i);
+            }
+        }));
+        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
+
+
+        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
+        String deviceN = sp_bluetooth.getString("DN", "isNot");
+
+        if(!Objects.equals(deviceN, "isNot")) {
+            connectedThread = BluetoothConnection.connectedThread;
+//            BTresList = connectedThread.quizresult();
+//            Log.d("btrl", String.valueOf(BTresList));
+        }
+
 
     }
-
-    private void updateAnswer(){
-        qzl_gridOAdt = new GridOutputAdapter(this);
-
-
-        for (int[] BItem : resList) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("@drawable/b");
-            for (int dot : BItem){
-                stringBuilder.append(dot);
-            }
-            String resName = stringBuilder.toString();
-
-            String packName = this.getPackageName();
-            int resId = getResources().getIdentifier(resName, "drawable", packName);
-
-
-            qzl_gridOAdt.setBItem(resId);
-        }
-        int numcol = resList.size();
-        int line = 2;
-
-        if (numcol > 12) {
-
-            line = 1 + (numcol-1)/6;
-
-        }
-
-        qzl_grid_output.setAdapter(qzl_gridOAdt);
-
-        ViewGroup.LayoutParams o_param = qzl_grid_output.getLayoutParams();
-        if(o_param == null) {
-            o_param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        }
-        o_param.height = 160 * line;
-        qzl_grid_output.setLayoutParams(o_param);
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tts_import.ttsDestroy();
     }
 
     @Override
@@ -359,6 +349,55 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 }
             }
         });
+
+
+    }
+    private void resetBraille(ImageButton[] points){
+        myBraille = new int[]{0, 0, 0, 0, 0, 0};
+        points[0].setImageResource(R.drawable.p0);
+        points[1].setImageResource(R.drawable.p0);
+        points[2].setImageResource(R.drawable.p0);
+        points[3].setImageResource(R.drawable.p0);
+        points[4].setImageResource(R.drawable.p0);
+        points[5].setImageResource(R.drawable.p0);
+
+    }
+
+    private void updateAnswer(){
+        qzl_gridOAdt = new GridOutputAdapter(this);
+
+
+        for (int[] BItem : resList) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("@drawable/b");
+            for (int dot : BItem){
+                stringBuilder.append(dot);
+            }
+            String resName = stringBuilder.toString();
+
+            String packName = this.getPackageName();
+            int resId = getResources().getIdentifier(resName, "drawable", packName);
+
+
+            qzl_gridOAdt.setBItem(resId);
+        }
+        int numcol = resList.size();
+        int line = 2;
+
+        if (numcol > 12) {
+
+            line = 1 + (numcol-1)/6;
+
+        }
+
+        qzl_grid_output.setAdapter(qzl_gridOAdt);
+
+        ViewGroup.LayoutParams o_param = qzl_grid_output.getLayoutParams();
+        if(o_param == null) {
+            o_param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        o_param.height = 160 * line;
+        qzl_grid_output.setLayoutParams(o_param);
 
     }
 

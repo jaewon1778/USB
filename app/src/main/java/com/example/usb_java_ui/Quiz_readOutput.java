@@ -483,9 +483,11 @@ public class Quiz_readOutput extends AppCompatActivity {
 
             //test1
             Log.d("test1", arrayListToString(matches));
-            for (int i = 0; i < matches.size(); i++) {
-                edt_myAnswer.setText(matches.get(i));
-            }
+//            for (int i = 0; i < matches.size(); i++) {
+//                edt_myAnswer.setText(matches.get(i));
+//            }
+            str = str.replaceAll("\n","");
+            str = str.replaceAll(" ","");
             str = arrayListToString(matches);
 
             //test2

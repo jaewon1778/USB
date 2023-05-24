@@ -9,10 +9,13 @@ import static com.example.usb_java_ui.MyTouchEvent.LONG_PRESS;
 import static com.example.usb_java_ui.MyTouchEvent.SINGLE_TAP;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,8 @@ public class Touchpad extends Dialog {
     private ObjectTree curObj;
     private ObjectTree toolRootObj;
     private ObjectTree tempObj;
+    private boolean isToolbar;
+    int x_val;
 
     @Override
     public void dismiss() {
@@ -40,11 +45,22 @@ public class Touchpad extends Dialog {
         super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 //        super(context, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         setContentView(R.layout.touchpad);
+        if (context instanceof Activity){
+            setOwnerActivity((Activity) context);
+        }
+
         objIndex = 0;
 
         myTouchEvent = new MyTouchEvent();
         myTouchEvent.mDetector = new GestureDetectorCompat(getContext(),myTouchEvent);
         myTouchEvent.mDetector.setOnDoubleTapListener(myTouchEvent);
+        ImageView imageView = findViewById(R.id.img_touch);
+        imageView.setColorFilter(Color.parseColor("#55FF0000"));
+        int offset = 100;
+        x_val = 440;
+//        imageView.setX(600);
+//        imageView.setY(1160);
+        isToolbar = false;
         v_touch = findViewById(R.id.v_touch);
         v_touch.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -72,28 +88,60 @@ public class Touchpad extends Dialog {
                         int next_index = curObj.getIndexOfCurrentObject()+1;
                         if(next_index < curObj.getParentObject().getNumOfChildObject()){
                             curObj = curObj.getParentObject().getChildObjectOfIndex(next_index);
+                            if (isToolbar){
+                                x_val = x_val+offset;
+                                imageView.setX(x_val);
+                                imageView.setY(115);
+                            }
                         }
                         break;
                     case FLING_DOWN: // 이전 Object
                         int prev_index = curObj.getIndexOfCurrentObject()-1;
                         if(prev_index >= 0){
                             curObj = curObj.getParentObject().getChildObjectOfIndex(prev_index);
+                            if (isToolbar){
+                                x_val = x_val-offset;
+                                imageView.setX(x_val);
+                                imageView.setY(115);
+                            }
                         }
 
                         break;
                     case FLING_LEFT: // ToolBar 접근
-//                        for (ObjectTree toolObj : toolRootObj.getChildObjectList()){
-//                            if (curObj == toolObj){
-//                                curObj = tempObj;
-//                                break;
-//                            }
-//                        }
-//                        tempObj = curObj;
-//                        curObj = toolRootObj.getChildObjectOfIndex(0);
+                        if (!isToolbar){
+                            curObj.getCurrentView().clearFocus();
+                            tempObj = curObj;
+                            curObj = toolRootObj.getChildObjectOfIndex(0);
+                            isToolbar = true;
+                            x_val = 440;
+                            imageView.setX(x_val);
+//                            imageView.setX(540);
+//                            imageView.setX(640);
+                            imageView.setY(115);
+
+
+                        } else {
+                            curObj = tempObj;
+                            imageView.setX(600);
+                            imageView.setY(1160);
+                            isToolbar = false;
+                            curObj.getCurrentView().requestFocus();
+                        }
+
                         break;
                     case FLING_RIGHT: // 이전 액티비티 or 부모 Object 접근
+                        if (isToolbar){
+                            curObj = tempObj;
+                            imageView.setX(600);
+                            imageView.setY(1160);
+                            isToolbar = false;
+                            curObj.getCurrentView().requestFocus();
+                            break;
+                        }
                         if(curObj.getParentObject().getCurrentView()!=null){
                             curObj = curObj.getParentObject();
+                        } else {
+                            onBackPressed();
                         }
                         break;
                 }
@@ -123,5 +171,11 @@ public class Touchpad extends Dialog {
     }
     public void setToolRootObjCurObj(ObjectTree toolRootObj) {
         this.toolRootObj = toolRootObj;
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        getOwnerActivity().onBackPressed();
     }
 }
