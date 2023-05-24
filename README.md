@@ -10,7 +10,7 @@
 #### 점자 학습 시스템(USB)를 제안하고자 합니다.
 
 ## System blueprint
-![USB_png]()
+![USB_png](https://github.com/jaewon1778/USB/blob/main/%EC%84%A4%EA%B3%84%EB%8F%842.png)
 
 ## Settings
 #### Android Studio 2022.2.1.19 (target SDK : 31 / min SDK : 28)
