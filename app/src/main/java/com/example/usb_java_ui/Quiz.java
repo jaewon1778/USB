@@ -10,11 +10,15 @@ import static com.example.usb_java_ui.DBManager.TABLE_WORD;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -25,7 +29,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class Quiz extends AppCompatActivity {
+public class Quiz extends MyAppActivity {
     private boolean qzMode;
     private TextView txt_qzs;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -39,41 +43,33 @@ public class Quiz extends AppCompatActivity {
     private Button btn_word;
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prev_mode.edit();
-        editor.putBoolean("modeChecked",qzMode);
-        editor.apply();
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        // make objTree
+        swbtn_qzs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                swbtn_qzs.setChecked(!swbtn_qzs.isChecked());
+            }
+        });
+        ObjectTree OT_swM = new ObjectTree().initObject(swbtn_qzs);
+        ObjectTree OT_pt = new ObjectTree().initObject(txt_qzs);
+        OT_pt.addChildViewArr(new View[]{btn_initialC, btn_vowel, btn_finalC, btn_abb, btn_num, btn_word});
+        OT_root.addChildObjectArr(new ObjectTree[]{OT_pt, OT_swM});
+
+        // make objTree
+        MyFocusManager.viewArrFocusL(this, new View[]{swbtn_qzs,txt_qzs, btn_initialC, btn_vowel, btn_finalC, btn_abb, btn_num, btn_word},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
-        qzMode = prev_mode.getBoolean("modeChecked",false);
-        if (qzMode){
-            txt_qzs.setText("쓰기 퀴즈");
-        }
-        else{
-            txt_qzs.setText("읽기 퀴즈");
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        super.onCreate(savedInstanceState);
 
         SharedPreferences prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
 
@@ -146,35 +142,5 @@ public class Quiz extends AppCompatActivity {
 
         intent.putExtra("keyTableName", table_name);
         return intent;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

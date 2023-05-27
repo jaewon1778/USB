@@ -38,7 +38,6 @@ public class RecycleAdapterWord extends RecyclerView.Adapter<ViewHolderWord> {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.list_item_word, parent, false);
-
         ViewHolderWord newVHW = new ViewHolderWord(context, view);
         newVHW.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -58,6 +57,7 @@ public class RecycleAdapterWord extends RecyclerView.Adapter<ViewHolderWord> {
 
         return newVHW;
     }
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -84,7 +84,19 @@ public class RecycleAdapterWord extends RecyclerView.Adapter<ViewHolderWord> {
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
 
+
+    public View getItemView(ViewGroup parent){
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.list_item_word, parent, false);
+
+        return view;
+    }
 
 }
 

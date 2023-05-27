@@ -2,21 +2,29 @@ package com.example.usb_java_ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class Consonant extends AppCompatActivity {
+public class Consonant extends MyAppActivity {
+
+    private TextView txt_ic, txt_idc, txt_fc, txt_fdc;
     private GridView m_grid_ic;
     private GridView m_grid_idc;
     private GridView m_grid_fc;
@@ -40,18 +48,61 @@ public class Consonant extends AppCompatActivity {
                                            "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ",
                                            "ㅀ", "ㅄ", "ㅆ"};
 
+    protected void VoiceModeOn(){
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_ic = new ObjectTree().initObject(txt_ic);
+        ObjectTree OT_idc = new ObjectTree().initObject(txt_idc);
+        ObjectTree OT_fc = new ObjectTree().initObject(txt_fc);
+        ObjectTree OT_fdc = new ObjectTree().initObject(txt_fdc);
+
+        Button[] grid_ic_allView =new Button[m_grid_ic.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_ic.getCount(); i++){
+            grid_ic_allView[i] = m_gridAdt_ic.getView(i,new View(this), m_grid_ic).findViewById(R.id.btn_item_con);
+        }
+        Button[] grid_idc_allView =new Button[m_grid_idc.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_idc.getCount(); i++){
+            grid_idc_allView[i] = m_gridAdt_idc.getView(i,new View(this), m_grid_idc).findViewById(R.id.btn_item_con);
+        }
+        Button[] grid_fc_allView =new Button[m_grid_fc.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_fc.getCount(); i++){
+            grid_fc_allView[i] = m_gridAdt_fc.getView(i,new View(this), m_grid_fc).findViewById(R.id.btn_item_con);
+        }
+        Button[] grid_fdc_allView =new Button[m_grid_fdc.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_fdc.getCount(); i++){
+            grid_fdc_allView[i] = m_gridAdt_fdc.getView(i,new View(this), m_grid_fdc).findViewById(R.id.btn_item_con);
+        }
+        OT_ic.addChildViewArr(grid_ic_allView);
+        OT_idc.addChildViewArr(grid_idc_allView);
+        OT_fc.addChildViewArr(grid_fc_allView);
+        OT_fdc.addChildViewArr(grid_fdc_allView);
+        OT_root.addChildObjectArr(new ObjectTree[]{OT_ic, OT_idc, OT_fc, OT_fdc});
+
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_ic, txt_idc, txt_fc, txt_fdc},getTTS_import());
+        MyFocusManager.btnListFocusL(grid_ic_allView, getTTS_import());
+        MyFocusManager.btnListFocusL(grid_idc_allView, getTTS_import());
+        MyFocusManager.btnListFocusL(grid_fc_allView, getTTS_import());
+        MyFocusManager.btnListFocusL(grid_fdc_allView, getTTS_import());
+
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.consonant);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        txt_ic = findViewById(R.id.txt_initialCon);
+        txt_idc = findViewById(R.id.txt_initialDblCon);
+        txt_fc = findViewById(R.id.txt_finalCon);
+        txt_fdc = findViewById(R.id.txt_finalDblCon);
 
         m_grid_ic = (GridView) findViewById(R.id.grdv_initialCon);
         m_gridAdt_ic = new GridAdapter(this);
@@ -125,33 +176,5 @@ public class Consonant extends AppCompatActivity {
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
 
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

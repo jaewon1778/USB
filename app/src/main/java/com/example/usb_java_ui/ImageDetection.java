@@ -1,6 +1,5 @@
 package com.example.usb_java_ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,14 +11,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -27,9 +23,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,9 +35,7 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 
-import java.util.ArrayList;
-
-public class ImageDetection extends AppCompatActivity {
+public class ImageDetection extends MyAppActivity {
 
     private static final String TAG = "Main_TAG";
     //카메라나 갤러리에서 가져올 image의 Uri
@@ -59,7 +50,10 @@ public class ImageDetection extends AppCompatActivity {
     private LoadingDialog loadingDialog;
     private TextRecognizer textRecognizer;
 
+    private TextView txt_pt, txt_imgD;
     private Button btn_camera;
+    private Button btn_gallery;
+    private Button btn_recognizeText;
     private ImageView img_takenImage;
     private EditText et_content;
 
@@ -67,20 +61,27 @@ public class ImageDetection extends AppCompatActivity {
     private Button btn_saveWord;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_detection);
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        OT_root.addChild(new ObjectTree().initObject(txt_pt));
+        OT_root.getChildObjectOfIndex(0).addChildViewArr(new View[]{txt_imgD, btn_camera, btn_gallery, btn_recognizeText, btn_saveWord});
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_pt, txt_imgD, btn_camera, btn_gallery, btn_recognizeText, btn_saveWord},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.image_detection);
+        super.onCreate(savedInstanceState);
 
         //TEST IMAGE DETECTION
         //이미지에서 텍스트 인식할 때 보여줄 dialog 초기화
+
+        txt_pt = findViewById(R.id.pageTitle);
+        txt_imgD = findViewById(R.id.txt_imgD);
 
         loadingDialog = new LoadingDialog(this);
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -98,8 +99,8 @@ public class ImageDetection extends AppCompatActivity {
         //버튼 클릭 때 보여줄 image dialog
         img_takenImage = findViewById(R.id.img_imageDTakenImage);
         btn_camera = findViewById(R.id.btn_imageDCamera);
-        Button btn_gallery = findViewById(R.id.btn_imageDGallery);
-        Button btn_recognizeText = findViewById(R.id.btn_imageDRecognizeText);
+        btn_gallery = findViewById(R.id.btn_imageDGallery);
+        btn_recognizeText = findViewById(R.id.btn_imageDRecognizeText);
         et_content = findViewById(R.id.et_imageDContent);
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
@@ -177,20 +178,7 @@ public class ImageDetection extends AppCompatActivity {
 
 
     }
-    public String braille2String(ArrayList<int[]> newBraille){
-        StringBuilder resString = new StringBuilder();
-        resString.append("[");
-        for (int[] B : newBraille){
-            resString.append("[");
-            for (int i : B){
-                resString.append(i);
-            }
-            resString.append("]");
-        }
-        resString.append("]");
 
-        return resString.toString();
-    }
 
     private void recognizeTextFromImage() {
         Log.d(TAG, "recognizeTextFromImage: ");
@@ -214,6 +202,7 @@ public class ImageDetection extends AppCompatActivity {
                             Log.d(TAG, "onSuccess : recognizedText: " + recognizedText);
                             //인식된 텍스트를 edit 텍스트에 set시킴
                             et_content.setText(recognizedText);
+                            getTTS_import().speakOut(recognizedText);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -359,33 +348,4 @@ public class ImageDetection extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

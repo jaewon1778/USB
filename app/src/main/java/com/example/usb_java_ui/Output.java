@@ -2,13 +2,8 @@ package com.example.usb_java_ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,23 +12,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
-public class Output extends AppCompatActivity {
+public class Output extends MyAppOutputActivity {
     private GridView o_grid_output;
     private GridOutputAdapter o_gridOAdt;
 
     private ArrayList<int[]> resList;
-
-    private TTS_Import tts_import;
-    private ConnectedThread connectedThread;
 
     private String keyStr;
     private TextView txt_str;
@@ -54,50 +39,32 @@ public class Output extends AppCompatActivity {
     private int send_idx;
     private int max_idx;
     private int rem;
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
-        tts_import = new TTS_Import();
-        tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                tts_import.onInit(i);
-            }
-        }));
-        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
 
 
-        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
-        String deviceN = sp_bluetooth.getString("DN", "isNot");
+    protected void VoiceModeOn(){
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
 
-        if(!Objects.equals(deviceN, "isNot")) {
-            connectedThread = BluetoothConnection.connectedThread;
-        }
+        // make objTree
 
+        btn_prevW.setContentDescription("이전 단어");
+        btn_nextW.setContentDescription("다음 단어");
+        btn_prevO.setContentDescription("이전 출력");
+        btn_nextO.setContentDescription("다음 출력");
+        OT_root.addChildViewArr(new View[]{txt_str,btn_output,btn_nextO,btn_prevO});
+        OT_root.getChildObjectOfIndex(0).addChildViewArr(new View[]{btn_nextW,btn_prevW});
+        // make objTree
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_str,btn_output,btn_nextO,btn_prevO,btn_nextW,btn_prevW},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tts_import.ttsDestroy();
-        sendbraille(0, 0);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.output);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        super.onCreate(savedInstanceState);
 
         TextView txt_strType = (TextView) findViewById(R.id.txt_strType);
         txt_str = (TextView)findViewById(R.id.txt_str);
@@ -189,10 +156,6 @@ public class Output extends AppCompatActivity {
 
         setWordBraille(keyStr, resList);
 
-//        send_idx = 0;
-//        max_idx = (resList.size()-1) / 3;
-//        rem = resList.size() % 3 == 0 ? 3 : resList.size() % 3;
-
         btn_output.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +164,7 @@ public class Output extends AppCompatActivity {
                 if(max_idx == 0) {
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList, send_idx, cnt);
             }
         });
 
@@ -218,7 +181,7 @@ public class Output extends AppCompatActivity {
                 if(send_idx == max_idx){
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList, send_idx, cnt);
             }
         });
 
@@ -235,45 +198,19 @@ public class Output extends AppCompatActivity {
                 if(send_idx+max_idx == 0){
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList, send_idx, cnt);
             }
         });
 
         btn_reSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tts_import.speakOut(keyStr);
+                getTTS_import().speakOut(keyStr);
             }
         });
 
     }
-    private ArrayList<int[]> StringToBraille(String str){
-        Log.d("str", str);
-        String[] strArr = str.split("");
-        Log.d("strArr", Arrays.toString(strArr));
-        String[] strArrFor = Arrays.copyOfRange(strArr, 2, strArr.length-1);
-        Log.d("strArrFor", Arrays.toString(strArrFor));
-        ArrayList<int[]> braille = new ArrayList<>();
-        int[] newB = {0,0,0,0,0,0};
-        int indexB = 0;
-        for (String one : strArrFor){
 
-            if(Objects.equals(one, "1")){
-                newB[indexB] = 1;
-                indexB++;
-            }
-            else if (Objects.equals(one, "0")){
-                indexB++;
-            }
-            else if (Objects.equals(one, "]")) {
-                braille.add(newB);
-                newB = new int[]{0, 0, 0, 0, 0, 0};
-                indexB = 0;
-            }
-        }
-//        Log.d("strArrBra", String.valueOf(braille));
-        return braille;
-    }
 
     private void setWordBraille(String word, ArrayList<int[]> brailles){
         keyStr = word;
@@ -345,53 +282,5 @@ public class Output extends AppCompatActivity {
         }
 
     }
-
-
-    public void sendbraille(int send_idx, int cnt) {
-        ArrayList<int[]> brailleList = new ArrayList<>();
-
-        for(int j = 0; j < cnt; j++) {
-            brailleList.add(resList.get(send_idx*3 + j));
-        }
-
-        String row = String.valueOf(brailleList.size());
-        String braille = Arrays.deepToString(brailleList.toArray());
-        braille = row + braille + ";";  //끝에 ; 추가
-        Log.d("braille", braille);
-        if(connectedThread!=null){ Log.d("braille", braille);connectedThread.write(braille); }
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
 }

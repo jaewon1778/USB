@@ -1,5 +1,6 @@
 package com.example.usb_java_ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class GridAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) m_context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,8 +46,6 @@ public class GridAdapter extends BaseAdapter {
 
         Button button = convertView.findViewById(R.id.btn_item_con);
         button.setText(m_array_item.get(position).getItemString());
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +55,12 @@ public class GridAdapter extends BaseAdapter {
                 intent.putExtra("keyStr", str);
                 intent.putExtra("keyType", keyType);
                 m_context.startActivity(intent);
+            }
+        });
+        button.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                notify();
             }
         });
 
@@ -67,6 +73,24 @@ public class GridAdapter extends BaseAdapter {
 
     public String getItemString(int position) {
         return this.m_array_item.get(position).getItemString();
+    }
+
+    public ArrayList<GridItem> getM_array_item(){
+        return this.m_array_item;
+    }
+    public ArrayList<View> getItemView(View convertView, ViewGroup parent){
+        ArrayList<View> itemView = new ArrayList<>();
+        for (int i = 0; i< this.m_array_item.size(); i++){
+            itemView.add(getView(i,convertView,parent));
+        }
+        return itemView;
+    }
+    public View[] getItemViewArr(View convertView, ViewGroup parent){
+        View[] itemView = new View[this.m_array_item.size()];
+        for (int i = 0; i< this.m_array_item.size(); i++){
+            itemView[i] = getView(i,convertView,parent);
+        }
+        return itemView;
     }
 
     public int getKeyType() {

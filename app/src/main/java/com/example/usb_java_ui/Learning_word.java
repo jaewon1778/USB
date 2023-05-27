@@ -1,34 +1,44 @@
 package com.example.usb_java_ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+public class Learning_word extends MyAppActivity {
 
-public class Learning_word extends AppCompatActivity {
+    TextView txt_pt;
+    Button dotNum;
+    Button korean;
+    Button number;
+    Button wordList;
+
+    @Override
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_pt = new ObjectTree().initObject(txt_pt);
+        OT_pt.addChildViewArr(new View[]{dotNum, korean, number, wordList});
+        OT_root.addChild(OT_pt);
+
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_pt,dotNum, korean, number, wordList},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.learning_word);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        txt_pt = findViewById(R.id.pageTitle);
 
-        Button dotNum = (Button) findViewById(R.id.lw_dotNum);
+        dotNum = (Button) findViewById(R.id.lw_dotNum);
+        korean = (Button) findViewById(R.id.lw_korean);
+        number = findViewById(R.id.lw_number);
+        wordList = (Button) findViewById(R.id.lw_word);
         dotNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +46,6 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button korean = (Button) findViewById(R.id.lw_korean);
         korean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +53,6 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button number = findViewById(R.id.lw_number);
         number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +60,6 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button wordList = (Button) findViewById(R.id.lw_word);
         wordList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,34 +67,5 @@ public class Learning_word extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

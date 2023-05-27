@@ -6,6 +6,8 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
@@ -31,6 +33,7 @@
         android:theme="@style/Theme.USB_JAVA_UI"
         tools:targetApi="31"
         android:windowSoftInputMode="adjustPan"
+        android:hardwareAccelerated="true"
         >
         <activity
             android:name=".MainActivity"

@@ -1,34 +1,42 @@
 package com.example.usb_java_ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+public class Korean extends MyAppActivity {
 
-public class Korean extends AppCompatActivity {
+    TextView txt_pt;
+    Button kor_consonant;
+    Button kor_vowel;
+    Button kor_abbreviation;
+
+    @Override
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+
+        // make objTree
+        ObjectTree OT_pt = new ObjectTree().initObject(txt_pt);
+        OT_pt.addChildViewArr(new View[]{kor_consonant, kor_vowel, kor_abbreviation});
+        OT_root.addChild(OT_pt);
+        // make objTree
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_pt,kor_consonant, kor_vowel, kor_abbreviation},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.korean);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Button kor_consonant = (Button) findViewById(R.id.kor_consonant);
+        txt_pt = findViewById(R.id.pageTitle);
+        kor_consonant = (Button) findViewById(R.id.kor_consonant);
+        kor_vowel = (Button) findViewById(R.id.kor_vowel);
+        kor_abbreviation = (Button) findViewById(R.id.kor_abbreviation);
         kor_consonant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +45,6 @@ public class Korean extends AppCompatActivity {
             }
         });
 
-        Button kor_vowel = (Button) findViewById(R.id.kor_vowel);
         kor_vowel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +53,6 @@ public class Korean extends AppCompatActivity {
             }
         });
 
-        Button kor_abbreviation = (Button) findViewById(R.id.kor_abbreviation);
         kor_abbreviation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,34 +60,5 @@ public class Korean extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

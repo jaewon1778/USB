@@ -13,20 +13,23 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     tools:ignore="MissingConstraints">
 
-    <View
+    <Button
         android:id="@+id/v_help"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="@string/help"
         />
-    <View
+    <Button
         android:id="@+id/v_bluetooth"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="@string/bluetooth"
         />
-    <View
+    <Button
         android:id="@+id/v_setting"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:text="@string/setting"
         />
 
 <!--    <LinearLayout-->

@@ -17,6 +17,7 @@
     <string name="typing">직접 입력</string>
     <string name="image_detection">이미지 인식</string>
     <string name="STT">음성 인식</string>
+    <string name="STT_start">음성 인식 시작</string>
     <string name="dot_num">점 위치</string>
     <string name="korean">한글</string>
     <string name="number">숫자</string>

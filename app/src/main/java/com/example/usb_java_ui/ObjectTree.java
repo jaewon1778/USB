@@ -52,7 +52,11 @@ public class ObjectTree {
     }
 
     public ObjectTree initObject(View newView){
+//        if (newView != null){
         newView.setFocusableInTouchMode(true);
+        newView.setFocusable(true);
+//        }
+//        myFocusManager.viewFocusL(newView);
         this.currentView = newView;
         this.parentObject = null;
         this.indexOfCurrentObject = -1;
@@ -104,6 +108,7 @@ public class ObjectTree {
         }
         if(this.getCurrentView() != null){
             this.getCurrentView().setFocusableInTouchMode(false);
+            this.getCurrentView().setFocusable(false);
         }
     }
 

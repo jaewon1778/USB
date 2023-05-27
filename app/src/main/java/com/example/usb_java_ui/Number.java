@@ -6,15 +6,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class Number extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+public class Number extends MyAppActivity {
+    private TextView txt_num;
     private GridView m_grid_n;
     private GridAdapter m_gridAdt_n;
     private final String[] n_list = {
@@ -23,17 +29,27 @@ public class Number extends AppCompatActivity {
             "수표"};
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.number);
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_num = new ObjectTree().initObject(txt_num);
+        Button[] grid_n_allView =new Button[m_grid_n.getCount()];
+        for (int i = 0; i<m_grid_n.getCount(); i++){
+            grid_n_allView[i] = m_gridAdt_n.getView(i,new View(this), m_grid_n).findViewById(R.id.btn_item_con);
+        }
+        OT_num.addChildViewArr(grid_n_allView);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        MyFocusManager.txtFocusL(this, txt_num, getTTS_import());
+        MyFocusManager.viewArrFocusL(this, grid_n_allView,getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.number);
+        super.onCreate(savedInstanceState);
 
         m_grid_n = (GridView) findViewById(R.id.grdv_number);
         m_gridAdt_n = new GridAdapter(this);
@@ -53,33 +69,5 @@ public class Number extends AppCompatActivity {
         param_v.height = btn_height;
         m_grid_n.setLayoutParams(param_v);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
 
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

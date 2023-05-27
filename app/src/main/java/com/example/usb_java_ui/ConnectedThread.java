@@ -59,6 +59,9 @@ public class ConnectedThread extends Thread {
 
                     // 읽은 데이터를 로그로 출력
                     String receivedData = new String(buffer, 0, bytes);
+                    if(receivedData.length() == 0){
+                        continue;
+                    }
 
                     if(receivedData.charAt(receivedData.length()-1) == ';') {
                         received += receivedData.substring(0, receivedData.length() - 1);
@@ -79,9 +82,48 @@ public class ConnectedThread extends Thread {
         }
     }
 
-    public String KeypadInput() {
-        run();
+//    @Override
+//    public synchronized void start() {
+//        byte[] buffer = new byte[1024];  // buffer store for the stream
+//        int bytes = 0; // bytes returned from read()
+//        String received = "";
+//
+//        // Keep listening to the InputStream until an exception occurs
+//        while (true) {
+//            try {
+//                // Read from the InputStream
+//                bytes = mmInStream.available();
+//                if (bytes != 0) {
+//                    buffer = new byte[1024];
+//                    SystemClock.sleep(100); //pause and wait for rest of data. Adjust this depending on your sending speed.
+//                    bytes = mmInStream.available(); // how many bytes are ready to be read?
+//                    bytes = mmInStream.read(buffer, 0, bytes); // record how many bytes we actually read
+//
+//                    // 읽은 데이터를 로그로 출력
+//                    String receivedData = new String(buffer, 0, bytes);
+//
+//                    if(receivedData.charAt(receivedData.length()-1) == ';') {
+//                        received += receivedData.substring(0, receivedData.length() - 1);
+//
+//                        one_braille = received;
+//                        break;
+//                    }
+//                    else {
+//                        received += receivedData;
+//                    }
+//
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//
+//                break;
+//            }
+//        }
+//    }
 
+    public String KeypadInput() {
+//        start();
+        run();
         String str = one_braille;
         one_braille = "";
 

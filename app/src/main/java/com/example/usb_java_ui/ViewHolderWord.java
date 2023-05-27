@@ -1,8 +1,11 @@
 package com.example.usb_java_ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,6 +20,7 @@ public class ViewHolderWord extends RecyclerView.ViewHolder {
     public TextView txtWord;
     public ImageButton btnCancel;
     private RecycleAdapterWord.OnItemClickListener mListener = null;
+
 
     public void setOnItemClickListener(RecycleAdapterWord.OnItemClickListener listener) {
         this.mListener = listener;
@@ -53,5 +57,6 @@ public class ViewHolderWord extends RecyclerView.ViewHolder {
                 }
             }
         });
+
     }
 }

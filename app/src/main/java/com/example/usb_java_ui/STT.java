@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,9 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 
-public class STT extends AppCompatActivity {
+public class STT extends MyAppActivity {
 
+    private TextView txt_pt, txt_stt;
     SpeechRecognizer mRecognizer;
     Intent intent;
     EditText et_STT;
@@ -33,34 +35,40 @@ public class STT extends AppCompatActivity {
     final int PERMISSION = 1;
 
     private DBManager dbManager;
-    private Button btn_saveWord;
+    private Button btn_saveWord, btn_del, btn_startRec;
+
+    @Override
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_pt = new ObjectTree().initObject(txt_pt);
+        OT_pt.addChildViewArr(new View[]{txt_stt, btn_startRec, btn_del, btn_saveWord});
+        OT_root.addChild(OT_pt);
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_pt, txt_stt, btn_startRec, btn_del, btn_saveWord},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.stt);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-
+        txt_pt = findViewById(R.id.pageTitle);
+        txt_stt = findViewById(R.id.txt_STT);
 
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO},PERMISSION);
         et_STT = findViewById(R.id.et_STTContent);
 
-        Button btn_del = findViewById(R.id.btn_STTDelete);
+        btn_del = findViewById(R.id.btn_STTDelete);
         btn_del.setOnClickListener(view -> et_STT.setText(null));
 
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName()); // 여분의 키
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR"); // 언어 설정
 
-        Button btn_startRec = findViewById(R.id.btn_startSTT);
+        btn_startRec = findViewById(R.id.btn_startSTT);
         btn_startRec.setOnClickListener(view -> {
             mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext()); // 새 SpeechRecognizer 를 만드는 팩토리 메서드
             mRecognizer.setRecognitionListener(listener); // 리스너 설정
@@ -91,21 +99,6 @@ public class STT extends AppCompatActivity {
 
 
     }
-    public String braille2String(ArrayList<int[]> newBraille){
-        StringBuilder resString = new StringBuilder();
-        resString.append("[");
-        for (int[] B : newBraille){
-            resString.append("[");
-            for (int i : B){
-                resString.append(i);
-            }
-            resString.append("]");
-        }
-        resString.append("]");
-
-        return resString.toString();
-    }
-
     private final RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
@@ -196,6 +189,7 @@ public class STT extends AppCompatActivity {
             str = str.replaceAll("\n","");
             str = str.replaceAll(" ","");
             et_STT.setText(str);
+            getTTS_import().speakOut(str);
 
             //test2
             Log.d("test2", "str: " + str);
@@ -222,33 +216,4 @@ public class STT extends AppCompatActivity {
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

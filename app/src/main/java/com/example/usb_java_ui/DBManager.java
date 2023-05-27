@@ -52,7 +52,7 @@ public class DBManager {
                 Toast.makeText(context, "Error parsing JSON data", Toast.LENGTH_LONG).show();
                 }
             } else {
-            Toast.makeText(context, "이미 생성된 DB 존재", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "이미 생성된 DB 존재", Toast.LENGTH_LONG).show();
             }
         }
     }

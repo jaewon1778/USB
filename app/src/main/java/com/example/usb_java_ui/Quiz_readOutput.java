@@ -3,18 +3,11 @@ package com.example.usb_java_ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,25 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.IntStream;
 
-public class Quiz_readOutput extends AppCompatActivity {
-    private TTS_Import tts_import;
-    private ConnectedThread connectedThread;
+public class Quiz_readOutput extends MyAppOutputActivity {
 
     private SpeechRecognizer mRecognizer;
     private Intent intent;
@@ -54,6 +39,7 @@ public class Quiz_readOutput extends AppCompatActivity {
     private int curIndex;
 
 
+    private TextView txt_str;
     private ImageButton btn_nextQz;
     private ImageButton btn_prevQz;
     private Button btn_output;
@@ -71,53 +57,42 @@ public class Quiz_readOutput extends AppCompatActivity {
     private GridOutputAdapter qzr_gridOAdt;
     private DBManager dbManager;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
-        tts_import = new TTS_Import();
-        tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                tts_import.onInit(i);
-            }
-        }));
-        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
 
 
-        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
-        String deviceN = sp_bluetooth.getString("DN", "isNot");
+    protected void VoiceModeOn(){
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
 
-        if(!Objects.equals(deviceN, "isNot")) {
-            connectedThread = BluetoothConnection.connectedThread;
-        }
+        // make objTree
 
+        btn_prevQz.setContentDescription("이전 퀴즈");
+        btn_nextQz.setContentDescription("다음 퀴즈");
+        btn_prevO.setContentDescription("이전 출력");
+        btn_nextO.setContentDescription("다음 출력");
+        btn_STT.setContentDescription("음성 인식");
+        btn_submit.setContentDescription("제출");
+        OT_root.addChildViewArr(new View[]{txt_str,btn_output,btn_nextO,btn_prevO,btn_STT,btn_submit});
+        OT_root.getChildObjectOfIndex(0).addChildViewArr(new View[]{btn_nextQz,btn_prevQz});
+//        myFocusManager.txtFocusL(this, new TextView[]{txt_str},getTTS_import());
+//        myFocusManager.btnFocusL(new Button[]{btn_output}, getTTS_import());
+//        myFocusManager.imgBtnFocusL(new ImageButton[]{btn_nextO,btn_prevO,btn_nextQz,btn_prevQz,btn_STT,btn_submit}, tts_import);
+        // make objTree
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_str,btn_output,btn_nextO,btn_prevO,btn_STT,btn_submit,btn_nextQz,btn_prevQz}, getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tts_import.ttsDestroy();
-        sendbraille(0, 0);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_read_output);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO},PERMISSION);
-
+        txt_str = findViewById(R.id.txt_qzrStr);
         btn_nextQz = findViewById(R.id.btn_nextQz);
         btn_prevQz = findViewById(R.id.btn_prevQz);
         btn_prevO = findViewById(R.id.btn_prevOutput);
@@ -219,7 +194,7 @@ public class Quiz_readOutput extends AppCompatActivity {
                 if(max_idx == 0) {
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList,send_idx,cnt);
             }
         });
 
@@ -236,7 +211,7 @@ public class Quiz_readOutput extends AppCompatActivity {
                 if(send_idx == max_idx){
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList,send_idx,cnt);
             }
         });
 
@@ -253,14 +228,14 @@ public class Quiz_readOutput extends AppCompatActivity {
                 if(send_idx+max_idx == 0){
                     cnt = rem;
                 }
-                sendbraille(send_idx, cnt);
+                sendBraille(resList,send_idx,cnt);
             }
         });
 
         btn_reSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tts_import.speakOut(keyStr);
+                getTTS_import().speakOut(keyStr);
             }
         });
 
@@ -295,9 +270,11 @@ public class Quiz_readOutput extends AppCompatActivity {
                     btn_STT.setEnabled(false);
                     btn_submit.setEnabled(false);
                     btn_reSpeak.setEnabled(true);
+                    getTTS_import().speakOut("정답입니다");
                 }
                 else {
                     edt_myAnswer.setBackground(getDrawable(R.drawable.border_red));
+                    getTTS_import().speakOut("오답입니다");
                 }
             }
         });
@@ -364,47 +341,6 @@ public class Quiz_readOutput extends AppCompatActivity {
                 break;
         }
         return outputKey;
-    }
-
-    public void sendbraille(int send_idx, int cnt) {
-        ArrayList<int[]> brailleList = new ArrayList<>();
-
-        for(int j = 0; j < cnt; j++) {
-            brailleList.add(resList.get(send_idx*3 + j));
-        }
-
-        String row = String.valueOf(brailleList.size());
-        String braille = Arrays.deepToString(brailleList.toArray());
-        braille = row + braille + ";";  //끝에 ; 추가
-        Log.d("braille", braille);
-        if(connectedThread!=null){ Log.d("braille", braille);connectedThread.write(braille); }
-    }
-
-    private ArrayList<int[]> StringToBraille(String str){
-        String[] strArr = str.split("");
-//        Log.d("strArr", Arrays.toString(strArr));
-        String[] strArrFor = Arrays.copyOfRange(strArr, 2, strArr.length-1);
-//        Log.d("strArrFor", Arrays.toString(strArrFor));
-        ArrayList<int[]> braille = new ArrayList<>();
-        int[] newB = {0,0,0,0,0,0};
-        int indexB = 0;
-        for (String one : strArrFor){
-
-            if(Objects.equals(one, "1")){
-                newB[indexB] = 1;
-                indexB++;
-            }
-            else if (Objects.equals(one, "0")){
-                indexB++;
-            }
-            else if (Objects.equals(one, "]")) {
-                braille.add(newB);
-                newB = new int[]{0, 0, 0, 0, 0, 0};
-                indexB = 0;
-            }
-        }
-//        Log.d("strArrBra", String.valueOf(braille));
-        return braille;
     }
 
     public void setQzBraille(ArrayList<int[]> braille){
@@ -556,6 +492,7 @@ public class Quiz_readOutput extends AppCompatActivity {
             str = str.replaceAll(" ","");
             str = str2con(str);
             edt_myAnswer.setText(str);
+            getTTS_import().speakOut(str);
 
             //test2
             Log.d("test2", "str: " + str);
@@ -679,33 +616,4 @@ public class Quiz_readOutput extends AppCompatActivity {
         return outputStr;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

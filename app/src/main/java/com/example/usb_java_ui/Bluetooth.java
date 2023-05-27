@@ -2,69 +2,52 @@ package com.example.usb_java_ui;
 
 import static com.example.usb_java_ui.BluetoothConnection.REQUEST_ENABLE_BT;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
-public class Bluetooth extends AppCompatActivity {
+public class Bluetooth extends MyAppActivity {
 
+    TextView txt_pt;
     TextView textStatus;
-    Button btnParied, btnSearch, btnNext, btnBack, btnBraille, btnQuiz;
+    private Button btnParied, btnSearch;
     ListView listView;
-    EditText txtText;
 
-
-    private ArrayList<Object> Result = new ArrayList<>();
-
-    private int send_idx = 0;
-    private int max_idx = 0;
 
     private BluetoothConnection mBC;
     private ConnectedThread connectedThread;
-    @Override
-    protected void onDestroy() {
-//        unregisterReceiver(receiver);
 
-        super.onDestroy();
+    private ObjectTree OT_root;
 
-        // Don't forget to unregister the ACTION_FOUND receiver.
+
+    protected void VoiceModeOn(){
+        super.VoiceModeOn();
+        OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_blue = new ObjectTree().initObject(txt_pt);
+        OT_blue.addChildViewArr(new View[]{btnParied});
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_pt, btnParied}, getTTS_import());
+        OT_root.addChild(OT_blue);
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+
     }
-
     @Override
     protected void onResume() {
         super.onResume();
+
         SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
         String deviceN = sp_bluetooth.getString("DN", "isNot");
 
@@ -73,21 +56,15 @@ public class Bluetooth extends AppCompatActivity {
             textStatus.setText(deviceN);
 
         }
-    }
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.bluetooth);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
+        txt_pt = findViewById(R.id.pageTitle);
 //  Bluetooth
         mBC = new BluetoothConnection(getApplicationContext());
 
@@ -102,7 +79,7 @@ public class Bluetooth extends AppCompatActivity {
 
         // variables
         textStatus = (TextView) findViewById(R.id.txt_status);
-        btnParied = (Button) findViewById(R.id.btn_pairedD);
+        btnParied = findViewById(R.id.btn_pairedD);
         btnSearch = (Button) findViewById(R.id.btn_searchD);
 //        btnBraille = (Button) findViewById(R.id.btn_braille);
 //        btnQuiz = (Button) findViewById(R.id.btn_quiz);
@@ -122,7 +99,11 @@ public class Bluetooth extends AppCompatActivity {
                         String deviceHardwareAddress = device.getAddress(); // MAC address
                         mBC.addBtArrAdt(deviceName);
                         mBC.addDAddArr(deviceHardwareAddress);
-
+//                        if (getSp_setting().getBoolean("voiceChecked", false)){
+//
+//                            @SuppressLint("ResourceType") TextView usb =  mBC.getBtArrayAdapter().getView(0, new View(getApplicationContext()), listView).findViewById(android.R.layout.simple_list_item_1);
+//                            OT_root.addChild(new ObjectTree().initObject(usb));
+//                        }
                     }
                 }
             }
@@ -186,48 +167,4 @@ public class Bluetooth extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.bluetooth_menu, menu);
-
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-//                try {
-//                    mBC.getBtSocket().close();
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-                finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-//        try {
-//            mBC.getBtSocket().close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-        super.onBackPressed();
-    }
 }

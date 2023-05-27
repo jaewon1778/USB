@@ -7,28 +7,18 @@ import static com.example.usb_java_ui.DBManager.TABLE_NUM;
 import static com.example.usb_java_ui.DBManager.TABLE_V;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 
 import java.util.ArrayList;
@@ -36,15 +26,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
-public class Quiz_listenOutput extends AppCompatActivity {
+public class Quiz_listenOutput extends MyAppOutputActivity {
 
-    private TTS_Import tts_import;
-    private ConnectedThread connectedThread;
     private GridView qzl_grid_output;
     private GridOutputAdapter qzl_gridOAdt;
     private String table_name;
     private int[] myBraille = new int[]{0, 0, 0, 0, 0, 0};
     private ArrayList<int[]> resList = new ArrayList<>();
+    private ArrayList<int[]> quizList = new ArrayList<>();
     private ArrayList<int[]> BTresList = new ArrayList<>();
     private ArrayList<int[]> keyBraille = new ArrayList<>();
     private String keyStr;
@@ -57,6 +46,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
     private ImageButton btn_nextQz;
     private TextView txt_qzType;
     private TextView txt_qzStr;
+    private TextView txt_qzQ;
 
     private Button btn_bluetoothInput;
     private boolean running;
@@ -81,56 +71,31 @@ public class Quiz_listenOutput extends AppCompatActivity {
     private DBManager dbManager;
 
 
+    protected void VoiceModeOn(){
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences prev_settings = getSharedPreferences("setting", MODE_PRIVATE);
-        tts_import = new TTS_Import();
-        tts_import.set_tts(new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                tts_import.onInit(i);
-            }
-        }));
-        tts_import.setSpeed(prev_settings.getFloat("voiceSpeedFloat",1.0f));
+        // make objTree
 
+        btn_prevQz.setContentDescription("이전 퀴즈");
+        btn_nextQz.setContentDescription("다음 퀴즈");
+        OT_root.addChildViewArr(new View[]{txt_qzQ,txt_qzStr,btn_bluetoothInput});
+        OT_root.getChildObjectOfIndex(0).addChildViewArr(new View[]{btn_nextQz,btn_prevQz});
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_qzQ,txt_qzStr,btn_bluetoothInput,btn_nextQz,btn_prevQz},getTTS_import());
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
-        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
-        String deviceN = sp_bluetooth.getString("DN", "isNot");
-
-        if(!Objects.equals(deviceN, "isNot")) {
-            connectedThread = BluetoothConnection.connectedThread;
-            btn_bluetoothInput.setEnabled(true);
-        } else {
-            btn_bluetoothInput.setEnabled(false);
-        }
-
-
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tts_import.ttsDestroy();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_listen_output);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-
+        txt_qzQ = findViewById(R.id.txt_qzlQuestion);
         ns_qzl = findViewById(R.id.ns_qzl);
         qzl_grid_output = findViewById(R.id.grdv_qzlBrailles);
-        updateAnswer();
+        updateAnswer(resList);
 
         btn_prevQz = findViewById(R.id.btn_prevQz);
         btn_prevQz.setEnabled(false);
@@ -204,22 +169,17 @@ public class Quiz_listenOutput extends AppCompatActivity {
                     setButtonEnabled(false);
                     btn_bluetoothInput.setEnabled(false);
                     resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));
-                    updateAnswer();
+                    updateAnswer(resList);
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
                 } else {
                     setButtonEnabled(true);
                     SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
                     String deviceN = sp_bluetooth.getString("DN", "isNot");
 
-                    if(!Objects.equals(deviceN, "isNot")) {
-                        connectedThread = BluetoothConnection.connectedThread;
-                        btn_bluetoothInput.setEnabled(true);
-                    } else {
-                        btn_bluetoothInput.setEnabled(false);
-                    }
+                    btn_bluetoothInput.setEnabled(!Objects.equals(deviceN, "isNot"));
                     qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
                     resList = new ArrayList<>();
-                    updateAnswer();
+                    updateAnswer(resList);
                 }
                 setKeyValue();
 
@@ -237,22 +197,18 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 if (!Arrays.deepEquals(AnswerArr[curIndex], new int[][]{})) {
                     setButtonEnabled(false);
                     btn_bluetoothInput.setEnabled(false);
-                    resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));                    updateAnswer();
+                    resList = new ArrayList<int[]>(Arrays.asList(AnswerArr[curIndex]));
+                    updateAnswer(resList);
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
                 } else {
                     setButtonEnabled(true);
                     SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
                     String deviceN = sp_bluetooth.getString("DN", "isNot");
 
-                    if(!Objects.equals(deviceN, "isNot")) {
-                        connectedThread = BluetoothConnection.connectedThread;
-                        btn_bluetoothInput.setEnabled(true);
-                    } else {
-                        btn_bluetoothInput.setEnabled(false);
-                    }
+                    btn_bluetoothInput.setEnabled(!Objects.equals(deviceN, "isNot"));
                     qzl_grid_output.setBackground(new ColorDrawable(Color.TRANSPARENT));
                     resList = new ArrayList<>();
-                    updateAnswer();
+                    updateAnswer(resList);
                 }
                 setKeyValue();
 
@@ -264,15 +220,15 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                // Fill in the code here
-//                ArrayList<int[]> answer = Hangul2Braille.text("사과");
-//                resList.clear();
+                quizList.clear();
                 running = true;
                 while (running){
                     quizresult();
-                    updateAnswer();
-
+                    updateAnswer(quizList);
                 }
+                resList.clear();
+                resList.addAll(quizList);
+                submitA.callOnClick();
 
 
                 // Fill in the code here
@@ -286,7 +242,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
         btn_reSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tts_import.speakOut(keyStr);
+                getTTS_import().speakOut(keyStr);
             }
         });
 
@@ -295,7 +251,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resList.add(myBraille);
-                updateAnswer();
+                updateAnswer(resList);
                 resetBraille(points);
                 ns_qzl.fullScroll(NestedScrollView.FOCUS_DOWN);
             }
@@ -305,7 +261,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
             public void onClick(View view) {
                 if (resList.size() != 0) {
                     resList.remove(resList.size() - 1);
-                    updateAnswer();
+                    updateAnswer(resList);
                 }
             }
         });
@@ -313,7 +269,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resList.clear();
-                updateAnswer();
+                updateAnswer(resList);
             }
         });
         submitA.setOnClickListener(new View.OnClickListener() {
@@ -326,8 +282,11 @@ public class Quiz_listenOutput extends AppCompatActivity {
                     btn_bluetoothInput.setEnabled(false);
                     AnswerArr[curIndex] = keyBraille.toArray(new int[0][]);
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_green));
+                    getTTS_import().speakOut("정답입니다");
                 } else {
                     qzl_grid_output.setBackground(getDrawable(R.drawable.border_red));
+                    getTTS_import().speakOut("오답입니다");
+
 //                    resList.clear();
                 }
 
@@ -426,10 +385,10 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
     }
 
-    public void updateAnswer(){
+    public void updateAnswer(ArrayList<int[]> newList){
         qzl_gridOAdt = new GridOutputAdapter(this);
 
-        for (int[] BItem : resList) {
+        for (int[] BItem : newList) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("@drawable/b");
             for (int dot : BItem){
@@ -443,7 +402,7 @@ public class Quiz_listenOutput extends AppCompatActivity {
 
             qzl_gridOAdt.setBItem(resId);
         }
-        int numcol = resList.size();
+        int numcol = newList.size();
         int line = 2;
 
         if (numcol > 12) {
@@ -509,33 +468,6 @@ public class Quiz_listenOutput extends AppCompatActivity {
         keyBraille = StringToBraille(info[1]);
     }
 
-    private ArrayList<int[]> StringToBraille(String str){
-        String[] strArr = str.split("");
-//        Log.d("strArr", Arrays.toString(strArr));
-        String[] strArrFor = Arrays.copyOfRange(strArr, 2, strArr.length-1);
-//        Log.d("strArrFor", Arrays.toString(strArrFor));
-        ArrayList<int[]> braille = new ArrayList<>();
-        int[] newB = {0,0,0,0,0,0};
-        int indexB = 0;
-        for (String one : strArrFor){
-
-            if(Objects.equals(one, "1")){
-                newB[indexB] = 1;
-                indexB++;
-            }
-            else if (Objects.equals(one, "0")){
-                indexB++;
-            }
-            else if (Objects.equals(one, "]")) {
-                braille.add(newB);
-                newB = new int[]{0, 0, 0, 0, 0, 0};
-                indexB = 0;
-            }
-        }
-//        Log.d("strArrBra", String.valueOf(braille));
-        return braille;
-    }
-
     public static int[] generateShuffledArray(int start, int end) {
         int[] array = new int[end - start + 1];
         for (int i = start; i <= end; i++) {
@@ -554,16 +486,17 @@ public class Quiz_listenOutput extends AppCompatActivity {
     }
 
     public void quizresult() {
+//        resList.clear();
 
         while(true) {
 //            updateAnswer();
-            String KeypadInput = connectedThread.KeypadInput();
+            String KeypadInput = getConnectedThread().KeypadInput();
             if(KeypadInput.length() == 1) {
                 // 1개 지우기: $
                 if(KeypadInput.charAt(0) == '$') {
-                    if(resList.size() != 0) {
-                        resList.remove(resList.size() - 1);
-                        Log.d("quiz array remove", Arrays.deepToString(resList.toArray()));
+                    if(quizList.size() != 0) {
+                        quizList.remove(quizList.size() - 1);
+                        Log.d("quiz array remove", Arrays.deepToString(quizList.toArray()));
 //                        btn_bluetoothInput.callOnClick();
                         return;
 //                        updateAnswer();
@@ -571,9 +504,9 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 }
                 // 전체 지우기: #
                 else if(KeypadInput.charAt(0) == '#') {
-                    if(resList.size() != 0) {
-                        resList.clear();
-                        Log.d("quiz array clear", Arrays.deepToString(resList.toArray()));
+                    if(quizList.size() != 0) {
+                        quizList.clear();
+                        Log.d("quiz array clear", Arrays.deepToString(quizList.toArray()));
 //                        btn_bluetoothInput.callOnClick();
                         return;
 //                        updateAnswer();
@@ -581,9 +514,11 @@ public class Quiz_listenOutput extends AppCompatActivity {
                 }
                 // 제출하기: @
                 else if(KeypadInput.charAt(0) == '@') {
-                    Log.d("quiz array submit", Arrays.deepToString(resList.toArray()));
+                    Log.d("quiz array submit", Arrays.deepToString(quizList.toArray()));
                     running = false;
-                    submitA.callOnClick();
+//                    resList.addAll(quizList);
+//                    quizList.clear();
+//                    submitA.callOnClick();
                     return;
                 }
             }
@@ -596,8 +531,8 @@ public class Quiz_listenOutput extends AppCompatActivity {
                         one[i] = 1;
                     }
                 }
-                resList.add(one);
-                Log.d("quiz array add", Arrays.deepToString(resList.toArray()));
+                quizList.add(one);
+                Log.d("quiz array add", Arrays.deepToString(quizList.toArray()));
 //                btn_bluetoothInput.callOnClick();
                 return;
 //                updateAnswer();
@@ -607,36 +542,6 @@ public class Quiz_listenOutput extends AppCompatActivity {
             //coding here
 //            Log.d("quiz array", Arrays.deepToString(resList.toArray()));
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

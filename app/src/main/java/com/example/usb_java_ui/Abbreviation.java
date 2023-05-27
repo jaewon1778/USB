@@ -1,21 +1,13 @@
 package com.example.usb_java_ui;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-public class Abbreviation extends AppCompatActivity {
+public class Abbreviation extends MyAppActivity {
 
     private GridView m_grid_ca;
     private GridView m_grid_va;
@@ -33,18 +25,56 @@ public class Abbreviation extends AppCompatActivity {
                                     "그러면", "그러므로", "그런데",
                                     "그리고", "그리하여"};
 
+    private TextView txt_ca;
+    private TextView txt_va;
+    private TextView txt_ua;
+
+    @Override
+    protected void VoiceModeOn() {
+        super.VoiceModeOn();
+        ObjectTree OT_root = new ObjectTree().rootObject();
+        ObjectTree OT_ca = new ObjectTree().initObject(txt_ca);
+        ObjectTree OT_va = new ObjectTree().initObject(txt_va);
+        ObjectTree OT_ua = new ObjectTree().initObject(txt_ua);
+
+        Button[] grid_ca_allView =new Button[m_grid_ca.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_ca.getCount(); i++){
+            grid_ca_allView[i] = m_gridAdt_ca.getView(i,new View(this), m_grid_ca).findViewById(R.id.btn_item_con);
+        }
+        Button[] grid_va_allView =new Button[m_grid_va.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_va.getCount(); i++){
+            grid_va_allView[i] = m_gridAdt_va.getView(i,new View(this), m_grid_va).findViewById(R.id.btn_item_con);
+        }
+        Button[] grid_ua_allView =new Button[m_grid_ua.getCount()];
+//        Log.d("item", String.valueOf(m_grid_v.getCount()));
+        for (int i = 0; i<m_grid_ua.getCount(); i++){
+            grid_ua_allView[i] = m_gridAdt_ua.getView(i,new View(this), m_grid_ua).findViewById(R.id.btn_item_con);
+        }
+        OT_ca.addChildViewArr(grid_ca_allView);
+        OT_va.addChildViewArr(grid_va_allView);
+        OT_ua.addChildViewArr(grid_ua_allView);
+        OT_root.addChildObjectArr(new ObjectTree[]{OT_ca, OT_va, OT_ua});
+
+        MyFocusManager.viewArrFocusL(this, new View[]{txt_ca, txt_va, txt_ua},getTTS_import());
+        MyFocusManager.btnListFocusL(grid_ca_allView, getTTS_import());
+        MyFocusManager.btnListFocusL(grid_va_allView, getTTS_import());
+        MyFocusManager.btnListFocusL(grid_ua_allView, getTTS_import());
+
+        getTouchpad().setCurObj(OT_root.getChildObjectOfIndex(0));
+        OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.abbreviation);
+        super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("USB_Project");
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        txt_ca = findViewById(R.id.txt_conAbb);
+        txt_va = findViewById(R.id.txt_voAbb);
+        txt_ua = findViewById(R.id.txt_uAbb);
 
         m_grid_ca = (GridView) findViewById(R.id.grdv_conAbb);
         m_gridAdt_ca = new GridAdapter(this);
@@ -97,35 +127,6 @@ public class Abbreviation extends AppCompatActivity {
         param_ua.height = btn_height;
         m_grid_ua.setLayoutParams(param_ua);
 
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.Help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-
-            case R.id.Bluetooth:
-                startActivity(new Intent(this, Bluetooth.class));
-                return true;
-
-            case R.id.Setting:
-                startActivity(new Intent(this, Setting.class));
-                return true;
-
-            case android.R.id.home:
-                finish();
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

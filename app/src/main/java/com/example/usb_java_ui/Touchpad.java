@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ public class Touchpad extends Dialog {
     private ObjectTree tempObj;
     private boolean isToolbar;
     int x_val;
+    private Vibrator vibrator;
 
     @Override
     public void dismiss() {
@@ -48,6 +51,7 @@ public class Touchpad extends Dialog {
         if (context instanceof Activity){
             setOwnerActivity((Activity) context);
         }
+        vibrator =(Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         objIndex = 0;
 
@@ -70,6 +74,7 @@ public class Touchpad extends Dialog {
                     return true;
                 }
                 int gesture_n = myTouchEvent.getGesture_n();
+                curObj.getCurrentView().clearFocus();
                 switch(gesture_n){
                     case LONG_PRESS: // 앱 종료 버튼
                         break;
@@ -83,7 +88,10 @@ public class Touchpad extends Dialog {
                             curObj = curObj.getChildObjectOfIndex(0);
                         }
                         else {
-                            curObj.getCurrentView().callOnClick();
+                            if (curObj.getCurrentView().isEnabled()){
+                                curObj.getCurrentView().callOnClick();
+
+                            }
                         }
                         break;
                     case FLING_UP: // 다음 Object
@@ -96,6 +104,9 @@ public class Touchpad extends Dialog {
                                 imageView.setY(115);
                             }
                         }
+                        else {
+                            vib_Woong();
+                        }
                         break;
                     case FLING_DOWN: // 이전 Object
                         int prev_index = curObj.getIndexOfCurrentObject()-1;
@@ -106,6 +117,9 @@ public class Touchpad extends Dialog {
                                 imageView.setX(x_val);
                                 imageView.setY(115);
                             }
+                        }
+                        else {
+                            vib_Woong();
                         }
 
                         break;
@@ -131,7 +145,7 @@ public class Touchpad extends Dialog {
                         }
 
                         break;
-                    case FLING_RIGHT: // 이전 액티비티 or 부모 Object 접근
+                    case FLING_RIGHT: // 부모 Object 접근
                         if (isToolbar){
                             curObj = tempObj;
                             imageView.setX(600);
@@ -142,8 +156,12 @@ public class Touchpad extends Dialog {
                         }
                         if(curObj.getParentObject().getCurrentView()!=null){
                             curObj = curObj.getParentObject();
-                        } else {
-                            onBackPressed();
+                        }
+                        else {
+//                            onBackPressed();
+//                            vibrator.vibrate(VibrationEffect.createOneShot(500, 50));
+//                            vibrator.vibrate(VibrationEffect.createWaveform(new long[]{200, 100, 100}, new int[]{80, 0, 50}, -1));
+                            vib_WooongWoong();
                         }
                         break;
                 }
@@ -153,6 +171,14 @@ public class Touchpad extends Dialog {
                 return true;
             }
         });
+
+    }
+    public void vib_WooongWoong(){
+        vibrator.vibrate(VibrationEffect.createWaveform(new long[]{200, 100, 100}, new int[]{80, 0, 50}, -1));
+
+    }
+    public void vib_Woong(){
+        vibrator.vibrate(VibrationEffect.createOneShot(200, 80));
 
     }
 
@@ -170,9 +196,14 @@ public class Touchpad extends Dialog {
 
     public void setCurObj(ObjectTree curObj) {
         this.curObj = curObj;
+        this.root = curObj.getParentObject();
     }
     public void setToolRootObjCurObj(ObjectTree toolRootObj) {
         this.toolRootObj = toolRootObj;
+    }
+
+    public ObjectTree getRoot() {
+        return root;
     }
 
     @Override

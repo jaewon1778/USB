@@ -46,7 +46,7 @@ public class ChoiceVoiceMode extends Dialog {
     }
 
     @SuppressLint("MissingInflatedId")
-    public ChoiceVoiceMode(@NonNull Context context) {
+    public ChoiceVoiceMode(@NonNull Context context, TTS_Import tts_import) {
         super(context,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choice_mode);
@@ -59,13 +59,7 @@ public class ChoiceVoiceMode extends Dialog {
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe_setting = sp_setting.edit();
 //        boolean is_voiceChecked = sp_setting.getBoolean("voiceChecked", false);
 
-        ttsImport = new TTS_Import();
-        ttsImport.set_tts(new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                ttsImport.onInit(i);
-            }
-        }));
+        ttsImport = tts_import;
         ttsImport.setSpeed(1.0f);
 
         cvmV = findViewById(R.id.ll_CVM);
