@@ -339,6 +339,46 @@ public class Quiz_readOutput extends MyAppOutputActivity {
             case "ㅢ":
                 outputKey = "의";
                 break;
+            case "ㄲ":
+                outputKey = "ㄱㄱ";
+                break;
+            case "ㄳ":
+                outputKey = "ㄱㅅ";
+                break;
+            case "ㄵ":
+                outputKey = "ㄴㅈ";
+                break;
+            case "ㄶ":
+                outputKey = "ㄴㅎ";
+                break;
+            case "ㄺ":
+                outputKey = "ㄹㄱ";
+                break;
+            case "ㄻ":
+                outputKey = "ㄹㅁ";
+                break;
+            case "ㄼ":
+                outputKey = "ㄹㅂ";
+                break;
+            case "ㄽ":
+                outputKey = "ㄹㅅ";
+                break;
+            case "ㄾ":
+                outputKey = "ㄹㅌ";
+                break;
+            case "ㄿ":
+                outputKey = "ㄹㅍ";
+                break;
+            case "ㅀ":
+                outputKey = "ㄹㅎ";
+                break;
+            case "ㅄ":
+                outputKey = "ㅂㅅ";
+                break;
+            case "ㅆ":
+                outputKey = "ㅅㅅ";
+                break;
+
         }
         return outputKey;
     }
@@ -579,7 +619,7 @@ public class Quiz_readOutput extends MyAppOutputActivity {
             case "기역시옷":
                 outputStr = "ㄳ";
                 break;
-            case "니은지읏":
+            case "니은지읒":
                 outputStr = "ㄵ";
                 break;
             case "니은히읗":
