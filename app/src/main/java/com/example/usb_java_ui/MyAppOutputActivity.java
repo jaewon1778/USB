@@ -10,16 +10,21 @@ import java.util.Objects;
 public class MyAppOutputActivity extends MyAppActivity{
 
     private ConnectedThread connectedThread;
+    private SharedPreferences sp_bluetooth;
 
     protected ConnectedThread getConnectedThread(){
         return connectedThread;
+    }
+
+    protected SharedPreferences getSp_bluetooth(){
+        return sp_bluetooth;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
+        sp_bluetooth = getSharedPreferences("bluetoothDN", MODE_PRIVATE);
         String deviceN = sp_bluetooth.getString("DN", "isNot");
 
         if(!Objects.equals(deviceN, "isNot")) {

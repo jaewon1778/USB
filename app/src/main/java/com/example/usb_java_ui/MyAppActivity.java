@@ -146,13 +146,17 @@ public class MyAppActivity extends AppCompatActivity {
                         touchpad.dismiss();
                         tts_import.speakOut("기본모드로 변경되었습니다");
                         spe_setting.putBoolean("voiceChecked", false);
+                        spe_setting.apply();
                     }
                     else {
-                        VoiceModeOn();
+//                        VoiceModeOn();
                         tts_import.speakOut("보이스모드로 변경되었습니다");
                         spe_setting.putBoolean("voiceChecked", true);
+                        spe_setting.apply();
+                        onPause();
+                        onResume();
                     }
-                    spe_setting.apply();
+
                 }
             }
         });

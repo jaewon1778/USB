@@ -88,6 +88,19 @@ public class Quiz_listenOutput extends MyAppOutputActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        String deviceN = getSp_bluetooth().getString("DN", "isNot");
+
+        if(Objects.equals(deviceN, "isNot")) {
+           btn_bluetoothInput.setEnabled(false);
+        }
+        else {
+            btn_bluetoothInput.setEnabled(true);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.quiz_listen_output);
         super.onCreate(savedInstanceState);

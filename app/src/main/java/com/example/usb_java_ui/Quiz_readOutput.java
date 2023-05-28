@@ -82,6 +82,22 @@ public class Quiz_readOutput extends MyAppOutputActivity {
         OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String deviceN = getSp_bluetooth().getString("DN", "isNot");
+
+        if(Objects.equals(deviceN, "isNot")) {
+            btn_output.setEnabled(false);
+            btn_prevO.setEnabled(false);
+            btn_nextO.setEnabled(false);
+        }
+        else {
+            btn_output.setEnabled(true);
+            btn_prevO.setEnabled(true);
+            btn_nextO.setEnabled(true);
+        }
+    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override

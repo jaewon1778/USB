@@ -31,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class Quiz extends MyAppActivity {
     private boolean qzMode;
+    private SharedPreferences prev_mode;
     private TextView txt_qzs;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch swbtn_qzs;
@@ -65,13 +66,34 @@ public class Quiz extends MyAppActivity {
         OT_root.getChildObjectOfIndex(0).getCurrentView().requestFocus();
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        qzMode = prev_mode.getBoolean("modeChecked",false);
+        if (qzMode){
+            txt_qzs.setText("쓰기 퀴즈");
+        }
+        else{
+            txt_qzs.setText("읽기 퀴즈");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = prev_mode.edit();
+        editor.putBoolean("modeChecked",qzMode);
+        editor.apply();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.quiz);
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
+        prev_mode = getSharedPreferences("qzMode", MODE_PRIVATE);
 
         txt_qzs = findViewById(R.id.txt_qzSelect);
         btn_initialC = findViewById(R.id.btn_qzInitialCon);
